@@ -1,8 +1,12 @@
 
 /**
- * Clog C header - Provides macros for color console and file logging.
+ * =============
+ * Clog C Header
+ * =============
  *
- * Copyright (C) <year>  <name of author>
+ * Provides macros for color console and file logging.
+ *
+ * Copyright (C) 2025 Dorian N. Nihil, "starstarnull"
  *
  * This program is free software: you can redistribute it and/or modify it 
  * under the terms of the GNU General Public License as published by the Free 
@@ -17,20 +21,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
- * jdkfjkdskf sdklfj ksdjkfj ksdjkfjsdkj f
  *
- * djfkjsdk jfkjsdkjfkjsdkljfkljsdkfjklsdjfk jsdkjfkjsdkj f
- * Requirements:
+ * Description
+ * ===========
+ *
+ * description
+ *
+ *
+ * Philosophy
+ * ==========
+ *
+ * philosophy
+ *
+ *
+ * Requirements
+ * ============
  *
  *      Currently uses standard C library.
  *
  * Use:
+ * ============
  *
  *      Macros with preceding underscores (like `_<macro`) are not intended to 
  *      be used by the user.
  *
  *
  * Rules:
+ * ============
  *      These are macros, but they are wrapped with brackets so they can be
  *      used without brackets. For example, the following works:
  *
@@ -48,15 +65,12 @@
  *
  *
  *
- * Examples:
+ * Examples
+ * ========
  *
  *
- * Exposed constant macros:
- *
- *
- *
- *
- *
+ * Exposed Constant Macros
+ * =======================
  *
  *
  *
@@ -66,9 +80,48 @@
  *
  *
  *
- * Exposed function macros:
  *
  *
+ *
+ *
+ *
+ * Exposed Function Macros
+ * =======================
+ *
+ *
+ * Notes
+ * =====
+ *
+ * `_SYM_<level>` are redefinable after inclusion.
+ *
+ *
+ * Future Plans
+ * ============
+ *
+ *  * More configurations options.
+ *
+ *      * Time configurations (such as local time and formats).
+ *      * Order configurations.
+ *      * Color configurations.
+ *      * Symbol/order configurations.
+ *
+ *  * Add verbosity functionality.
+ *  * Add tracing option to all functions and/or add tracing mode.
+ *  * Add documentation to each define (for IDE recognition).
+ *  * Add aliases for function variations.
+ *  * Add namespace mode (with defines in more limited namespace).
+ *  * Add color hex and string hex (#ffffff) conversion functions.
+ *  * Add option to set new log file instead of appending to file.
+ *  * Add emoji mode.
+ *  * Add exported symbols.
+ *  * Add python library.
+ *  * Add cpp library.
+ *  * Port to Windows.
+ *  * Add secret money function.
+ *  * Need to consider backward compatability.
+ *  * Need to consider critical level.
+ *  * Add automated testing.
+ *  * Consider reducing binary size with functions.
  *
  */
 
@@ -263,7 +316,8 @@
  * fprint functions.
  *
  * The "fprint" series of macros are the base functions used in the other
- * macro functions. For this implementation, they use the `fprintf` function.
+ * macro functions. They are for printing to a given file pointer. For this 
+ * implementation, they use the `fprintf` function.
  *
  * The first parameter of all these functions is the `FILE*` pointer (which \
  * may be `stdout` or `stderr` or a `FILE*` to a file`) to write to. 
@@ -294,8 +348,6 @@
  *      
  *  Descriptions of each function can be found at the top comment of this file.
  */
-
-#define _NOTHING 
 
 #define FPRINT(f, s)                { fprintf(f, "%s", s); }
 #define FPRINTLN(f, s)              { fprintf(f, "%s\n", s); }
@@ -347,7 +399,7 @@
  * cfprint functions.
  *
  * The "cfprint" series of macros are the base functions used in the other
- * macro functions for colored printing. 
+ * macro functions and are for colored printing to the given file pointer. 
  *
  * The first parameter of all these functions is the color to print the text as
  * by prepending the string argument with the ANZI terminal color code and by
@@ -357,16 +409,16 @@
  * 
  * There are several function-like macros available:
  *
- *      CFPRINT(char* string, FILE*, char* string)
- *      CFPRINTLN(char* string, FILE*, char* string)
- *      CFPRINTF(char* string, FILE*, char* format_string, ...)
- *      CFPRINTFLN(char* string, FILE*, char* format_string, ...)
- *      CFPRINT_HEX(char* string, FILE*, void* buffer, size_t size)
- *      CFPRINTLN_HEX(char* string, FILE*, void* buffer, size_t size)
- *      CFPRINT_WIDE_HEX(char* string, FILE*, void* buffer, size_t size)
- *      CFPRINTLN_WIDE_HEX(char* string, FILE*, void* buffer, size_t size)
- *      CFPERROR(char* string, FILE*, char* string)
- *      CFPERRORF(char* string, FILE*, char* format_string, ...)
+ *      CFPRINT(char* color_string, FILE*, char* string)
+ *      CFPRINTLN(char* color_string, FILE*, char* string)
+ *      CFPRINTF(char* color_string, FILE*, char* format_string, ...)
+ *      CFPRINTFLN(char* color_string, FILE*, char* format_string, ...)
+ *      CFPRINT_HEX(char* color_string, FILE*, void* buffer, size_t size)
+ *      CFPRINTLN_HEX(char* color_string, FILE*, void* buffer, size_t size)
+ *      CFPRINT_WIDE_HEX(char* color_string, FILE*, void* buffer, size_t size)
+ *      CFPRINTLN_WIDE_HEX(char* color_string, FILE*, void* buffer, size_t size)
+ *      CFPERROR(char* color_string, FILE*, char* string)
+ *      CFPERRORF(char* color_string, FILE*, char* format_string, ...)
  *
  * Examples:
  *
@@ -428,8 +480,108 @@
                                             ); \
                                         }
 
-                                                                                        
-// Print functions.
+
+/**
+ * print functions.
+ *
+ * The "print" series are for printing to standard out. 
+ *
+ * There are several function-like macros available:
+ *
+ *      PRINT(char* string)
+ *      PRINTLN(char* string)
+ *      PRINTF(char* format_string, ...)
+ *      PRINTFLN(char* format_string, ...)
+ *      PRINT_HEX(void* buffer, size_t size)
+ *      PRINTLN_HEX(void* buffer, size_t size)
+ *      PRINT_WIDE_HEX(void* buffer, size_t size)
+ *      PRINTLN_WIDE_HEX(void* buffer, size_t size)
+ *      PERROR(char* string)
+ *      PERRORF(char* format_string, ...)
+ *
+ * Examples:
+ *
+ *      `PRINT("Hello"); printf("you");`
+ *
+ *          Output: `Helloyou`
+ *
+ *      `int i = 15; PRINT_HEX(&i, sizeof(int));` 
+ *
+ *          Output: `0f000000`. 
+ *
+ *  Additionally, there are "print_level" functions which add a symbol header
+ *  to each line based on the level selected. 
+ *
+ *  ** Note: These will ALWAYS print regardless of logging level. For
+ *  controlling prints using levels, see "CLOG" and "LOG" functions.
+ *
+ * There are several of these function-like macros available:
+ *
+ *      PRINT_TRACE(char* string)
+ *      PRINTLN_TRACE(char* string)
+ *      PRINTF_TRACE(char* format_string, ...)
+ *      PRINTFLN_TRACE(char* format_string, ...)
+ *
+ *      PRINT_DEBUG(char* string)
+ *      PRINTLN_DEBUG(char* string)
+ *      PRINTF_DEBUG(char* format_string, ...)
+ *      PRINTFLN_DEBUG(char* format_string, ...)
+ *
+ *      PRINT_EXTRA(char* string)
+ *      PRINTLN_EXTRA(char* string)
+ *      PRINTF_EXTRA(char* format_string, ...)
+ *      PRINTFLN_EXTRA(char* format_string, ...)
+ *
+ *      PRINT_INFO(char* string)
+ *      PRINTLN_INFO(char* string)
+ *      PRINTF_INFO(char* format_string, ...)
+ *      PRINTFLN_INFO(char* format_string, ...)
+ *
+ *      PRINT_HEADER(char* string)
+ *      PRINTLN_HEADER(char* string)
+ *      PRINTF_HEADER(char* format_string, ...)
+ *      PRINTFLN_HEADER(char* format_string, ...)
+ *
+ *      PRINT_SUCCESS(char* string)
+ *      PRINTLN_SUCCESS(char* string)
+ *      PRINTF_SUCCESS(char* format_string, ...)
+ *      PRINTFLN_SUCCESS(char* format_string, ...)
+ *
+ *      PRINT_INPUT(char* string)
+ *      PRINTLN_INPUT(char* string)
+ *      PRINTF_INPUT(char* format_string, ...)
+ *      PRINTFLN_INPUT(char* format_string, ...)
+ *
+ *      PRINT_WARNING(char* string)
+ *      PRINTLN_WARNING(char* string)
+ *      PRINTF_WARNING(char* format_string, ...)
+ *      PRINTFLN_WARNING(char* format_string, ...)
+ *
+ *      PRINT_ERROR(char* string)
+ *      PRINTLN_ERROR(char* string)
+ *      PRINTF_ERROR(char* format_string, ...)
+ *      PRINTFLN_ERROR(char* format_string, ...)
+ *
+ *      PERROR_ERROR(char* string)
+ *      PERRORF_ERROR(char* format_string, ...)
+ *
+ *      PRINT_FATAL(char* string)
+ *      PRINTLN_FATAL(char* string)
+ *      PRINTF_FATAL(char* format_string, ...)
+ *      PRINTFLN_FATAL(char* format_string, ...)
+ *
+ *      PERROR_FATAL(char* string)
+ *      PERRORF_FATAL(char* format_string, ...)
+ *
+ * Examples:
+ *
+ *      `PRINT_INFO("Hello"); printf("you");`
+ *
+ *          Output: `[*] Helloyou`
+ *
+ *  Descriptions of each function can be found at the top comment of this file.
+ */
+
 #define PRINT(s)                    FPRINT(stdout, s)
 #define PRINTLN(s)                  FPRINTLN(stdout, s)
 #define PRINTF(...)                 FPRINTF(stdout, __VA_ARGS__)
@@ -438,17 +590,8 @@
 #define PRINTLN_HEX(s, l)           FPRINTLN_HEX(stdout, s, l)
 #define PRINT_WIDE_HEX(s, l)        FPRINT_WIDE_HEX(stdout, s, l)
 #define PRINTLN_WIDE_HEX(s, l)      FPRINTLN_WIDE_HEX(stdout, s, l)
-#define PERROR(...)                 FPERROR(stdout, __VA_ARGS__)
-
-#define CPRINT(c, s)                CFPRINT(c, stdout, s)
-#define CPRINTLN(c, s)              CFPRINTLN(c, stdout, s)
-#define CPRINTF(c, ...)             CFPRINTF(c, stdout, __VA_ARGS__); PRINT(C_RESET)
-#define CPRINTFLN(c, ...)           CFPRINTFLN(c, stdout, __VA_ARGS__); PRINT(C_RESET)
-#define CPRINT_HEX(c, s, l)         CFPRINT_HEX(c, stdout, s, l)
-#define CPRINTLN_HEX(c, s, l)       CFPRINTLN_HEX(c, stdout, s, l)
-#define CPRINT_WIDE_HEX(c, s, l)    CFPRINT_WIDE_HEX(c, stdout, s, l)
-#define CPRINTLN_WIDE_HEX(c, s, l)  CFPRINTLN_WIDE_HEX(c, stdout, s, l)
-#define CPERROR(c, ...)             CFPERROR(c, stdout, __VA_ARGS__)
+#define PERROR(s)                   FPERROR(stdout, s)
+#define PERRORF(...)                FPERRORF(stdout, __VA_ARGS__)
 
 #define PRINT_TRACE(s)              PRINT(_SYM_TRACE s)
 #define PRINTLN_TRACE(s)            PRINTLN(_SYM_TRACE s)
@@ -485,78 +628,288 @@
 #define PRINTF_INPUT(...)           PRINTF(_SYM_INPUT __VA_ARGS__)
 #define PRINTFLN_INPUT(...)         PRINTFLN(_SYM_INPUT __VA_ARGS__)
 
-#define PRINT_WARN(s)               PRINT(_SYM_WARN s)
-#define PRINTLN_WARN(s)             PRINTLN(_SYM_WARN s)
-#define PRINTF_WARN(...)            PRINTF(_SYM_WARN __VA_ARGS__)
-#define PRINTFLN_WARN(...)          PRINTFLN(_SYM_WARN __VA_ARGS__)
+#define PRINT_WARNING(s)            PRINT(_SYM_WARN s)
+#define PRINTLN_WARNING(s)          PRINTLN(_SYM_WARN s)
+#define PRINTF_WARNING(...)         PRINTF(_SYM_WARN __VA_ARGS__)
+#define PRINTFLN_WARNING(...)       PRINTFLN(_SYM_WARN __VA_ARGS__)
 
-#define PRINT_ERR(s)                PRINT(_SYM_ERR s)
-#define PRINTLN_ERR(s)              PRINTLN(_SYM_ERR s)
-#define PRINTF_ERR(...)             PRINTF(_SYM_ERR __VA_ARGS__)
-#define PRINTFLN_ERR(...)           PRINTFLN(_SYM_ERR __VA_ARGS__)
-#define PERROR_ERR(...)             PERROR(_SYM_ERR __VA_ARGS__)
+#define PRINT_ERROR(s)              PRINT(_SYM_ERR s)
+#define PRINTLN_ERROR(s)            PRINTLN(_SYM_ERR s)
+#define PRINTF_ERROR(...)           PRINTF(_SYM_ERR __VA_ARGS__)
+#define PRINTFLN_ERROR(...)         PRINTFLN(_SYM_ERR __VA_ARGS__)
+
+#define PERROR_ERROR(s)             PERROR(_SYM_ERR s)
+#define PERRORF_ERROR(...)          PERRORF(_SYM_ERR __VA_ARGS__)
 
 #define PRINT_FATAL(s)              PRINT(_SYM_FATAL s)
 #define PRINTLN_FATAL(s)            PRINTLN(_SYM_FATAL s)
 #define PRINTF_FATAL(...)           PRINTF(_SYM_FATAL __VA_ARGS__)
 #define PRINTFLN_FATAL(...)         PRINTFLN(_SYM_FATAL __VA_ARGS__)
 
+#define PERROR_FATAL(s)             PERROR(_SYM_FATAL s)
+#define PERRORF_FATAL(...)          PERRORF(_SYM_FATAL __VA_ARGS__)
 
 
-#define CPRINT_TRACE(s)             CPRINT(C_TRACE, _SYM_TRACE s)
-#define CPRINTLN_TRACE(s)           CPRINTLN(C_TRACE, _SYM_TRACE s)
-#define CPRINTF_TRACE(...)          CPRINTF(C_TRACE, _SYM_TRACE __VA_ARGS__)
-#define CPRINTFLN_TRACE(...)        CPRINTFLN(C_TRACE, _SYM_TRACE __VA_ARGS__)
+/**
+ * cprint functions.
+ *
+ * The "cprint" series of macros are for colored printing to standard out. 
+ *
+ * The first parameter of all these functions is the color to print the text as
+ * by prepending the string argument with the ANZI terminal color code and by
+ * resetting the color output at the end.
+ * 
+ * There are several function-like macros available:
+ *
+ *      CPRINT(char* color_string, char* string)
+ *      CPRINTLN(char* color_string, char* string)
+ *      CPRINTF(char* color_string, char* format_string, ...)
+ *      CPRINTFLN(char* color_string, char* format_string, ...)
+ *      CPRINT_HEX(char* color_string, void* buffer, size_t size)
+ *      CPRINTLN_HEX(char* color_string, void* buffer, size_t size)
+ *      CPRINT_WIDE_HEX(char* color_string, void* buffer, size_t size)
+ *      CPRINTLN_WIDE_HEX(char* color_string, void* buffer, size_t size)
+ *      CPERROR(char* color_string, char* string)
+ *      CPERRORF(char* color_string, char* format_string, ...)
+ *
+ * Examples:
+ *
+ *      `CFPRINT(C_RED, "Hello"); printf("you");`
+ *
+ *          Output: `\033[31mHelloyou\033[0m` (Red "Helloyou")
+ *
+ *      `int i = 15; CFPRINT_HEX(C_RED, &i, sizeof(int));` 
+ *
+ *          Output: `\033[31m0f000000\033[0m`. (Red "0f000000")
+ *      
+ *  Additionally, there are "cprint_level" functions which add a symbol header
+ *  to each line based on the level selected and the given color. 
+ *
+ *  ** Note: These will ALWAYS print regardless of logging level. For
+ *  controlling prints using levels, see "CLOG" and "LOG" functions.
+ *
+ * There are several of these function-like macros available:
+ *
+ *      CPRINT_TRACE(char* color_string, char* string)
+ *      CPRINTLN_TRACE(char* color_string, char* string)
+ *      CPRINTF_TRACE(char* color_string, char* format_string, ...)
+ *      CPRINTFLN_TRACE(char* color_string, char* format_string, ...)
+ *
+ *      CPRINT_DEBUG(char* color_string, char* string)
+ *      CPRINTLN_DEBUG(char* color_string, char* string)
+ *      CPRINTF_DEBUG(char* color_string, char* format_string, ...)
+ *      CPRINTFLN_DEBUG(char* color_string, char* format_string, ...)
+ *
+ *      CPRINT_EXTRA(char* color_string, char* string)
+ *      CPRINTLN_EXTRA(char* color_string, char* string)
+ *      CPRINTF_EXTRA(char* color_string, char* format_string, ...)
+ *      CPRINTFLN_EXTRA(char* color_string, char* format_string, ...)
+ *
+ *      CPRINT_INFO(char* color_string, char* string)
+ *      CPRINTLN_INFO(char* color_string, char* string)
+ *      CPRINTF_INFO(char* color_string, char* format_string, ...)
+ *      CPRINTFLN_INFO(char* color_string, char* format_string, ...)
+ *
+ *      CPRINT_HEADER(char* color_string, char* string)
+ *      CPRINTLN_HEADER(char* color_string, char* string)
+ *      CPRINTF_HEADER(char* color_string, char* format_string, ...)
+ *      CPRINTFLN_HEADER(char* color_string, char* format_string, ...)
+ *
+ *      CPRINT_SUCCESS(char* color_string, char* string)
+ *      CPRINTLN_SUCCESS(char* color_string, char* string)
+ *      CPRINTF_SUCCESS(char* color_string, char* format_string, ...)
+ *      CPRINTFLN_SUCCESS(char* color_string, char* format_string, ...)
+ *
+ *      CPRINT_INPUT(char* color_string, char* string)
+ *      CPRINTLN_INPUT(char* color_string, char* string)
+ *      CPRINTF_INPUT(char* color_string, char* format_string, ...)
+ *      CPRINTFLN_INPUT(char* color_string, char* format_string, ...)
+ *
+ *      CPRINT_WARNING(char* color_string, char* string)
+ *      CPRINTLN_WARNING(char* color_string, char* string)
+ *      CPRINTF_WARNING(char* color_string, char* format_string, ...)
+ *      CPRINTFLN_WARNING(char* color_string, char* format_string, ...)
+ *
+ *      CPRINT_ERROR(char* color_string, char* string)
+ *      CPRINTLN_ERROR(char* color_string, char* string)
+ *      CPRINTF_ERROR(char* color_string, char* format_string, ...)
+ *      CPRINTFLN_ERROR(char* color_string, char* format_string, ...)
+ *
+ *      CPERROR_ERROR(char* color_string, char* string)
+ *      CPERRORF_ERROR(char* color_string, char* format_string, ...)
+ *
+ *      CPRINT_FATAL(char* color_string, char* string)
+ *      CPRINTLN_FATAL(char* color_string, char* string)
+ *      CPRINTF_FATAL(char* color_string, char* format_string, ...)
+ *      CPRINTFLN_FATAL(char* color_string, char* format_string, ...)
+ *
+ *      CPERROR_FATAL(char* color_string, char* string)
+ *      CPERRORF_FATAL(char* color_string, char* format_string, ...)
+ *
+ * Examples:
+ *
+ *      `CPRINT_INFO(C_RED, "Hello"); printf("you");`
+ *
+ *          Output: `\033[31m[*] Helloyou\033[0m` (Red "[*] Helloyou")
+ *
+ *  Descriptions of each function can be found at the top comment of this file.
+ */
 
-#define CPRINT_DEBUG(s)             CPRINT(C_DEBUG, _SYM_DEBUG s)
-#define CPRINTLN_DEBUG(s)           CPRINTLN(C_DEBUG, _SYM_DEBUG s)
-#define CPRINTF_DEBUG(...)          CPRINTF(C_DEBUG, _SYM_DEBUG __VA_ARGS__)
-#define CPRINTFLN_DEBUG(...)        CPRINTFLN(C_DEBUG, _SYM_DEBUG __VA_ARGS__)
+#define CPRINT(c, s)                CFPRINT(c, stdout, s)
+#define CPRINTLN(c, s)              CFPRINTLN(c, stdout, s)
+#define CPRINTF(c, ...)             CFPRINTF(c, stdout, __VA_ARGS__)
+#define CPRINTFLN(c, ...)           CFPRINTFLN(c, stdout, __VA_ARGS__)
+#define CPRINT_HEX(c, s, l)         CFPRINT_HEX(c, stdout, s, l)
+#define CPRINTLN_HEX(c, s, l)       CFPRINTLN_HEX(c, stdout, s, l)
+#define CPRINT_WIDE_HEX(c, s, l)    CFPRINT_WIDE_HEX(c, stdout, s, l)
+#define CPRINTLN_WIDE_HEX(c, s, l)  CFPRINTLN_WIDE_HEX(c, stdout, s, l)
+#define CPERROR(c, s)               CFPERROR(c, stdout, s)
+#define CPERRORF(c, ...)            CFPERRORF(c, stdout, __VA_ARGS__)
 
-#define CPRINT_EXTRA(s)             CPRINT(C_EXTRA, _SYM_EXTRA s)
-#define CPRINTLN_EXTRA(s)           CPRINTLN(C_EXTRA, _SYM_EXTRA s)
-#define CPRINTF_EXTRA(...)          CPRINTF(C_EXTRA, _SYM_EXTRA __VA_ARGS__)
-#define CPRINTFLN_EXTRA(...)        CPRINTFLN(C_EXTRA, _SYM_EXTRA __VA_ARGS__)
+#define CPRINT_TRACE(c, s)          CPRINT(c, _SYM_TRACE s)
+#define CPRINTLN_TRACE(c, s)        CPRINTLN(c, _SYM_TRACE s)
+#define CPRINTF_TRACE(c, ...)       CPRINTF(c, _SYM_TRACE __VA_ARGS__)
+#define CPRINTFLN_TRACE(c, ...)     CPRINTFLN(c, _SYM_TRACE __VA_ARGS__)
 
-#define CPRINT_INFO(s)              CPRINT(C_INFO, _SYM_INFO s)
-#define CPRINTLN_INFO(s)            CPRINTLN(C_INFO, _SYM_INFO s)
-#define CPRINTF_INFO(...)           CPRINTF(C_INFO, _SYM_INFO __VA_ARGS__)
-#define CPRINTFLN_INFO(...)         CPRINTFLN(C_INFO, _SYM_INFO __VA_ARGS__)
+#define CPRINT_DEBUG(c, s)          CPRINT(c, _SYM_DEBUG s)
+#define CPRINTLN_DEBUG(c, s)        CPRINTLN(c, _SYM_DEBUG s)
+#define CPRINTF_DEBUG(c, ...)       CPRINTF(c, _SYM_DEBUG __VA_ARGS__)
+#define CPRINTFLN_DEBUG(c, ...)     CPRINTFLN(c, _SYM_DEBUG __VA_ARGS__)
 
-#define CPRINT_HEADER(s)            CPRINT(C_HEADER, _SYM_HEADER s)
-#define CPRINTLN_HEADER(s)          CPRINTLN(C_HEADER, _SYM_HEADER s)
-#define CPRINTF_HEADER(...)         CPRINTF(C_HEADER, _SYM_HEADER __VA_ARGS__)
-#define CPRINTFLN_HEADER(...)       CPRINTFLN(C_HEADER, _SYM_HEADER __VA_ARGS__)
+#define CPRINT_EXTRA(c, s)          CPRINT(c, _SYM_EXTRA s)
+#define CPRINTLN_EXTRA(c, s)        CPRINTLN(c, _SYM_EXTRA s)
+#define CPRINTF_EXTRA(c, ...)       CPRINTF(c, _SYM_EXTRA __VA_ARGS__)
+#define CPRINTFLN_EXTRA(c, ...)     CPRINTFLN(c, _SYM_EXTRA __VA_ARGS__)
 
-#define CPRINT_SUCCESS(s)           CPRINT(C_SUCCESS, _SYM_SUCCESS s)
-#define CPRINTLN_SUCCESS(s)         CPRINTLN(C_SUCCESS, _SYM_SUCCESS s)
-#define CPRINTF_SUCCESS(...)        CPRINTF(C_SUCCESS, _SYM_SUCCESS __VA_ARGS__)
-#define CPRINTFLN_SUCCESS(...)      CPRINTFLN(C_SUCCESS, _SYM_SUCCESS __VA_ARGS__)
+#define CPRINT_INFO(c, s)           CPRINT(c, _SYM_INFO s)
+#define CPRINTLN_INFO(c, s)         CPRINTLN(c, _SYM_INFO s)
+#define CPRINTF_INFO(c, ...)        CPRINTF(c, _SYM_INFO __VA_ARGS__)
+#define CPRINTFLN_INFO(c, ...)      CPRINTFLN(c, _SYM_INFO __VA_ARGS__)
 
-#define CPRINT_INPUT(s)             CPRINT(C_INPUT, _SYM_INPUT s)
-#define CPRINTLN_INPUT(s)           CPRINTLN(C_INPUT, _SYM_INPUT s)
-#define CPRINTF_INPUT(...)          CPRINTF(C_INPUT, _SYM_INPUT __VA_ARGS__)
-#define CPRINTFLN_INPUT(...)        CPRINTFLN(C_INPUT, _SYM_INPUT __VA_ARGS__)
+#define CPRINT_HEADER(c, s)         CPRINT(c, _SYM_HEADER s)
+#define CPRINTLN_HEADER(c, s)       CPRINTLN(c, _SYM_HEADER s)
+#define CPRINTF_HEADER(c, ...)      CPRINTF(c, _SYM_HEADER __VA_ARGS__)
+#define CPRINTFLN_HEADER(c, ...)    CPRINTFLN(c, _SYM_HEADER __VA_ARGS__)
 
-#define CPRINT_WARN(s)              CPRINT(C_WARN, _SYM_WARN s)
-#define CPRINTLN_WARN(s)            CPRINTLN(C_WARN, _SYM_WARN s)
-#define CPRINTF_WARN(...)           CPRINTF(C_WARN, _SYM_WARN __VA_ARGS__)
-#define CPRINTFLN_WARN(...)         CPRINTFLN(C_WARN, _SYM_WARN __VA_ARGS__)
+#define CPRINT_SUCCESS(c, s)        CPRINT(c, _SYM_SUCCESS s)
+#define CPRINTLN_SUCCESS(c, s)      CPRINTLN(c, _SYM_SUCCESS s)
+#define CPRINTF_SUCCESS(c, ...)     CPRINTF(c, _SYM_SUCCESS __VA_ARGS__)
+#define CPRINTFLN_SUCCESS(c, ...)   CPRINTFLN(c, _SYM_SUCCESS __VA_ARGS__)
 
-#define CPRINT_ERR(s)               CPRINT(C_ERR, _SYM_ERR s)
-#define CPRINTLN_ERR(s)             CPRINTLN(C_ERR, _SYM_ERR s)
-#define CPRINTF_ERR(...)            CPRINTF(C_ERR, _SYM_ERR __VA_ARGS__)
-#define CPRINTFLN_ERR(...)          CPRINTFLN(C_ERR, _SYM_ERR __VA_ARGS__)
-#define CPERROR_ERR(...)            CPERROR(C_ERR, _SYM_ERR __VA_ARGS__)
+#define CPRINT_INPUT(c, s)          CPRINT(c, _SYM_INPUT s)
+#define CPRINTLN_INPUT(c, s)        CPRINTLN(c, _SYM_INPUT s)
+#define CPRINTF_INPUT(c, ...)       CPRINTF(c, _SYM_INPUT __VA_ARGS__)
+#define CPRINTFLN_INPUT(c, ...)     CPRINTFLN(c, _SYM_INPUT __VA_ARGS__)
 
-#define CPRINT_FATAL(s)             CPRINT(C_FATAL, _SYM_FATAL s)
-#define CPRINTLN_FATAL(s)           CPRINTLN(C_FATAL, _SYM_FATAL s)
-#define CPRINTF_FATAL(...)          CPRINTF(C_FATAL, _SYM_FATAL __VA_ARGS__)
-#define CPRINTFLN_FATAL(...)        CPRINTFLN(C_FATAL, _SYM_FATAL __VA_ARGS__)
+#define CPRINT_WARNING(c, s)        CPRINT(c, _SYM_WARN s)
+#define CPRINTLN_WARNING(c, s)      CPRINTLN(c, _SYM_WARN s)
+#define CPRINTF_WARNING(c, ...)     CPRINTF(c, _SYM_WARN __VA_ARGS__)
+#define CPRINTFLN_WARNING(c, ...)   CPRINTFLN(c, _SYM_WARN __VA_ARGS__)
 
-// Logging.
+#define CPRINT_ERROR(c, s)          CPRINT(c, _SYM_ERR s)
+#define CPRINTLN_ERROR(c, s)        CPRINTLN(c, _SYM_ERR s)
+#define CPRINTF_ERROR(c, ...)       CPRINTF(c, _SYM_ERR __VA_ARGS__)
+#define CPRINTFLN_ERROR(c, ...)     CPRINTFLN(c, _SYM_ERR __VA_ARGS__)
+
+#define CPERROR_ERROR(c, s)         CPERROR(c, _SYM_ERR s)
+#define CPERRORF_ERROR(c, ...)      CPERRORF(c, _SYM_ERR __VA_ARGS__)
+
+#define CPRINT_FATAL(c, s)          CPRINT(c, _SYM_FATAL s)
+#define CPRINTLN_FATAL(c, s)        CPRINTLN(c, _SYM_FATAL s)
+#define CPRINTF_FATAL(c, ...)       CPRINTF(c, _SYM_FATAL __VA_ARGS__)
+#define CPRINTFLN_FATAL(c, ...)     CPRINTFLN(c, _SYM_FATAL __VA_ARGS__)
+
+#define CPERROR_FATAL(c, s)         CPERROR(c, _SYM_ERR s)
+#define CPERRORF_FATAL(c, ...)      CPERRORF(c, _SYM_ERR __VA_ARGS__)
+
+/**
+ * Logging
+ * =======
+ *
+ * Logging is also provided and there are some configuration options. There are
+ * three different main types of logging provided:
+ *
+ *      - The "clog" functions provide console logging to standard error.
+ *
+ *      - The "flog" functions provide file logging to the file initialized with
+ *      the `CLOG_INIT` macro or defaults to the '<file.c>.log' where
+ *      `<file.c>` is the name of the C file using the logger.
+ *
+ *      - The "log" functions provide console and file logging if it is enabled
+ *      in the configuration.
+ *
+ *  Log options include the following:
+ *
+ *      `LOG_CONSOLE_MODE` which may be colored or uncolored by setting it to
+ *      one of two options:
+ *
+ *          - `LOG_CONSOLE_MODE_COLOR` (default) enables color console logging.
+ *
+ *          - `LOG_CONSOLE_NOCOLOR` disables color console logging.
+ *
+ *          ** Note **: File logging never has colored logs.
+ *
+ *      `LOG_MODE` which may be no logging, log to console only, log to file
+ *      only, or log to console and file and may be set to one of the following
+ *      options:
+ *
+ *          - `LOG_MODE_NONE` disables all logging.
+ *
+ *          - `LOG_MODE_CONSOLE` enables logging to the console only.
+ *
+ *          - `LOG_MODE_FILE` enables logging to a file only.
+ *
+ *          - `LOG_MODE_CONSOLE_AND_FILE` (default) enables logging to the
+ *          console and a file.
+ *
+ *          ** Note **: All disabled logging calls are removed from the
+ *          compilation (preprocessed out) through undefine or empty redefine
+ *          macros. String declarations outside of logging calls are not
+ *          guaranteed to be preprocessed out.
+ *
+ *      `LOG_LEVEL` is the level of logging that will occur. Options include:
+ *
+ *          - `LOG_LEVEL_NONE` disables all logging.
+ *
+ *          - `LOG_LEVEL_ERROR` enables fatal and error level logging.
+ *
+ *          - `LOG_LEVEL_WARNING` enables fatal, error, and warning logging.
+ *
+ *          - `LOG_LEVEL_INFO` enables info level logging in addition to fatal,
+ *          error, and warning logs(`<log>_INFO`, `<log>_HEADER`, 
+ *          `<log>_SUCCESS`, and `<log>_INPUT`).
+ *
+ *          - `LOG_LEVEL_EXTRA` enables logging of previous levels and the 
+ *          extra level.
+ *
+ *          - `LOG_LEVEL_DEBUG` enables logging of previous levels and the 
+ *          debug level.
+ *
+ *          - `LOG_LEVEL_ALL` enables all logging including trace level logs.
+ *
+ * Logs include a header with an ISO 8601 UTC timestamp and a string "symbol" 
+ * indicating the level of the log. Trace and debug logs also include the
+ * filename the call was logged from, the function name it was called from, and
+ * the line number the log call was made. For example:
+ *
+ *      `CLOGLN_INFO("This is an info message.");`
+ *
+ *          Output: "2025-04-29T06:49:16Z [*] This is an info message." 
+ *                  (in blue)
+ *
+ *      `FLOGLN_DEBUG("This is a debug message.");`
+ *
+ *          File output: "2025-04-29T06:49:16Z [DEBUG] file:function:114: This is a debug message." 
+ *
+ *      `LOGLN_ERROR("This is an error.");`
+ *
+ *          Output: "2025-04-29T06:49:16Z [-] This is an error." (in red)
+ */
+
+#define _NOTHING 
 
 // Log options.
+
 #define LOG_CONSOLE_MODE_NOCOLOR    0
 #define LOG_CONSOLE_MODE_COLOR      1
 
@@ -586,23 +939,27 @@
 #endif
 
 // Log initialization.
-#define TM_BUFSZ                    128
-#define TM_FMT                      "%FT%T%z"
 
-#define LOG_DECLARE                 FILE* _glog = NULL; \
-                                    char _gtime_buf[TM_BUFSZ] = { 0 }; \
-                                    time_t _gtime = 0;
-#define LOGFILE_INIT(f)             _glog = fopen(f, "a+")
+#define _CLOG_TM_BUFSZ              128
+#define _CLOG_TM_FMT                "%FT%T%z"
+
+#define CLOG_DECLARE                FILE* _clog_glog = NULL; \
+                                    char _clog_gtime_buf[_CLOG_TM_BUFSZ] = {0}; \
+                                    time_t _clog_gtime = 0;
+#define LOGFILE_INIT(f)             _clog_glog = fopen(f, "a+")
 
 // Log functions.
-#define _LOG_TIME(f)                time(&_gtime); \
-                                    strftime( \
-                                        _gtime_buf, \
-                                        TM_BUFSZ, \
-                                        TM_FMT, \
-                                        localtime(&_gtime) \
-                                    ); \
-                                    FPRINTF(f, "%s: ", _gtime_buf)
+
+#define _LOG_TIME(f)                { \
+                                        time(&_gtime); \
+                                        strftime( \
+                                            _gtime_buf, \
+                                            _TM_BUFSZ, \
+                                            _TM_FMT, \
+                                            localtime(&_gtime) \
+                                        ); \
+                                        FPRINTF(f, "%s: ", _gtime_buf) \
+                                    }
 #define _LOG_FTRACE(f)              FPRINTF( \
                                         f, \
                                         "%s:%s:%u: ", \
@@ -620,79 +977,54 @@
                                         __LINE__ \
                                     ); 
 
-// File logging.
-#define FLOG(s)                     _LOG_TIME(_glog); FPRINT(_glog, s)
-#define FLOGLN(s)                   _LOG_TIME(_glog); FPRINTLN(_glog, s)
-#define FLOGF(...)                  _LOG_TIME(_glog); FPRINTF(_glog, __VA_ARGS__)
-#define FLOGFLN(...)                _LOG_TIME(_glog); FPRINTFLN(_glog, __VA_ARGS__)
-#define FLOG_PERROR(...)            _LOG_TIME(_glog); FPERROR(_glog, __VA_ARGS__)
 
-#define FLOG_T(s)                   _LOG_TIME(_glog); _LOG_FTRACE(_glog); FPRINT(_glog, s)
-#define FLOGLN_T(s)                 _LOG_TIME(_glog); _LOG_FTRACE(_glog); FPRINTLN(_glog, s)
-#define FLOGF_T(...)                _LOG_TIME(_glog); _LOG_FTRACE(_glog); FPRINTF(_glog, __VA_ARGS__)
-#define FLOGFLN_T(...)              _LOG_TIME(_glog); _LOG_FTRACE(_glog); FPRINTFLN(_glog, __VA_ARGS__)
-#define FLOG_PERROR_T(...)          _LOG_TIME(_glog); _LOG_FTRACE(_glog); FPERROR(_glog, __VA_ARGS__)
+/**
+ * Console Logging.
+ *
+ * Logging is also provided and there are some configuration options. There are
+ * three different main types of logging provided:
+ *
+ *      The "clog" functions provided console logging to standard error.
+ *
+ *      The "flog" functions provided file logging to the file initialized with
+ *      the `CLOG_INIT` macro or defaults to the '<file.c>.log' where
+ *      `<file.c>` is the name of the C file using the logger.
+ *
+ *      The "log" functions provide console and file logging if it is enabled
+ *      in the configuration.
+ *
+ *  Log options include the following:
+ *
+ *      `LOG_CONSOLE_MODE` which may be colored or uncolored using the options
+ *      `LOG_CONSOLE_MODE_COLOR` (default) or `LOG_CONSOLE_NOCOLOR`.
+ *
+ *      `LOG_MODE` which may be no logging, log to console only, log to file
+ *      only, or log to console and file and may be set with the
+ *      `LOG_MODE_NONE`, `LOG_MODE_CONSOLE`, `LOG_MODE_FILE`, or
+ *      `LOG_MODE_CONSOLE_AND_FILE` (default) options.
+ *
+ *      `LOG_LEVEL` is the level of logging that will occur. Options include
+ *      `LOG_LEVEL_NONE` (disables all logging), `LOG_LEVEL_ERROR` (),
+ *      `LOG_LEVEL_WARNING`, `LOG_LEVEL_INFO`, `LOG_LEVEL_EXTRA`,
+ *      `LOG_LEVEL_EXTRA`, `LOG_LEVEL_ALL`.
+ *
+ * Logs will include a header with a timestamp and "symbol" indicating the
+ * level of the log. For example:
+ *
+ *      `CLOGLN_INFO("This is an info message.");`
+ *
+ *          Output: timestamp [*] This is an info message." (in blue)
+ *
+ *      `FLOGLN_DEBUG("This is a debug message.");`
+ *
+ *          Output: timestamp [*] This is a debug message." (in blue)
+ *
+ *      `LOGLN_DEBUG("This is a debug message.");`
+ *
+ *          Output: timestamp [*] This is a debug message." (in blue)
+ *
+ */
 
-#define FLOG_STREAM(s)              FPRINT(_glog, s)
-#define FLOGLN_STREAM(s)            FPRINTLN(_glog, s)
-#define FLOGF_STREAM(...)           FPRINTF(_glog, __VA_ARGS__)
-#define FLOGFLN_STREAM(...)         FPRINTFLN(_glog, __VA_ARGS__)
-#define FLOG_STREAM_HEX(s, l)       FPRINTLN_HEX(_glog, s, l)
-#define FLOG_STREAM_WIDE_HEX(s, l)  FPRINTLN_WIDE_HEX(_glog, s, l)
-
-#define FLOG_TRACE(s)               FLOG_T(_SYM_TRACE s)
-#define FLOGLN_TRACE(s)             FLOGLN_T(_SYM_TRACE s)
-#define FLOGF_TRACE(...)            FLOGF_T(_SYM_TRACE __VA_ARGS__)
-#define FLOGFLN_TRACE(...)          FLOGFLN_T(_SYM_TRACE __VA_ARGS__)
-
-#define FLOG_DEBUG(s)               FLOG_T(_SYM_DEBUG s)
-#define FLOGLN_DEBUG(s)             FLOGLN_T(_SYM_DEBUG s)
-#define FLOGF_DEBUG(...)            FLOGF_T(_SYM_DEBUG __VA_ARGS__)
-#define FLOGFLN_DEBUG(...)          FLOGFLN_T(_SYM_DEBUG __VA_ARGS__)
-
-#define FLOG_EXTRA(s)               FLOG(_SYM_EXTRA s)
-#define FLOGLN_EXTRA(s)             FLOGLN(_SYM_EXTRA s)
-#define FLOGF_EXTRA(...)            FLOGF(_SYM_EXTRA __VA_ARGS__)
-#define FLOGFLN_EXTRA(...)          FLOGFLN(_SYM_EXTRA __VA_ARGS__)
-
-#define FLOG_INFO(s)                FLOG(_SYM_INFO s)
-#define FLOGLN_INFO(s)              FLOGLN(_SYM_INFO s)
-#define FLOGF_INFO(...)             FLOGF(_SYM_INFO __VA_ARGS__)
-#define FLOGFLN_INFO(...)           FLOGFLN(_SYM_INFO __VA_ARGS__)
-
-#define FLOG_HEADER(s)              FLOG(_SYM_HEADER s)
-#define FLOGLN_HEADER(s)            FLOGLN(_SYM_HEADER s)
-#define FLOGF_HEADER(...)           FLOGF(_SYM_HEADER __VA_ARGS__)
-#define FLOGFLN_HEADER(...)         FLOGFLN(_SYM_HEADER __VA_ARGS__)
-
-#define FLOG_SUCCESS(s)             FLOG(_SYM_SUCCESS s)
-#define FLOGLN_SUCCESS(s)           FLOGLN(_SYM_SUCCESS s)
-#define FLOGF_SUCCESS(...)          FLOGF(_SYM_SUCCESS __VA_ARGS__)
-#define FLOGFLN_SUCCESS(...)        FLOGFLN(_SYM_SUCCESS __VA_ARGS__)
-
-#define FLOG_INPUT(s)               FLOG(_SYM_INPUT s)
-#define FLOGLN_INPUT(s)             FLOGLN(_SYM_INPUT s)
-#define FLOGF_INPUT(...)            FLOGF(_SYM_INPUT __VA_ARGS__)
-#define FLOGFLN_INPUT(...)          FLOGFLN(_SYM_INPUT __VA_ARGS__)
-
-#define FLOG_WARN(s)                FLOG(_SYM_WARN s)
-#define FLOGLN_WARN(s)              FLOGLN(_SYM_WARN s)
-#define FLOGF_WARN(...)             FLOGF(_SYM_WARN __VA_ARGS__)
-#define FLOGFLN_WARN(...)           FLOGFLN(_SYM_WARN __VA_ARGS__)
-
-#define FLOG_ERR(s)                 FLOG(_SYM_ERR s)
-#define FLOGLN_ERR(s)               FLOGLN(_SYM_ERR s)
-#define FLOGF_ERR(...)              FLOGF(_SYM_ERR __VA_ARGS__)
-#define FLOGFLN_ERR(...)            FLOGFLN(_SYM_ERR __VA_ARGS__)
-#define FLOG_PERROR_ERR(...)        FLOG_PERROR(_SYM_ERR __VA_ARGS__)
-
-#define FLOG_FATAL(s)               FLOG(_SYM_FATAL s)
-#define FLOGLN_FATAL(s)             FLOGLN(_SYM_FATAL s)
-#define FLOGF_FATAL(...)            FLOGF(_SYM_FATAL __VA_ARGS__)
-#define FLOGFLN_FATAL(...)          FLOGFLN(_SYM_FATAL __VA_ARGS__)
-#define FLOG_PERRROR_FATAL(...)     FLOG_PERROR(_SYM_FATAL __VA_ARGS__)
-
-// Console logging.
 #define _NC_CLOG(c, s)              _LOG_TIME(stderr); FPRINT(stderr, s)
 #define _NC_CLOGLN(c, s)            _LOG_TIME(stderr); FPRINTLN(stderr, s)
 #define _NC_CLOGF(c, ...)           _LOG_TIME(stderr); FPRINTF(stderr, __VA_ARGS__)
@@ -819,16 +1151,16 @@
 #define CLOGF_INPUT(...)            _CLOGF(C_INPUT, _SYM_INPUT __VA_ARGS__)
 #define CLOGFLN_INPUT(...)          _CLOGFLN(C_INPUT, _SYM_INPUT __VA_ARGS__)
 
-#define CLOG_WARN(s)                _CLOG(C_WARN, _SYM_WARN s)
-#define CLOGLN_WARN(s)              _CLOGLN(C_WARN, _SYM_WARN s)
-#define CLOGF_WARN(...)             _CLOGF(C_WARN, _SYM_WARN __VA_ARGS__)
-#define CLOGFLN_WARN(...)           _CLOGFLN(C_WARN, _SYM_WARN __VA_ARGS__)
+#define CLOG_WARNING(s)                _CLOG(C_WARN, _SYM_WARN s)
+#define CLOGLN_WARNING(s)              _CLOGLN(C_WARN, _SYM_WARN s)
+#define CLOGF_WARNING(...)             _CLOGF(C_WARN, _SYM_WARN __VA_ARGS__)
+#define CLOGFLN_WARNING(...)           _CLOGFLN(C_WARN, _SYM_WARN __VA_ARGS__)
 
-#define CLOG_ERR(s)                 _CLOG(C_ERR, _SYM_ERR s)
-#define CLOGLN_ERR(s)               _CLOGLN(C_ERR, _SYM_ERR s)
-#define CLOGF_ERR(...)              _CLOGF(C_ERR, _SYM_ERR __VA_ARGS__)
-#define CLOGFLN_ERR(...)            _CLOGFLN(C_ERR, _SYM_ERR __VA_ARGS__)
-#define CLOG_PERROR_ERR(...)        _CLOG_PERROR(C_ERR, _SYM_ERR __VA_ARGS__)
+#define CLOG_ERROR(s)                 _CLOG(C_ERR, _SYM_ERR s)
+#define CLOGLN_ERROR(s)               _CLOGLN(C_ERR, _SYM_ERR s)
+#define CLOGF_ERROR(...)              _CLOGF(C_ERR, _SYM_ERR __VA_ARGS__)
+#define CLOGFLN_ERROR(...)            _CLOGFLN(C_ERR, _SYM_ERR __VA_ARGS__)
+#define CLOG_PERROR_ERROR(...)        _CLOG_PERROR(C_ERR, _SYM_ERR __VA_ARGS__)
 
 #define CLOG_FATAL(s)               _CLOG(C_FATAL, _SYM_FATAL s)
 #define CLOGLN_FATAL(s)             _CLOGLN(C_FATAL, _SYM_FATAL s)
@@ -836,7 +1168,174 @@
 #define CLOGFLN_FATAL(...)          _CLOGFLN(C_FATAL, C_FATAL, _SYM_FATAL __VA_ARGS__)
 #define CLOG_PERROR_FATAL(...)      _CLOG_PERROR(C_FATAL, C_FATAL, _SYM_FATAL __VA_ARGS__)
 
+
+/**
+ * File Logging.
+ *
+ * Logging is also provided and there are some configuration options. There are
+ * three different main types of logging provided:
+ *
+ *      The "clog" functions provided console logging to standard error.
+ *
+ *      The "flog" functions provided file logging to the file initialized with
+ *      the `CLOG_INIT` macro or defaults to the '<file.c>.log' where
+ *      `<file.c>` is the name of the C file using the logger.
+ *
+ *      The "log" functions provide console and file logging if it is enabled
+ *      in the configuration.
+ *
+ *  Log options include the following:
+ *
+ *      `LOG_CONSOLE_MODE` which may be colored or uncolored using the options
+ *      `LOG_CONSOLE_MODE_COLOR` (default) or `LOG_CONSOLE_NOCOLOR`.
+ *
+ *      `LOG_MODE` which may be no logging, log to console only, log to file
+ *      only, or log to console and file and may be set with the
+ *      `LOG_MODE_NONE`, `LOG_MODE_CONSOLE`, `LOG_MODE_FILE`, or
+ *      `LOG_MODE_CONSOLE_AND_FILE` (default) options.
+ *
+ *      `LOG_LEVEL` is the level of logging that will occur. Options include
+ *      `LOG_LEVEL_NONE` (disables all logging), `LOG_LEVEL_ERROR` (),
+ *      `LOG_LEVEL_WARNING`, `LOG_LEVEL_INFO`, `LOG_LEVEL_EXTRA`,
+ *      `LOG_LEVEL_EXTRA`, `LOG_LEVEL_ALL`.
+ *
+ * Logs will include a header with a timestamp and "symbol" indicating the
+ * level of the log. For example:
+ *
+ *      `CLOGLN_INFO("This is an info message.");`
+ *
+ *          Output: timestamp [*] This is an info message." (in blue)
+ *
+ *      `FLOGLN_DEBUG("This is a debug message.");`
+ *
+ *          Output: timestamp [*] This is a debug message." (in blue)
+ *
+ *      `LOGLN_DEBUG("This is a debug message.");`
+ *
+ *          Output: timestamp [*] This is a debug message." (in blue)
+ *
+ */
+
+#define FLOG(s)                     _LOG_TIME(_glog); FPRINT(_glog, s)
+#define FLOGLN(s)                   _LOG_TIME(_glog); FPRINTLN(_glog, s)
+#define FLOGF(...)                  _LOG_TIME(_glog); FPRINTF(_glog, __VA_ARGS__)
+#define FLOGFLN(...)                _LOG_TIME(_glog); FPRINTFLN(_glog, __VA_ARGS__)
+#define FLOG_PERROR(...)            _LOG_TIME(_glog); FPERROR(_glog, __VA_ARGS__)
+
+#define FLOG_T(s)                   _LOG_TIME(_glog); _LOG_FTRACE(_glog); FPRINT(_glog, s)
+#define FLOGLN_T(s)                 _LOG_TIME(_glog); _LOG_FTRACE(_glog); FPRINTLN(_glog, s)
+#define FLOGF_T(...)                _LOG_TIME(_glog); _LOG_FTRACE(_glog); FPRINTF(_glog, __VA_ARGS__)
+#define FLOGFLN_T(...)              _LOG_TIME(_glog); _LOG_FTRACE(_glog); FPRINTFLN(_glog, __VA_ARGS__)
+#define FLOG_PERROR_T(...)          _LOG_TIME(_glog); _LOG_FTRACE(_glog); FPERROR(_glog, __VA_ARGS__)
+
+#define FLOG_STREAM(s)              FPRINT(_glog, s)
+#define FLOGLN_STREAM(s)            FPRINTLN(_glog, s)
+#define FLOGF_STREAM(...)           FPRINTF(_glog, __VA_ARGS__)
+#define FLOGFLN_STREAM(...)         FPRINTFLN(_glog, __VA_ARGS__)
+#define FLOG_STREAM_HEX(s, l)       FPRINTLN_HEX(_glog, s, l)
+#define FLOG_STREAM_WIDE_HEX(s, l)  FPRINTLN_WIDE_HEX(_glog, s, l)
+
+#define FLOG_TRACE(s)               FLOG_T(_SYM_TRACE s)
+#define FLOGLN_TRACE(s)             FLOGLN_T(_SYM_TRACE s)
+#define FLOGF_TRACE(...)            FLOGF_T(_SYM_TRACE __VA_ARGS__)
+#define FLOGFLN_TRACE(...)          FLOGFLN_T(_SYM_TRACE __VA_ARGS__)
+
+#define FLOG_DEBUG(s)               FLOG_T(_SYM_DEBUG s)
+#define FLOGLN_DEBUG(s)             FLOGLN_T(_SYM_DEBUG s)
+#define FLOGF_DEBUG(...)            FLOGF_T(_SYM_DEBUG __VA_ARGS__)
+#define FLOGFLN_DEBUG(...)          FLOGFLN_T(_SYM_DEBUG __VA_ARGS__)
+
+#define FLOG_EXTRA(s)               FLOG(_SYM_EXTRA s)
+#define FLOGLN_EXTRA(s)             FLOGLN(_SYM_EXTRA s)
+#define FLOGF_EXTRA(...)            FLOGF(_SYM_EXTRA __VA_ARGS__)
+#define FLOGFLN_EXTRA(...)          FLOGFLN(_SYM_EXTRA __VA_ARGS__)
+
+#define FLOG_INFO(s)                FLOG(_SYM_INFO s)
+#define FLOGLN_INFO(s)              FLOGLN(_SYM_INFO s)
+#define FLOGF_INFO(...)             FLOGF(_SYM_INFO __VA_ARGS__)
+#define FLOGFLN_INFO(...)           FLOGFLN(_SYM_INFO __VA_ARGS__)
+
+#define FLOG_HEADER(s)              FLOG(_SYM_HEADER s)
+#define FLOGLN_HEADER(s)            FLOGLN(_SYM_HEADER s)
+#define FLOGF_HEADER(...)           FLOGF(_SYM_HEADER __VA_ARGS__)
+#define FLOGFLN_HEADER(...)         FLOGFLN(_SYM_HEADER __VA_ARGS__)
+
+#define FLOG_SUCCESS(s)             FLOG(_SYM_SUCCESS s)
+#define FLOGLN_SUCCESS(s)           FLOGLN(_SYM_SUCCESS s)
+#define FLOGF_SUCCESS(...)          FLOGF(_SYM_SUCCESS __VA_ARGS__)
+#define FLOGFLN_SUCCESS(...)        FLOGFLN(_SYM_SUCCESS __VA_ARGS__)
+
+#define FLOG_INPUT(s)               FLOG(_SYM_INPUT s)
+#define FLOGLN_INPUT(s)             FLOGLN(_SYM_INPUT s)
+#define FLOGF_INPUT(...)            FLOGF(_SYM_INPUT __VA_ARGS__)
+#define FLOGFLN_INPUT(...)          FLOGFLN(_SYM_INPUT __VA_ARGS__)
+
+#define FLOG_WARNING(s)                FLOG(_SYM_WARN s)
+#define FLOGLN_WARNING(s)              FLOGLN(_SYM_WARN s)
+#define FLOGF_WARNING(...)             FLOGF(_SYM_WARN __VA_ARGS__)
+#define FLOGFLN_WARNING(...)           FLOGFLN(_SYM_WARN __VA_ARGS__)
+
+#define FLOG_ERROR(s)                 FLOG(_SYM_ERR s)
+#define FLOGLN_ERROR(s)               FLOGLN(_SYM_ERR s)
+#define FLOGF_ERROR(...)              FLOGF(_SYM_ERR __VA_ARGS__)
+#define FLOGFLN_ERROR(...)            FLOGFLN(_SYM_ERR __VA_ARGS__)
+#define FLOG_PERROR_ERROR(...)        FLOG_PERROR(_SYM_ERR __VA_ARGS__)
+
+#define FLOG_FATAL(s)               FLOG(_SYM_FATAL s)
+#define FLOGLN_FATAL(s)             FLOGLN(_SYM_FATAL s)
+#define FLOGF_FATAL(...)            FLOGF(_SYM_FATAL __VA_ARGS__)
+#define FLOGFLN_FATAL(...)          FLOGFLN(_SYM_FATAL __VA_ARGS__)
+#define FLOG_PERRROR_FATAL(...)     FLOG_PERROR(_SYM_FATAL __VA_ARGS__)
+
+
 // Dual logging.
+/**
+ * Logging.
+ *
+ * Logging is also provided and there are some configuration options. There are
+ * three different main types of logging provided:
+ *
+ *      The "clog" functions provided console logging to standard error.
+ *
+ *      The "flog" functions provided file logging to the file initialized with
+ *      the `CLOG_INIT` macro or defaults to the '<file.c>.log' where
+ *      `<file.c>` is the name of the C file using the logger.
+ *
+ *      The "log" functions provide console and file logging if it is enabled
+ *      in the configuration.
+ *
+ *  Log options include the following:
+ *
+ *      `LOG_CONSOLE_MODE` which may be colored or uncolored using the options
+ *      `LOG_CONSOLE_MODE_COLOR` (default) or `LOG_CONSOLE_NOCOLOR`.
+ *
+ *      `LOG_MODE` which may be no logging, log to console only, log to file
+ *      only, or log to console and file and may be set with the
+ *      `LOG_MODE_NONE`, `LOG_MODE_CONSOLE`, `LOG_MODE_FILE`, or
+ *      `LOG_MODE_CONSOLE_AND_FILE` (default) options.
+ *
+ *      `LOG_LEVEL` is the level of logging that will occur. Options include
+ *      `LOG_LEVEL_NONE` (disables all logging), `LOG_LEVEL_ERROR` (),
+ *      `LOG_LEVEL_WARNING`, `LOG_LEVEL_INFO`, `LOG_LEVEL_EXTRA`,
+ *      `LOG_LEVEL_EXTRA`, `LOG_LEVEL_ALL`.
+ *
+ * Logs will include a header with a timestamp and "symbol" indicating the
+ * level of the log. For example:
+ *
+ *      `CLOGLN_INFO("This is an info message.");`
+ *
+ *          Output: timestamp [*] This is an info message." (in blue)
+ *
+ *      `FLOGLN_DEBUG("This is a debug message.");`
+ *
+ *          Output: timestamp [*] This is a debug message." (in blue)
+ *
+ *      `LOGLN_DEBUG("This is a debug message.");`
+ *
+ *          Output: timestamp [*] This is a debug message." (in blue)
+ *
+ */
+
 #if LOG_MODE == LOG_MODE_NONE
     #define _LOG(...)                  
     #define _LOGLN(...)                  
@@ -973,16 +1472,16 @@
 #define LOGF_INPUT(...)             _LOGF(C_INPUT, _SYM_INPUT __VA_ARGS__)
 #define LOGFLN_INPUT(...)           _LOGFLN(C_INPUT, _SYM_INPUT __VA_ARGS__)
 
-#define LOG_WARN(s)                 _LOG(C_WARN, _SYM_WARN s)
-#define LOGLN_WARN(s)               _LOGLN(C_WARN, _SYM_WARN s)
-#define LOGF_WARN(...)              _LOGF(C_WARN, _SYM_WARN __VA_ARGS__)
-#define LOGFLN_WARN(...)            _LOGFLN(C_WARN, _SYM_WARN __VA_ARGS__)
+#define LOG_WARNING(s)                 _LOG(C_WARN, _SYM_WARN s)
+#define LOGLN_WARNING(s)               _LOGLN(C_WARN, _SYM_WARN s)
+#define LOGF_WARNING(...)              _LOGF(C_WARN, _SYM_WARN __VA_ARGS__)
+#define LOGFLN_WARNING(...)            _LOGFLN(C_WARN, _SYM_WARN __VA_ARGS__)
 
-#define LOG_ERR(s)                  _LOG(C_ERR, _SYM_ERR s)
-#define LOGLN_ERR(s)                _LOGLN(C_ERR, _SYM_ERR s)
-#define LOGF_ERR(...)               _LOGF(C_ERR, _SYM_ERR __VA_ARGS__)
-#define LOGFLN_ERR(...)             _LOGFLN(C_ERR, _SYM_ERR __VA_ARGS__)
-#define LOG_PERROR_ERR(...)         _LOG_PERROR(C_ERR, _SYM_ERR __VA_ARGS__)
+#define LOG_ERROR(s)                  _LOG(C_ERR, _SYM_ERR s)
+#define LOGLN_ERROR(s)                _LOGLN(C_ERR, _SYM_ERR s)
+#define LOGF_ERROR(...)               _LOGF(C_ERR, _SYM_ERR __VA_ARGS__)
+#define LOGFLN_ERROR(...)             _LOGFLN(C_ERR, _SYM_ERR __VA_ARGS__)
+#define LOG_PERROR_ERROR(...)         _LOG_PERROR(C_ERR, _SYM_ERR __VA_ARGS__)
 
 #define LOG_FATAL(s)                _LOG(C_FATAL, _SYM_FATAL s)
 #define LOGLN_FATAL(s)              _LOGLN(C_FATAL, _SYM_FATAL s)
@@ -1090,24 +1589,24 @@
     #define FLOGFLN_INPUT(...)
 
     #undef FLOG_WARN
-    #define FLOG_WARN(...)
+    #define FLOG_WARNING(...)
     #undef FLOGLN_WARN
-    #define FLOGLN_WARN(...)
+    #define FLOGLN_WARNING(...)
     #undef FLOGF_WARN
-    #define FLOGF_WARN(...)
+    #define FLOGF_WARNING(...)
     #undef FLOGFLN_WARN
-    #define FLOGFLN_WARN(...)
+    #define FLOGFLN_WARNING(...)
 
     #undef FLOG_ERR
-    #define FLOG_ERR(...)
+    #define FLOG_ERROR(...)
     #undef FLOGLN_ERR
-    #define FLOGLN_ERR(...)
+    #define FLOGLN_ERROR(...)
     #undef FLOGF_ERR
-    #define FLOGF_ERR(...)
+    #define FLOGF_ERROR(...)
     #undef FLOGFLN_ERR
-    #define FLOGFLN_ERR(...)
+    #define FLOGFLN_ERROR(...)
     #undef FLOG_PERROR_ERR
-    #define FLOG_PERROR_ERR(...)
+    #define FLOG_PERROR_ERROR(...)
 
     #undef FLOG_FATAL
     #define FLOG_FATAL(...)
@@ -1218,24 +1717,24 @@
     #define CLOGFLN_INPUT(...)
 
     #undef CLOG_WARN
-    #define CLOG_WARN(...)
+    #define CLOG_WARNING(...)
     #undef CLOGLN_WARN
-    #define CLOGLN_WARN(...)
+    #define CLOGLN_WARNING(...)
     #undef CLOGF_WARN
-    #define CLOGF_WARN(...)
+    #define CLOGF_WARNING(...)
     #undef CLOGFLN_WARN
-    #define CLOGFLN_WARN(...)
+    #define CLOGFLN_WARNING(...)
 
     #undef CLOG_ERR
-    #define CLOG_ERR(...)
+    #define CLOG_ERROR(...)
     #undef CLOGLN_ERR
-    #define CLOGLN_ERR(...)
+    #define CLOGLN_ERROR(...)
     #undef CLOGF_ERR
-    #define CLOGF_ERR(...)
+    #define CLOGF_ERROR(...)
     #undef CLOGFLN_ERR
-    #define CLOGFLN_ERR(...)
+    #define CLOGFLN_ERROR(...)
     #undef CLOG_PERROR_ERR
-    #define CLOG_PERROR_ERR(...)
+    #define CLOG_PERROR_ERROR(...)
 
     #undef CLOG_FATAL
     #define CLOG_FATAL(...)
@@ -1346,24 +1845,24 @@
     #define LOGFLN_INPUT(...)
 
     #undef LOG_WARN
-    #define LOG_WARN(...)
+    #define LOG_WARNING(...)
     #undef LOGLN_WARN
-    #define LOGLN_WARN(...)
+    #define LOGLN_WARNING(...)
     #undef LOGF_WARN
-    #define LOGF_WARN(...)
+    #define LOGF_WARNING(...)
     #undef LOGFLN_WARN
-    #define LOGFLN_WARN(...)
+    #define LOGFLN_WARNING(...)
 
     #undef LOG_ERR
-    #define LOG_ERR(...)
+    #define LOG_ERROR(...)
     #undef LOGLN_ERR
-    #define LOGLN_ERR(...)
+    #define LOGLN_ERROR(...)
     #undef LOGF_ERR
-    #define LOGF_ERR(...)
+    #define LOGF_ERROR(...)
     #undef LOGFLN_ERR
-    #define LOGFLN_ERR(...)
+    #define LOGFLN_ERROR(...)
     #undef LOG_PERROR_ERR
-    #define LOG_PERROR_ERR(...)
+    #define LOG_PERROR_ERROR(...)
 
     #undef LOG_FATAL
     #define LOG_FATAL(...)
@@ -1440,13 +1939,13 @@
     #define FLOGFLN_INPUT(...)
 
     #undef FLOG_WARN
-    #define FLOG_WARN(...)
+    #define FLOG_WARNING(...)
     #undef FLOGLN_WARN
-    #define FLOGLN_WARN(...)
+    #define FLOGLN_WARNING(...)
     #undef FLOGF_WARN
-    #define FLOGF_WARN(...)
+    #define FLOGF_WARNING(...)
     #undef FLOGFLN_WARN
-    #define FLOGFLN_WARN(...)
+    #define FLOGFLN_WARNING(...)
 
     #undef CLOG_TRACE
     #define CLOG_TRACE(...)
@@ -1512,13 +2011,13 @@
     #define CLOGFLN_INPUT(...)
 
     #undef CLOG_WARN
-    #define CLOG_WARN(...)
+    #define CLOG_WARNING(...)
     #undef CLOGLN_WARN
-    #define CLOGLN_WARN(...)
+    #define CLOGLN_WARNING(...)
     #undef CLOGF_WARN
-    #define CLOGF_WARN(...)
+    #define CLOGF_WARNING(...)
     #undef CLOGFLN_WARN
-    #define CLOGFLN_WARN(...)
+    #define CLOGFLN_WARNING(...)
 
     #undef LOG_TRACE
     #define LOG_TRACE(...)
@@ -1584,13 +2083,13 @@
     #define LOGFLN_INPUT(...)
 
     #undef LOG_WARN
-    #define LOG_WARN(...)
+    #define LOG_WARNING(...)
     #undef LOGLN_WARN
-    #define LOGLN_WARN(...)
+    #define LOGLN_WARNING(...)
     #undef LOGF_WARN
-    #define LOGF_WARN(...)
+    #define LOGF_WARNING(...)
     #undef LOGFLN_WARN
-    #define LOGFLN_WARN(...)
+    #define LOGFLN_WARNING(...)
 
 #elif LOG_LEVEL == LOG_LEVEL_WARN
     #undef FLOG_TRACE

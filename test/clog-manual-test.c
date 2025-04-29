@@ -30,10 +30,19 @@ int main() {
     // Variables.
     char* header = "Testing clog header file";
     char* padding = "========================================================";
-
     unsigned long header_len = strlen(header);
 
-    // Tests.
+    printf(
+        "%.*s %s %.*s\n\n", 
+        (int)(80 - header_len - 2)/2, 
+        padding, 
+        header, 
+        (int)(80 - header_len - 2)/2, 
+        padding
+    );
+
+
+    header = "Testing fprint functions";
     printf(
         "%.*s %s %.*s\n\n", 
         (int)(80 - header_len - 2)/2, 
@@ -44,11 +53,83 @@ int main() {
     );
 
     test_fprint();
+
+
+    header = "Testing cfprint functions";
+    printf(
+        "%.*s %s %.*s\n\n", 
+        (int)(80 - header_len - 2)/2, 
+        padding, 
+        header, 
+        (int)(80 - header_len - 2)/2, 
+        padding
+    );
+
     test_cfprint();
+
+
+    header = "Testing print functions";
+    printf(
+        "%.*s %s %.*s\n\n", 
+        (int)(80 - header_len - 2)/2, 
+        padding, 
+        header, 
+        (int)(80 - header_len - 2)/2, 
+        padding
+    );
+
     test_print();
+    
+
+    header = "Testing cprint functions";
+    printf(
+        "%.*s %s %.*s\n\n", 
+        (int)(80 - header_len - 2)/2, 
+        padding, 
+        header, 
+        (int)(80 - header_len - 2)/2, 
+        padding
+    );
+
     test_cprint();
+
+
+    header = "Testing clog functions";
+    printf(
+        "%.*s %s %.*s\n\n", 
+        (int)(80 - header_len - 2)/2, 
+        padding, 
+        header, 
+        (int)(80 - header_len - 2)/2, 
+        padding
+    );
+
     test_clog();
+
+
+    header = "Testing flog functions";
+    printf(
+        "%.*s %s %.*s\n\n", 
+        (int)(80 - header_len - 2)/2, 
+        padding, 
+        header, 
+        (int)(80 - header_len - 2)/2, 
+        padding
+    );
+
     test_flog();
+
+
+    header = "Testing log functions";
+    printf(
+        "%.*s %s %.*s\n\n", 
+        (int)(80 - header_len - 2)/2, 
+        padding, 
+        header, 
+        (int)(80 - header_len - 2)/2, 
+        padding
+    );
+
     test_log();
 
     return 0;
@@ -101,12 +182,82 @@ int test_fprint() {
     FPERROR(stdout, "FPERROR test");
     errno = 0;
 
-    FPERRORF(stdout, "FPERROR test");
+    FPERRORF(stdout, "FPERRORF test integer: %d", integer);
+    errno = ENOENT;
+    FPERRORF(stdout, "FPERRORF test integer: %d", integer);
     errno = 0;
+    printf("\n");
 
-    FPERROR(stdout, "FPERROR test");
-    errno = 0;
 
+    printf("[*] Testing in loop without brackets...\n\n");
+
+    for (int i = 0; i < 4; ++i)
+        FPRINT(stdout, "FPRINT loop test.");
+
+    printf("\n");
+    printf("\n");
+
+
+    for (int i = 0; i < 4; ++i)
+        FPRINTLN(stdout, "FPRINTLN loop test.");
+
+    printf("\n");
+
+
+    for (int i = 0; i < 4; ++i)
+        FPRINTF(stdout, "FPRINTF loop test: %d.", integer);
+
+    printf("\n");
+    printf("\n");
+
+
+    for (int i = 0; i < 4; ++i)
+        FPRINTFLN(stdout, "FPRINTFLN loop test: %d.", integer);
+
+    printf("\n");
+
+
+    FPRINTF(stdout, "FPRINT_HEX loop test hex: %llu: ", hex);
+
+    for (int i = 0; i < 4; ++i)
+        FPRINT_HEX(stdout, &hex, sizeof(hex));
+
+    printf("\n");
+    printf("\n");
+
+
+    FPRINTF(stdout, "FPRINTLN_HEX loop test hex: %llu: ", hex);
+
+    for (int i = 0; i < 4; ++i)
+        FPRINTLN_HEX(stdout, &hex, sizeof(hex));
+
+    printf("\n");
+
+
+    FPRINTF(stdout, "FPRINT_WIDE_HEX loop test wide hex: %llu: ", hex);
+
+    for (int i = 0; i < 4; ++i)
+        FPRINT_WIDE_HEX(stdout, &hex, sizeof(hex));
+
+    printf("\n");
+    printf("\n");
+
+
+    FPRINTF(stdout, "FPRINTLN_WIDE_HEX loop test wide hex: %llu: ", hex);
+
+    for (int i = 0; i < 4; ++i)
+        FPRINTLN_WIDE_HEX(stdout, &hex, sizeof(hex));
+
+    printf("\n");
+
+
+    for (int i = 0; i < 4; ++i)
+        FPERROR(stdout, "FPERROR loop test");
+
+    printf("\n");
+
+    for (int i = 0; i < 4; ++i)
+        FPERRORF(stdout, "FPERRORF loop test integer: %d", integer);
 
     printf("\n");
 
@@ -156,13 +307,19 @@ int test_cfprint() {
 
 
     CFPERROR(C_RED, stdout, "CFPERROR test");
-
     errno = ENOENT;
     CFPERROR(C_RED, stdout, "CFPERROR test");
     errno = 0;
+
+    CFPERRORF(C_RED, stdout, "CFPERRORF test integer: %d", integer);
+    errno = ENOENT;
+    CFPERRORF(C_RED, stdout, "CFPERRORF test integer: %d", integer);
+    errno = 0;
     printf("\n");
 
+
     printf("[*] Testing standard colors...\n\n");
+
     CFPRINTLN(C_BLACK, stdout, "CFPRINTLN C_BLACK test.");
     CFPRINTLN(C_RED, stdout, "CFPRINTLN C_RED test.");
     CFPRINTLN(C_GREEN, stdout, "CFPRINTLN C_GREEN test.");
@@ -173,7 +330,9 @@ int test_cfprint() {
     CFPRINTLN(C_WHITE, stdout, "CFPRINTLN C_WHITE test.");
     printf("\n");
 
+
     printf("[*] Testing bright standard colors...\n\n");
+
     CFPRINTLN(C_BR_BLACK, stdout, "CFPRINTLN C_BR_BLACK test.");
     CFPRINTLN(C_BR_RED, stdout, "CFPRINTLN C_BR_RED test.");
     CFPRINTLN(C_BR_GREEN, stdout, "CFPRINTLN C_BR_GREEN test.");
@@ -184,7 +343,9 @@ int test_cfprint() {
     CFPRINTLN(C_BR_WHITE, stdout, "CFPRINTLN C_BR_WHITE test.");
     printf("\n");
 
+
     printf("[*] Testing standard background colors...\n\n");
+
     CFPRINTLN(C_B_BLACK, stdout, "CFPRINTLN C_B_BLACK test.");
     CFPRINTLN(C_B_RED, stdout, "CFPRINTLN C_B_RED test.");
     CFPRINTLN(C_B_GREEN, stdout, "CFPRINTLN C_B_GREEN test.");
@@ -195,7 +356,9 @@ int test_cfprint() {
     CFPRINTLN(C_B_WHITE, stdout, "CFPRINTLN C_B_WHITE test.");
     printf("\n");
 
+
     printf("[*] Testing bright standard background colors...\n\n");
+
     CFPRINTLN(C_B_BR_BLACK, stdout, "CFPRINTLN C_B_BR_BLACK test.");
     CFPRINTLN(C_B_BR_RED, stdout, "CFPRINTLN C_B_BR_RED test.");
     CFPRINTLN(C_B_BR_GREEN, stdout, "CFPRINTLN C_B_BR_GREEN test.");
@@ -206,7 +369,9 @@ int test_cfprint() {
     CFPRINTLN(C_B_BR_WHITE, stdout, "CFPRINTLN C_B_BR_WHITE test.");
     printf("\n");
 
+
     printf("[*] Testing default colors...\n\n");
+
     CFPRINTLN(C_BLACK, stdout, "CFPRINTLN C_BLACK test.");
     CFPRINTLN(C_RED, stdout, "CFPRINTLN C_RED test.");
     CFPRINTLN(C_GREEN, stdout, "CFPRINTLN C_GREEN test.");
@@ -217,7 +382,9 @@ int test_cfprint() {
     CFPRINTLN(C_WHITE, stdout, "CFPRINTLN C_WHITE test.");
     printf("\n");
 
+
     printf("[*] Testing default background colors...\n\n");
+
     CFPRINTLN(C_B_BLACK, stdout, "CFPRINTLN C_B_BLACK test.");
     CFPRINTLN(C_B_RED, stdout, "CFPRINTLN C_B_RED test.");
     CFPRINTLN(C_B_GREEN, stdout, "CFPRINTLN C_B_GREEN test.");
@@ -228,7 +395,9 @@ int test_cfprint() {
     CFPRINTLN(C_B_WHITE, stdout, "CFPRINTLN C_B_WHITE test.");
     printf("\n");
 
+
     printf("[*] Testing 8-bit colors...\n\n");
+
     CFPRINTLN(C_8BIT(0), stdout, "CFPRINTLN C_8BIT(0) test.");
     CFPRINTLN(C_8BIT(1), stdout, "CFPRINTLN C_8BIT(1) test.");
     CFPRINTLN(C_8BIT(2), stdout, "CFPRINTLN C_8BIT(2) test.");
@@ -487,7 +656,9 @@ int test_cfprint() {
     CFPRINTLN(C_8BIT(255), stdout, "CFPRINTLN C_8BIT(255) test.");
     printf("\n");
 
+
     printf("[*] Testing 8-bit background colors...\n\n");
+
     CFPRINTLN(C_B_8BIT(0), stdout, "CFPRINTLN C_B_8BIT(0) test.");
     CFPRINTLN(C_B_8BIT(1), stdout, "CFPRINTLN C_B_8BIT(1) test.");
     CFPRINTLN(C_B_8BIT(2), stdout, "CFPRINTLN C_B_8BIT(2) test.");
@@ -746,25 +917,39 @@ int test_cfprint() {
     CFPRINTLN(C_B_8BIT(255), stdout, "CFPRINTLN C_B_8BIT(255) test.");
     printf("\n");
 
+
     printf("[*] Testing a couple of 24-bit colors...\n\n");
+
     CFPRINTLN(C_RGB(255, 0, 0), stdout, "CFPRINTLN C_RGB(255, 0, 0) test.");
     CFPRINTLN(C_RGB(120, 204, 62), stdout, "CFPRINTLN C_RGB(120, 204, 62) test.");
     CFPRINTLN(C_RGB(66, 99, 123), stdout, "CFPRINTLN C_RGB(66, 99, 123) test.");
     CFPRINTLN(C_RGB(204, 128, 224), stdout, "CFPRINTLN C_RGB(204, 128, 224) test.");
 
-    // Does not work.
+    // Currently does not work.
     //CFPRINTLN(C_RGB(0xff, 0x0, 0xa0), stdout, "CFPRINTLN C_RGB(0xff, 0x0, 0xa0) test.");
     printf("\n");
 
+
     printf("[*] Testing a couple of 24-bit background colors...\n\n");
+
     CFPRINTLN(C_B_RGB(255, 0, 0), stdout, "CFPRINTLN C_B_RGB(255, 0, 0) test.");
     CFPRINTLN(C_B_RGB(120, 204, 62), stdout, "CFPRINTLN C_B_RGB(120, 204, 62) test.");
     CFPRINTLN(C_B_RGB(66, 99, 123), stdout, "CFPRINTLN C_B_RGB(66, 99, 123) test.");
     CFPRINTLN(C_B_RGB(204, 128, 224), stdout, "CFPRINTLN C_B_RGB(204, 128, 224) test.");
     printf("\n");
 
+
     printf("[*] Testing extra colors...\n\n");
+
     CFPRINTLN(C_ORANGE, stdout, "CFPRINTLN C_ORANGE test.");
+    printf("\n");
+
+
+    printf("[*] Testing in loop without brackets...\n\n");
+
+    for (int i = 0; i < 4; ++i)
+        CFPRINTLN(C_ORANGE, stdout, "CFPRINTLN C_ORANGE test.");
+
     printf("\n");
 
     return 0;
@@ -813,14 +998,11 @@ int test_print() {
 
 
     PERROR("PERROR test");
-
-    errno = ENOENT;
-    PERROR("PERROR test");
-    errno = 0;
+    PERRORF("PERRORF test: %d", integer);
     printf("\n");
 
 
-    printf("[*] Testing 'print_log' functions...\n\n");
+    printf("[*] Testing 'print_level' functions...\n\n");
 
     PRINT_TRACE("PRINT_TRACE test.");
     printf("\n");
@@ -830,15 +1012,6 @@ int test_print() {
     PRINTFLN_TRACE("PRINTFLN_TRACE test integer: %d.", integer);
     printf("\n");
 
-    PRINT_DEBUG("PRINT_DEBUG test.");
-    printf("\n");
-    PRINTLN_DEBUG("PRINTLN_DEBUG test.");
-    PRINTF_DEBUG("PRINTF_DEBUG test integer: %d.", integer);
-    printf("\n");
-    PRINTFLN_DEBUG("PRINTFLN_DEBUG test integer: %d.", integer);
-    printf("\n");
-
-
 
     PRINT_DEBUG("PRINT_DEBUG test.");
     printf("\n");
@@ -849,81 +1022,84 @@ int test_print() {
     printf("\n");
 
 
-    PRINT_DEBUG("PRINT_DEBUG test.");
+    PRINT_EXTRA("PRINT_EXTRA test.");
     printf("\n");
-    PRINTLN_DEBUG("PRINTLN_DEBUG test.");
-    PRINTF_DEBUG("PRINTF_DEBUG test integer: %d.", integer);
+    PRINTLN_EXTRA("PRINTLN_EXTRA test.");
+    PRINTF_EXTRA("PRINTF_EXTRA test integer: %d.", integer);
     printf("\n");
-    PRINTFLN_DEBUG("PRINTFLN_DEBUG test integer: %d.", integer);
-    printf("\n");
-
-
-    PRINT_DEBUG("PRINT_DEBUG test.");
-    printf("\n");
-    PRINTLN_DEBUG("PRINTLN_DEBUG test.");
-    PRINTF_DEBUG("PRINTF_DEBUG test integer: %d.", integer);
-    printf("\n");
-    PRINTFLN_DEBUG("PRINTFLN_DEBUG test integer: %d.", integer);
+    PRINTFLN_EXTRA("PRINTFLN_EXTRA test integer: %d.", integer);
     printf("\n");
 
 
-    PRINT_DEBUG("PRINT_DEBUG test.");
+    PRINT_INFO("PRINT_INFO test.");
     printf("\n");
-    PRINTLN_DEBUG("PRINTLN_DEBUG test.");
-    PRINTF_DEBUG("PRINTF_DEBUG test integer: %d.", integer);
+    PRINTLN_INFO("PRINTLN_INFO test.");
+    PRINTF_INFO("PRINTF_INFO test integer: %d.", integer);
     printf("\n");
-    PRINTFLN_DEBUG("PRINTFLN_DEBUG test integer: %d.", integer);
-    printf("\n");
-
-
-    PRINT_DEBUG("PRINT_DEBUG test.");
-    printf("\n");
-    PRINTLN_DEBUG("PRINTLN_DEBUG test.");
-    PRINTF_DEBUG("PRINTF_DEBUG test integer: %d.", integer);
-    printf("\n");
-    PRINTFLN_DEBUG("PRINTFLN_DEBUG test integer: %d.", integer);
+    PRINTFLN_INFO("PRINTFLN_INFO test integer: %d.", integer);
     printf("\n");
 
 
-    PRINT_DEBUG("PRINT_DEBUG test.");
+    PRINT_HEADER("PRINT_HEADER test.");
     printf("\n");
-    PRINTLN_DEBUG("PRINTLN_DEBUG test.");
-    PRINTF_DEBUG("PRINTF_DEBUG test integer: %d.", integer);
+    PRINTLN_HEADER("PRINTLN_HEADER test.");
+    PRINTF_HEADER("PRINTF_HEADER test integer: %d.", integer);
     printf("\n");
-    PRINTFLN_DEBUG("PRINTFLN_DEBUG test integer: %d.", integer);
-    printf("\n");
-
-
-    PRINT_DEBUG("PRINT_DEBUG test.");
-    printf("\n");
-    PRINTLN_DEBUG("PRINTLN_DEBUG test.");
-    PRINTF_DEBUG("PRINTF_DEBUG test integer: %d.", integer);
-    printf("\n");
-    PRINTFLN_DEBUG("PRINTFLN_DEBUG test integer: %d.", integer);
+    PRINTFLN_HEADER("PRINTFLN_HEADER test integer: %d.", integer);
     printf("\n");
 
 
-    PRINT_DEBUG("PRINT_DEBUG test.");
+    PRINT_SUCCESS("PRINT_SUCCESS test.");
     printf("\n");
-    PRINTLN_DEBUG("PRINTLN_DEBUG test.");
-    PRINTF_DEBUG("PRINTF_DEBUG test integer: %d.", integer);
+    PRINTLN_SUCCESS("PRINTLN_SUCCESS test.");
+    PRINTF_SUCCESS("PRINTF_SUCCESS test integer: %d.", integer);
     printf("\n");
-    PRINTFLN_DEBUG("PRINTFLN_DEBUG test integer: %d.", integer);
-    printf("\n");
-
-
-    PRINT_DEBUG("PRINT_DEBUG test.");
-    printf("\n");
-    PRINTLN_DEBUG("PRINTLN_DEBUG test.");
-    PRINTF_DEBUG("PRINTF_DEBUG test integer: %d.", integer);
-    printf("\n");
-    PRINTFLN_DEBUG("PRINTFLN_DEBUG test integer: %d.", integer);
+    PRINTFLN_SUCCESS("PRINTFLN_SUCCESS test integer: %d.", integer);
     printf("\n");
 
 
+    PRINT_INPUT("PRINT_INPUT test.");
+    printf("\n");
+    PRINTLN_INPUT("PRINTLN_INPUT test.");
+    PRINTF_INPUT("PRINTF_INPUT test integer: %d.", integer);
+    printf("\n");
+    PRINTFLN_INPUT("PRINTFLN_INPUT test integer: %d.", integer);
+    printf("\n");
 
 
+    PRINT_WARNING("PRINT_WARNING test.");
+    printf("\n");
+    PRINTLN_WARNING("PRINTLN_WARNING test.");
+    PRINTF_WARNING("PRINTF_WARNING test integer: %d.", integer);
+    printf("\n");
+    PRINTFLN_WARNING("PRINTFLN_WARNING test integer: %d.", integer);
+    printf("\n");
 
+
+    PRINT_ERROR("PRINT_ERROR test.");
+    printf("\n");
+    PRINTLN_ERROR("PRINTLN_ERROR test.");
+    PRINTF_ERROR("PRINTF_ERROR test integer: %d.", integer);
+    printf("\n");
+    PRINTFLN_ERROR("PRINTFLN_ERROR test integer: %d.", integer);
+    printf("\n");
+
+    PERROR_ERROR("PERROR_ERROR test");
+    PERRORF_ERROR("PERRORF_ERROR test: %d", integer);
+    printf("\n");
+
+
+    PRINT_FATAL("PRINT_FATAL test.");
+    printf("\n");
+    PRINTLN_FATAL("PRINTLN_FATAL test.");
+    PRINTF_FATAL("PRINTF_FATAL test integer: %d.", integer);
+    printf("\n");
+    PRINTFLN_FATAL("PRINTFLN_FATAL test integer: %d.", integer);
+    printf("\n");
+
+    PERROR_FATAL("PERROR_FATAL test");
+    PERRORF_FATAL("PERRORF_FATAL test: %d", integer);
+    printf("\n");
 
     return 0;
 }
@@ -940,41 +1116,135 @@ int test_cprint() {
     int integer = 1234567890;
     unsigned long long hex = __bswap_constant_64(0xcafebabebaddecaf);
 
-    printf("[*] Testing 'print' functions...\n\n");
+    printf("[*] Testing 'cprint' functions...\n\n");
 
-    CPRINT(C_RED, "PRINT test.");
+    CPRINT(C_RED, "CPRINT test.");
     printf("\n");
-
-    CPRINTLN(C_RED, "PRINTLN test.");
-
-    CPRINTF(C_RED, "PRINTF test integer: %d.", integer);
+    CPRINTLN(C_RED, "CPRINTLN test.");
+    CPRINTF(C_RED, "CPRINTF test integer: %d.", integer);
     printf("\n");
-
-    CPRINTFLN(C_RED, "PRINTFLN test integer: %d.", integer);
+    CPRINTFLN(C_RED, "CPRINTFLN test integer: %d.", integer);
     printf("\n");
 
 
-    CPRINTF(C_RED, "PRINT_HEX test hex: %llu: ", hex);
+    CPRINTF(C_RED, "CPRINT_HEX test hex: %llu: ", hex);
     CPRINT_HEX(C_RED, &hex, sizeof(hex));
     printf("\n");
 
-    CPRINTF(C_RED, "PRINTLN_HEX test hex: %llu: ", hex);
+    CPRINTF(C_RED, "CPRINTLN_HEX test hex: %llu: ", hex);
     CPRINTLN_HEX(C_RED, &hex, sizeof(hex));
 
-    CPRINTF(C_RED, "PRINT_WIDE_HEX test wide hex: %llu: ", hex);
+    CPRINTF(C_RED, "CPRINT_WIDE_HEX test wide hex: %llu: ", hex);
     CPRINT_WIDE_HEX(C_RED, &hex, sizeof(hex));
     printf("\n");
 
-    CPRINTF(C_RED, "PRINTLN_WIDE_HEX test wide hex: %llu: ", hex);
+    CPRINTF(C_RED, "CPRINTLN_WIDE_HEX test wide hex: %llu: ", hex);
     CPRINTLN_WIDE_HEX(C_RED, &hex, sizeof(hex));
     printf("\n");
 
 
-    CPERROR(C_RED, "PERROR test");
+    CPERROR(C_RED, "CPERROR test");
+    CPERRORF(C_RED, "CPERRORF test: %d", integer);
+    printf("\n");
 
-    errno = ENOENT;
-    CPERROR(C_RED, "PERROR test");
-    errno = 0;
+
+    printf("[*] Testing 'cprint_level' functions...\n\n");
+
+    CPRINT_TRACE(C_RED, "CPRINT_TRACE test.");
+    printf("\n");
+    CPRINTLN_TRACE(C_RED, "CPRINTLN_TRACE test.");
+    CPRINTF_TRACE(C_RED, "CPRINTF_TRACE test integer: %d.", integer);
+    printf("\n");
+    CPRINTFLN_TRACE(C_RED, "CPRINTFLN_TRACE test integer: %d.", integer);
+    printf("\n");
+
+
+    CPRINT_DEBUG(C_RED, "CPRINT_DEBUG test.");
+    printf("\n");
+    CPRINTLN_DEBUG(C_RED, "CPRINTLN_DEBUG test.");
+    CPRINTF_DEBUG(C_RED, "CPRINTF_DEBUG test integer: %d.", integer);
+    printf("\n");
+    CPRINTFLN_DEBUG(C_RED, "CPRINTFLN_DEBUG test integer: %d.", integer);
+    printf("\n");
+
+
+    CPRINT_EXTRA(C_RED, "CPRINT_EXTRA test.");
+    printf("\n");
+    CPRINTLN_EXTRA(C_RED, "CPRINTLN_EXTRA test.");
+    CPRINTF_EXTRA(C_RED, "CPRINTF_EXTRA test integer: %d.", integer);
+    printf("\n");
+    CPRINTFLN_EXTRA(C_RED, "CPRINTFLN_EXTRA test integer: %d.", integer);
+    printf("\n");
+
+
+    CPRINT_INFO(C_RED, "CPRINT_INFO test.");
+    printf("\n");
+    CPRINTLN_INFO(C_RED, "CPRINTLN_INFO test.");
+    CPRINTF_INFO(C_RED, "CPRINTF_INFO test integer: %d.", integer);
+    printf("\n");
+    CPRINTFLN_INFO(C_RED, "CPRINTFLN_INFO test integer: %d.", integer);
+    printf("\n");
+
+
+    CPRINT_HEADER(C_RED, "CPRINT_HEADER test.");
+    printf("\n");
+    CPRINTLN_HEADER(C_RED, "CPRINTLN_HEADER test.");
+    CPRINTF_HEADER(C_RED, "CPRINTF_HEADER test integer: %d.", integer);
+    printf("\n");
+    CPRINTFLN_HEADER(C_RED, "CPRINTFLN_HEADER test integer: %d.", integer);
+    printf("\n");
+
+
+    CPRINT_SUCCESS(C_RED, "CPRINT_SUCCESS test.");
+    printf("\n");
+    CPRINTLN_SUCCESS(C_RED, "CPRINTLN_SUCCESS test.");
+    CPRINTF_SUCCESS(C_RED, "CPRINTF_SUCCESS test integer: %d.", integer);
+    printf("\n");
+    CPRINTFLN_SUCCESS(C_RED, "CPRINTFLN_SUCCESS test integer: %d.", integer);
+    printf("\n");
+
+
+    CPRINT_INPUT(C_RED, "CPRINT_INPUT test.");
+    printf("\n");
+    CPRINTLN_INPUT(C_RED, "CPRINTLN_INPUT test.");
+    CPRINTF_INPUT(C_RED, "CPRINTF_INPUT test integer: %d.", integer);
+    printf("\n");
+    CPRINTFLN_INPUT(C_RED, "CPRINTFLN_INPUT test integer: %d.", integer);
+    printf("\n");
+
+
+    CPRINT_WARNING(C_RED, "CPRINT_WARNING test.");
+    printf("\n");
+    CPRINTLN_WARNING(C_RED, "CPRINTLN_WARNING test.");
+    CPRINTF_WARNING(C_RED, "CPRINTF_WARNING test integer: %d.", integer);
+    printf("\n");
+    CPRINTFLN_WARNING(C_RED, "CPRINTFLN_WARNING test integer: %d.", integer);
+    printf("\n");
+
+
+    CPRINT_ERROR(C_RED, "CPRINT_ERROR test.");
+    printf("\n");
+    CPRINTLN_ERROR(C_RED, "CPRINTLN_ERROR test.");
+    CPRINTF_ERROR(C_RED, "CPRINTF_ERROR test integer: %d.", integer);
+    printf("\n");
+    CPRINTFLN_ERROR(C_RED, "CPRINTFLN_ERROR test integer: %d.", integer);
+    printf("\n");
+
+    CPERROR_ERROR(C_RED, "PERROR_ERROR test");
+    CPERRORF_ERROR(C_RED, "PERRORF_ERROR test: %d", integer);
+    printf("\n");
+
+
+    CPRINT_FATAL(C_RED, "CPRINT_FATAL test.");
+    printf("\n");
+    CPRINTLN_FATAL(C_RED, "CPRINTLN_FATAL test.");
+    CPRINTF_FATAL(C_RED, "CPRINTF_FATAL test integer: %d.", integer);
+    printf("\n");
+    CPRINTFLN_FATAL(C_RED, "CPRINTFLN_FATAL test integer: %d.", integer);
+    printf("\n");
+
+    CPERROR_FATAL(C_RED, "CPERROR_FATAL test");
+    CPERRORF_FATAL(C_RED, "CPERRORF_FATAL test: %d", integer);
     printf("\n");
 
     return 0;
@@ -982,6 +1252,8 @@ int test_cprint() {
 
 
 int test_clog() {
+
+    CLOG("hello");
     return 0;
 }
 

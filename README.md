@@ -1,26 +1,59 @@
 
-# Title of Program
+<!-- Logo -->
+
+<!-- Badges -->
+
+
+# Title
 
 ## Description
 
-Describe me.
+Description.
 
-## Installation instructions.
+
+<!-- Links -->
+
+
+## Features
+
+Features.
+
+
+<!-- Gallery -->
+
+
+## Building & Installation
+
+### Dependencies
+
+Dependencies.
+
+
+### Installation
 
 Install me.
 
-## Examples.
+
+### Building from Source
+
+Build me.
+
+
+## Usage
+
+Usage.
+
+
+## Configuration
+
+Configuration.
+
+
+## Examples
 
 Example of me.
 
-## Contributors.
 
-Contributors.
+#### [License](LICENSE.txt)
 
-## Contact Information.
 
-Contact info.
-
-#### [Version Information](versions_info.md)
-#### [License](license.txt)
-#### [Information for contributors](contributors.md)
