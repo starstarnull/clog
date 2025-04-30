@@ -22,11 +22,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  *
- * Description
- * ===========
+ * Clog C Header is a C header library of functions that can be included in a C
+ * project to provide colored printing and console and file logging macros. 
+ * These functions can be configured to allow versatility of compile-time
+ * logging function inclusion.
  *
- * description
  *
+ * Features
+ * ========
+ *      * Normal print functions.
+ *      * Normal file print functions.
+ *      * Print line functions.
+ *      * Colored print functions. 
  *
  * Philosophy
  * ==========
