@@ -32,6 +32,8 @@ int main() {
     char* padding = "========================================================";
     unsigned long header_len = strlen(header);
 
+    CLOG_FILE_INIT("clog.log");
+
     printf(
         "%.*s %s %.*s\n\n", 
         (int)(80 - header_len - 2)/2, 
@@ -1253,7 +1255,24 @@ int test_cprint() {
 
 int test_clog() {
 
-    CLOG("hello");
+    int integer = 1234567890;
+    unsigned long long hex = __bswap_constant_64(0xcafebabebaddecaf);
+
+    printf("[*] Testing 'cprint' functions...\n\n");
+
+    LOG_INFO("CLOG test.");
+    printf("\n");
+    LOGLN_TRACE("CLOGLN test.");
+    LOGF_ERR("CLOGF test: %d", integer);
+    printf("\n");
+    LOGFLN_DEBUG("CLOGFLN test: %d", integer);
+
+    printf("\n");
+
+
+
+
+
     return 0;
 }
 
