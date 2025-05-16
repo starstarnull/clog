@@ -1,13 +1,5 @@
 
 /**
- * =============
- * Clog C Header
- * =============
- *
- * Version: 0.0.1-1 beta
- *
- * Provides macros for color console and file logging.
- *
  * Copyright (C) 2025 Dorian N. Nihil (starstarnull@starstarnull.net)
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -24,11 +16,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  *
+ * =============
+ * Clog C Header
+ * =============
+ *
+ * Version: 0.0.1-1 beta
+ *
+ * Provides macros for color console and file logging.
+ *
  * Clog C Header is a C header library of functions that can be included in a C
  * project to provide colored printing and console and file logging macros.
  * These functions can be configured to allow versatility of compile-time
  * logging function inclusion.
- *
  *
  * Features
  * ========
@@ -50,10 +49,10 @@
  * Philosophy
  * ==========
  *
- * This logging library provides functions that are grouped and use letters to
- * tweak the function. The logs can be used during development and then
- * deactivated for release. Or they can be customized and controlled by the
- * developer.
+ * This logging library provides functions that are grouped by letters that
+ * indicate variations to the functions behavior. The logs can be used during
+ * development and then deactivated for release. Or they can be customized and
+ * controlled by the developer. 
  *
  *
  * Requirements
@@ -68,15 +67,12 @@
  * Usage
  * =====
  *
- * Macros with preceding underscores (like `_<macro`) are not intended to be
- * used by the user.
- *
  * Simply include the header file in your project and start calling the print
  * and logging functions. To customize the filename, use the `CLOG_INIT` macro
  * in the main function.
  *
  * To configure logging, use a separate configuration header file and include
- * before the clog header or make macro definitions before the include for the
+ * BEFORE the clog header or make macro definitions before the include for the
  * log header file.
  *
  * There are several "groups" of functions.
@@ -131,6 +127,9 @@
  *
  *  * `<function><LN | F | FLN>_<level>(s)` follow the same rules described
  *  above, but print a symbolic line header representing the level.
+ *
+ * Macros with preceding underscores (like `_<macro`) are not intended to be
+ * used by the user.
  *
  *
  * Rules
@@ -229,6 +228,7 @@
  *  * Need to consider critical level.
  *  * Add automated testing.
  *  * Consider reducing binary size with functions.
+ *  * Consider adding dynamic methods.
  *
  *
  * Exposed Constant Macros
@@ -239,7 +239,7 @@
  *
  * C_RESET
  * C_BOLD
- * 
+ *
  * 3-bit Foreground Colors
  * -----------------------
  *
@@ -251,7 +251,7 @@
  * C_MAGENTA
  * C_CYAN
  * C_WHITE
- * 
+ *
  * 3-bit Background Colors
  * -----------------------
  *
@@ -263,7 +263,7 @@
  * C_B_MAGENTA
  * C_B_CYAN
  * C_B_WHITE
- * 
+ *
  * 4-bit Bright Foreground Colors
  * ------------------------------
  *
@@ -275,7 +275,7 @@
  * C_BR_MAGENTA
  * C_BR_CYAN
  * C_BR_WHITE
- * 
+ *
  * 4-bit Bright Background Colors
  * ------------------------------
  *
@@ -287,18 +287,18 @@
  * C_B_BR_MAGENTA
  * C_B_BR_CYAN
  * C_B_BR_WHITE
- * 
+ *
  * Other Colors
  * ------------
  *
  * C_ORANGE
  * C_B_ORANGE
- * 
+ *
  * Log Level Color Palette
  * -----------------------
  *
  * C_TRACE          Defaults to bright black
- * C_DEBUG          Defaults to cyan.          
+ * C_DEBUG          Defaults to cyan.
  * C_EXTRA          Defaults to bright black
  * C_INFO           Defaults to blue
  * C_HEADER         Defaults to bold yellow
@@ -307,7 +307,7 @@
  * C_WARN           Defaults to orange
  * C_ERR            Defaults to red
  * C_FATAL          Defaults to bold red
- * 
+ *
  * Log Level Header Strings
  * ------------------------
  *
@@ -321,7 +321,7 @@
  * SYM_WARN         Defaults to "[!] "
  * SYM_ERR          Defaults to "[-] "
  * SYM_FATAL        Defaults to "[FATAL] "
- * 
+ *
  *
  * Exposed Function Macros
  * =======================
@@ -1413,11 +1413,23 @@
 #define _CLOG_TM_BUFSZ              128
 #define _CLOG_TM_FMT                "%FT%T%z"
 
+#ifndef CLOG_FILE
+#define CLOG_FILE                   (strrchr(__FILE__, '/') \
+                                        ? strrchr(__FILE__ ".log", '/') + 1 \
+                                        : __FILE__ ".log")
+#endif
+
+#define _CLOG_DECLARE               static FILE* _clog_glog = NULL; \
+                                    static char _clog_gtime_buf[_CLOG_TM_BUFSZ] = {0};\
+                                    static time_t _clog_gtime = 0; 
+
+#define _CLOG_DECLARE_EXTERN        extern FILE* _clog_glog; \
+                                    extern char _clog_gtime_buf[_CLOG_TM_BUFSZ];\
+                                    extern time_t _clog_gtime; 
+
 #define CLOG_DECLARE                FILE* _clog_glog = NULL; \
                                     char _clog_gtime_buf[_CLOG_TM_BUFSZ] = {0};\
                                     time_t _clog_gtime = 0; 
-
-#define CLOG_FILE_INIT(f)           _clog_glog = fopen(f, "a+");
 
 // Log functions.
 
@@ -1712,14 +1724,14 @@
 #define CLOGF_WARNING(...)      _CLOG_CLOGF(C_WARN, CSYM_WARN __VA_ARGS__)
 #define CLOGFLN_WARNING(...)    _CLOG_CLOGFLN(C_WARN, CSYM_WARN __VA_ARGS__)
 #define CLOG_PERROR_WARNING(s)  _CLOG_CLOG_PERROR(C_WARN, CSYM_WARN s)
-#define CLOG_PERRORF_WARNING(...) _CLOG_CLOG_PERROR(C_WARN, CSYM_WARN __VA_ARGS__)
+#define CLOG_PERRORF_WARNING(...) _CLOG_CLOG_PERRORF(C_WARN, CSYM_WARN __VA_ARGS__)
 
 #define CLOG_ERROR(s)           _CLOG_CLOG(C_ERR, CSYM_ERR s)
 #define CLOGLN_ERROR(s)         _CLOG_CLOGLN(C_ERR, CSYM_ERR s)
 #define CLOGF_ERROR(...)        _CLOG_CLOGF(C_ERR, CSYM_ERR __VA_ARGS__)
 #define CLOGFLN_ERROR(...)      _CLOG_CLOGFLN(C_ERR, CSYM_ERR __VA_ARGS__)
 #define CLOG_PERROR_ERROR(s)    _CLOG_CLOG_PERROR(C_ERR, CSYM_ERR s)
-#define CLOG_PERRORF_ERROR(...) _CLOG_CLOG_PERROR(C_ERR, CSYM_ERR __VA_ARGS__)
+#define CLOG_PERRORF_ERROR(...) _CLOG_CLOG_PERRORF(C_ERR, CSYM_ERR __VA_ARGS__)
 
 #define CLOG_FATAL(s)           _CLOG_CLOG(C_FATAL, CSYM_FATAL s)
 #define CLOGLN_FATAL(s)         _CLOG_CLOGLN(C_FATAL, CSYM_FATAL s)
@@ -1832,70 +1844,126 @@
 // File logging functions.
 
 #define FLOG(s)                     { \
+                                        _clog_glog = fopen(CLOG_FILE, "a+"); \
                                         _CLOG_TIME(_clog_glog); \
                                         FPRINT(_clog_glog, s); \
+                                        fclose(_clog_glog); \
                                     }
 #define FLOGLN(s)                   { \
+                                        _clog_glog = fopen(CLOG_FILE, "a+"); \
                                         _CLOG_TIME(_clog_glog); \
                                         FPRINTLN(_clog_glog, s); \
+                                        fclose(_clog_glog); \
                                     }
 #define FLOGF(...)                  { \
+                                        _clog_glog = fopen(CLOG_FILE, "a+"); \
                                         _CLOG_TIME(_clog_glog); \
                                         FPRINTF(_clog_glog, __VA_ARGS__); \
+                                        fclose(_clog_glog); \
                                     }
 #define FLOGFLN(...)                { \
+                                        _clog_glog = fopen(CLOG_FILE, "a+"); \
                                         _CLOG_TIME(_clog_glog); \
                                         FPRINTFLN(_clog_glog, __VA_ARGS__); \
+                                        fclose(_clog_glog); \
                                     }
 #define FLOG_PERROR(s)              { \
+                                        _clog_glog = fopen(CLOG_FILE, "a+"); \
                                         _CLOG_TIME(_clog_glog); \
                                         FPERROR(_clog_glog, s); \
+                                        fclose(_clog_glog); \
                                     }
 #define FLOG_PERRORF(...)           { \
+                                        _clog_glog = fopen(CLOG_FILE, "a+"); \
                                         _CLOG_TIME(_clog_glog); \
                                         FPERRORF(_clog_glog, __VA_ARGS__); \
+                                        fclose(_clog_glog); \
                                     }
 
-#define FLOG_STREAM(s)              FPRINT(_clog_glog, s)
-#define FLOGLN_STREAM(s)            FPRINTLN(_clog_glog, s)
-#define FLOGF_STREAM(...)           FPRINTF(_clog_glog, __VA_ARGS__)
-#define FLOGFLN_STREAM(...)         FPRINTFLN(_clog_glog, __VA_ARGS__)
-#define FLOG_STREAM_HEX(s, l)       FPRINT_HEX(_clog_glog, s, l)
-#define FLOGLN_STREAM_HEX(s, l)     FPRINTLN_HEX(_clog_glog, s, l)
-#define FLOG_STREAM_WIDE_HEX(s, l)  FPRINT_WIDE_HEX(_clog_glog, s, l)
-#define FLOGLN_STREAM_WIDE_HEX(s, l) FPRINTLN_WIDE_HEX(_clog_glog, s, l)
+#define FLOG_STREAM(s)              { \
+                                        _clog_glog = fopen(CLOG_FILE, "a+"); \
+                                        FPRINT(_clog_glog, s); \
+                                        fclose(_clog_glog); \
+                                    }
+#define FLOGLN_STREAM(s)            { \
+                                        _clog_glog = fopen(CLOG_FILE, "a+"); \
+                                        FPRINTLN(_clog_glog, s); \
+                                        fclose(_clog_glog); \
+                                    }
+#define FLOGF_STREAM(...)           { \
+                                        _clog_glog = fopen(CLOG_FILE, "a+"); \
+                                        FPRINTF(_clog_glog, __VA_ARGS__); \
+                                        fclose(_clog_glog); \
+                                    }
+#define FLOGFLN_STREAM(...)         { \
+                                        _clog_glog = fopen(CLOG_FILE, "a+"); \
+                                        FPRINTFLN(_clog_glog, __VA_ARGS__); \
+                                        fclose(_clog_glog); \
+                                    }
+#define FLOG_STREAM_HEX(s, l)       { \
+                                        _clog_glog = fopen(CLOG_FILE, "a+"); \
+                                        FPRINT_HEX(_clog_glog, s, l); \
+                                        fclose(_clog_glog); \
+                                    }
+#define FLOGLN_STREAM_HEX(s, l)     { \
+                                        _clog_glog = fopen(CLOG_FILE, "a+"); \
+                                        FPRINTLN_HEX(_clog_glog, s, l); \
+                                        fclose(_clog_glog); \
+                                    }
+#define FLOG_STREAM_WIDE_HEX(s, l)  { \
+                                        _clog_glog = fopen(CLOG_FILE, "a+"); \
+                                        FPRINT_WIDE_HEX(_clog_glog, s, l); \
+                                        fclose(_clog_glog); \
+                                    }
+#define FLOGLN_STREAM_WIDE_HEX(s, l) { \
+                                        _clog_glog = fopen(CLOG_FILE, "a+"); \
+                                        FPRINTLN_WIDE_HEX(_clog_glog, s, l); \
+                                        fclose(_clog_glog); \
+                                     }
 
 // File logging functions with tracing.
 
 #define FLOG_T(s)                   { \
+                                        _clog_glog = fopen(CLOG_FILE, "a+"); \
                                         _CLOG_TIME(_clog_glog); \
                                         _CLOG_TRACING(_clog_glog); \
                                         FPRINT(_clog_glog, s); \
+                                        fclose(_clog_glog); \
                                     }
 #define FLOGLN_T(s)                 { \
+                                        _clog_glog = fopen(CLOG_FILE, "a+"); \
                                         _CLOG_TIME(_clog_glog); \
                                         _CLOG_TRACING(_clog_glog); \
                                         FPRINTLN(_clog_glog, s); \
+                                        fclose(_clog_glog); \
                                     }
 #define FLOGF_T(...)                { \
+                                        _clog_glog = fopen(CLOG_FILE, "a+"); \
                                         _CLOG_TIME(_clog_glog); \
                                         _CLOG_TRACING(_clog_glog); \
                                         FPRINTF(_clog_glog, __VA_ARGS__); \
+                                        fclose(_clog_glog); \
                                     }
 #define FLOGFLN_T(...)              { \
+                                        _clog_glog = fopen(CLOG_FILE, "a+"); \
                                         _CLOG_TIME(_clog_glog); \
                                         _CLOG_TRACING(_clog_glog); \
                                         FPRINTFLN(_clog_glog, __VA_ARGS__); \
+                                        fclose(_clog_glog); \
                                     }
 #define FLOG_PERROR_T(s)            { \
+                                        _clog_glog = fopen(CLOG_FILE, "a+"); \
                                         _CLOG_TIME(_clog_glog); \
                                         _CLOG_TRACING(_clog_glog); \
                                         FPERROR(_clog_glog, s); \
+                                        fclose(_clog_glog); \
                                     }
 #define FLOG_PERRORF_T(...)         { \
+                                        _clog_glog = fopen(CLOG_FILE, "a+"); \
                                         _CLOG_TIME(_clog_glog); \
                                         _CLOG_TRACING(_clog_glog); \
                                         FPERRORF(_clog_glog, __VA_ARGS__); \
+                                        fclose(_clog_glog); \
                                     }
 
 // File logging level functions.
@@ -4395,6 +4463,6 @@
 
 // Globals.
 
-CLOG_DECLARE;
+_CLOG_DECLARE;
 
 

@@ -1,10 +1,13 @@
 
 // Includes.
 
-#include <stdlib.h>
 #include <byteswap.h>
 
-#include "../src/clog.h"
+#include "clog-config.h"
+#include "clog.h"
+
+#include "clog-obj-1.h"
+#include "clog-obj-2.h"
 
 
 // Function declarations.
@@ -16,6 +19,7 @@ int test_cprint();
 int test_clog();
 int test_flog();
 int test_log();
+int test_log_custom();
 
 
 // Functions.
@@ -32,7 +36,9 @@ int main() {
     char* padding = "========================================================";
     unsigned long header_len = strlen(header);
 
-    CLOG_FILE_INIT("clog.log");
+
+    function1();
+    function2();
 
     printf(
         "%.*s %s %.*s\n\n", 
@@ -133,6 +139,18 @@ int main() {
     );
 
     test_log();
+
+    header = "Testing log customizations";
+    printf(
+        "%.*s %s %.*s\n\n", 
+        (int)(80 - header_len - 2)/2, 
+        padding, 
+        header, 
+        (int)(80 - header_len - 2)/2, 
+        padding
+    );
+
+    test_log_custom();
 
     return 0;
 }
@@ -1004,7 +1022,7 @@ int test_print() {
     printf("\n");
 
 
-    printf("[*] Testing 'print_level' functions...\n\n");
+    printf("[*] Testing 'print_<level>' functions...\n\n");
 
     PRINT_TRACE("PRINT_TRACE test.");
     printf("\n");
@@ -1108,7 +1126,7 @@ int test_print() {
 
 
 /**
- * @brief   Test the "cprint" series of function by printing to console for 
+ * @brief   Test the "cprint" series of functions by printing to console for 
  *          review.
  *
  * @return  Return 0.
@@ -1253,36 +1271,586 @@ int test_cprint() {
 }
 
 
+/**
+ * @brief   Test the "clog" series of functions by logging to console for 
+ *          review.
+ *
+ * @return  Return 0.
+ */
 int test_clog() {
 
     int integer = 1234567890;
     unsigned long long hex = __bswap_constant_64(0xcafebabebaddecaf);
 
-    printf("[*] Testing 'cprint' functions...\n\n");
+    printf("[*] Testing 'clog' functions...\n\n");
 
-    LOG_INFO("CLOG test.");
+    CLOG("CLOG test.");
     printf("\n");
-    LOGLN_TRACE("CLOGLN test.");
-    LOGF_ERR("CLOGF test: %d", integer);
+    CLOGLN("CLOGLN test.");
+    CLOGF("CLOGF test: %d", integer);
     printf("\n");
-    LOGFLN_DEBUG("CLOGFLN test: %d", integer);
+    CLOGFLN("CLOGFLN test: %d", integer);
+    printf("\n");
 
+    CLOG("CLOG_STREAM test: ");
+    CLOG_STREAM("stream test.");
+    printf("\n");
+    CLOG("CLOGLN_STREAM test: ");
+    CLOGLN_STREAM("stream test.");
+    CLOG("CLOGF_STREAM test: ");
+    CLOGF_STREAM("integer: %d", integer);
+    printf("\n");
+    CLOG("CLOGFLN_STREAM test: ");
+    CLOGFLN_STREAM("integer: %d", integer);
+    printf("\n");
+
+    CLOG("CLOG_STREAM_HEX test: ");
+    CLOG_STREAM_HEX(&hex, sizeof(hex));
+    printf("\n");
+    CLOG("CLOGLN_STREAM_HEX test: ");
+    CLOGLN_STREAM_HEX(&hex, sizeof(hex));
+    CLOG("CLOG_STREAM_WIDE_HEX test: ");
+    CLOG_STREAM_WIDE_HEX(&hex, sizeof(hex));
+    printf("\n");
+    CLOG("CLOGLN_STREAM_WIDE_HEX test: ");
+    CLOGLN_STREAM_WIDE_HEX(&hex, sizeof(hex));
+    printf("\n");
+
+    CLOG_PERROR("CLOG_PERROR test");
+    CLOG_PERRORF("CLOG_PERRORF test: %d", integer);
+    printf("\n");
+
+    CLOG_T("CLOG_T test.");
+    printf("\n");
+    CLOGLN_T("CLOGLN_T test.");
+    CLOGF_T("CLOGF_T test: %d.", integer);
+    printf("\n");
+    CLOGFLN_T("CLOGFLN_T test: %d.", integer);
+    printf("\n");
+
+    CLOG_PERROR_T("CLOG_PERROR_T test");
+    CLOG_PERRORF_T("CLOG_PERRORF_T test: %d", integer);
     printf("\n");
 
 
+    printf("[*] Testing 'cclog' functions...\n\n");
+
+    CCLOG(C_RED, "CLOG test.");
+    printf("\n");
+    CCLOGLN(C_RED, "CLOGLN test.");
+    CCLOGF(C_RED, "CLOGF test: %d", integer);
+    printf("\n");
+    CCLOGFLN(C_RED, "CLOGFLN test: %d", integer);
+    printf("\n");
+
+    CLOG("CLOG_STREAM test: ");
+    CCLOG_STREAM(C_RED, "stream test.");
+    printf("\n");
+    CLOG("CLOGLN_STREAM test: ");
+    CCLOGLN_STREAM(C_RED, "stream test.");
+    CLOG("CLOGF_STREAM test: ");
+    CCLOGF_STREAM(C_RED, "integer: %d", integer);
+    printf("\n");
+    CLOG("CLOGFLN_STREAM test: ");
+    CCLOGFLN_STREAM(C_RED, "integer: %d", integer);
+    printf("\n");
+
+    CLOG("CLOG_STREAM_HEX test: ");
+    CCLOG_STREAM_HEX(C_RED, &hex, sizeof(hex));
+    printf("\n");
+    CLOG("CLOGLN_STREAM_HEX test: ");
+    CCLOGLN_STREAM_HEX(C_RED, &hex, sizeof(hex));
+    CLOG("CLOG_STREAM_WIDE_HEX test: ");
+    CCLOG_STREAM_WIDE_HEX(C_RED, &hex, sizeof(hex));
+    printf("\n");
+    CLOG("CLOGLN_STREAM_WIDE_HEX test: ");
+    CCLOGLN_STREAM_WIDE_HEX(C_RED, &hex, sizeof(hex));
+    printf("\n");
+
+    CCLOG_PERROR(C_RED, "CLOG_PERROR test");
+    CCLOG_PERRORF(C_RED, "CLOG_PERRORF test: %d", integer);
+    printf("\n");
+
+    CCLOG_T(C_RED, "CLOG_T test.");
+    printf("\n");
+    CCLOGLN_T(C_RED, "CLOGLN_T test.");
+    CCLOGF_T(C_RED, "CLOGF_T test: %d.", integer);
+    printf("\n");
+    CCLOGFLN_T(C_RED, "CLOGFLN_T test: %d.", integer);
+    printf("\n");
+
+    CCLOG_PERROR_T(C_RED, "CLOG_PERROR_T test");
+    CCLOG_PERRORF_T(C_RED, "CLOG_PERRORF_T test: %d", integer);
+    printf("\n");
 
 
+    printf("[*] Testing 'clog_<level>' functions...\n\n");
+
+    CLOG_TRACE("CLOG_TRACE test.");
+    printf("\n");
+    CLOGLN_TRACE("CLOGLN_TRACE test.");
+    CLOGF_TRACE("CLOGF_TRACE test integer: %d.", integer);
+    printf("\n");
+    CLOGFLN_TRACE("CLOGFLN_TRACE test integer: %d.", integer);
+    printf("\n");
+
+
+    CLOG_DEBUG("CLOG_DEBUG test.");
+    printf("\n");
+    CLOGLN_DEBUG("CLOGLN_DEBUG test.");
+    CLOGF_DEBUG("CLOGF_DEBUG test integer: %d.", integer);
+    printf("\n");
+    CLOGFLN_DEBUG("CLOGFLN_DEBUG test integer: %d.", integer);
+    printf("\n");
+
+
+    CLOG_EXTRA("CLOG_EXTRA test.");
+    printf("\n");
+    CLOGLN_EXTRA("CLOGLN_EXTRA test.");
+    CLOGF_EXTRA("CLOGF_EXTRA test integer: %d.", integer);
+    printf("\n");
+    CLOGFLN_EXTRA("CLOGFLN_EXTRA test integer: %d.", integer);
+    printf("\n");
+
+
+    CLOG_INFO("CLOG_INFO test.");
+    printf("\n");
+    CLOGLN_INFO("CLOGLN_INFO test.");
+    CLOGF_INFO("CLOGF_INFO test integer: %d.", integer);
+    printf("\n");
+    CLOGFLN_INFO("CLOGFLN_INFO test integer: %d.", integer);
+    printf("\n");
+
+
+    CLOG_HEADER("CLOG_HEADER test.");
+    printf("\n");
+    CLOGLN_HEADER("CLOGLN_HEADER test.");
+    CLOGF_HEADER("CLOGF_HEADER test integer: %d.", integer);
+    printf("\n");
+    CLOGFLN_HEADER("CLOGFLN_HEADER test integer: %d.", integer);
+    printf("\n");
+
+
+    CLOG_SUCCESS("CLOG_SUCCESS test.");
+    printf("\n");
+    CLOGLN_SUCCESS("CLOGLN_SUCCESS test.");
+    CLOGF_SUCCESS("CLOGF_SUCCESS test integer: %d.", integer);
+    printf("\n");
+    CLOGFLN_SUCCESS("CLOGFLN_SUCCESS test integer: %d.", integer);
+    printf("\n");
+
+
+    CLOG_INPUT("CLOG_INPUT test.");
+    printf("\n");
+    CLOGLN_INPUT("CLOGLN_INPUT test.");
+    CLOGF_INPUT("CLOGF_INPUT test integer: %d.", integer);
+    printf("\n");
+    CLOGFLN_INPUT("CLOGFLN_INPUT test integer: %d.", integer);
+    printf("\n");
+
+
+    CLOG_WARNING("CLOG_WARNING test.");
+    printf("\n");
+    CLOGLN_WARNING("CLOGLN_WARNING test.");
+    CLOGF_WARNING("CLOGF_WARNING test integer: %d.", integer);
+    printf("\n");
+    CLOGFLN_WARNING("CLOGFLN_WARNING test integer: %d.", integer);
+    printf("\n");
+
+    CLOG_PERROR_WARNING("CLOG_PERROR_ERROR test");
+    CLOG_PERRORF_WARNING("CLOG_PERRORF_ERROR test: %d", integer);
+    printf("\n");
+
+
+    CLOG_ERROR("CLOG_ERROR test.");
+    printf("\n");
+    CLOGLN_ERROR("CLOGLN_ERROR test.");
+    CLOGF_ERROR("CLOGF_ERROR test integer: %d.", integer);
+    printf("\n");
+    CLOGFLN_ERROR("CLOGFLN_ERROR test integer: %d.", integer);
+    printf("\n");
+
+    CLOG_PERROR_ERROR("CLOG_PERROR_ERROR test");
+    CLOG_PERRORF_ERROR("CLOG_PERRORF_ERROR test: %d", integer);
+    printf("\n");
+
+
+    CLOG_FATAL("CLOG_FATAL test.");
+    printf("\n");
+    CLOGLN_FATAL("CLOGLN_FATAL test.");
+    CLOGF_FATAL("CLOGF_FATAL test integer: %d.", integer);
+    printf("\n");
+    CLOGFLN_FATAL("CLOGFLN_FATAL test integer: %d.", integer);
+    printf("\n");
+
+    CLOG_PERROR_FATAL("CLOG_PERROR_FATAL test");
+    CLOG_PERRORF_FATAL("CLOG_PERRORF_FATAL test: %d", integer);
+    printf("\n");
 
     return 0;
 }
 
 
+/**
+ * @brief   Test the "flog" series of functions by logging to file for 
+ *          review.
+ *
+ * @return  Return 0.
+ */
 int test_flog() {
+
+    int integer = 1234567890;
+    unsigned long long hex = __bswap_constant_64(0xcafebabebaddecaf);
+
+    printf("[*] Testing 'flog' functions...\n\n");
+
+    FLOG("FLOG test.");
+    FLOGLN_STREAM(" ");
+    FLOGLN("FLOGLN test.");
+    FLOGF("FLOGF test: %d", integer);
+    FLOGLN_STREAM(" ");
+    FLOGFLN("FLOGFLN test: %d", integer);
+
+    FLOG("FLOG_STREAM test: ");
+    FLOG_STREAM("stream test.");
+    FLOGLN_STREAM(" ");
+    FLOG("FLOGLN_STREAM test: ");
+    FLOGLN_STREAM("stream test.");
+    FLOG("FLOGF_STREAM test: ");
+    FLOGF_STREAM("integer: %d", integer);
+    FLOGLN_STREAM(" ");
+    FLOG("FLOGFLN_STREAM test: ");
+    FLOGFLN_STREAM("integer: %d", integer);
+
+    FLOG("FLOG_STREAM_HEX test: ");
+    FLOG_STREAM_HEX(&hex, sizeof(hex));
+    FLOGLN_STREAM(" ");
+    FLOG("FLOGLN_STREAM_HEX test: ");
+    FLOGLN_STREAM_HEX(&hex, sizeof(hex));
+    FLOG("FLOG_STREAM_WIDE_HEX test: ");
+    FLOG_STREAM_WIDE_HEX(&hex, sizeof(hex));
+    FLOGLN_STREAM(" ");
+    FLOG("FLOGLN_STREAM_WIDE_HEX test: ");
+    FLOGLN_STREAM_WIDE_HEX(&hex, sizeof(hex));
+
+    FLOG_PERROR("FLOG_PERROR test");
+    FLOG_PERRORF("FLOG_PERRORF test: %d", integer);
+
+    FLOG_T("FLOG_T test.");
+    FLOGLN_STREAM(" ");
+    FLOGLN_T("FLOGLN_T test.");
+    FLOGF_T("FLOGF_T test: %d.", integer);
+    FLOGLN_STREAM(" ");
+    FLOGFLN_T("FLOGFLN_T test: %d.", integer);
+
+    FLOG_PERROR_T("FLOG_PERROR_T test");
+    FLOG_PERRORF_T("FLOG_PERRORF_T test: %d", integer);
+
+
+    printf("[*] Testing 'flog_<level>' functions...\n\n");
+
+    FLOG_TRACE("FLOG_TRACE test.");
+    FLOGLN_STREAM(" ");
+    FLOGLN_TRACE("FLOGLN_TRACE test.");
+    FLOGF_TRACE("FLOGF_TRACE test integer: %d.", integer);
+    FLOGLN_STREAM(" ");
+    FLOGFLN_TRACE("FLOGFLN_TRACE test integer: %d.", integer);
+
+
+    FLOG_DEBUG("FLOG_DEBUG test.");
+    FLOGLN_STREAM(" ");
+    FLOGLN_DEBUG("FLOGLN_DEBUG test.");
+    FLOGF_DEBUG("FLOGF_DEBUG test integer: %d.", integer);
+    FLOGLN_STREAM(" ");
+    FLOGFLN_DEBUG("FLOGFLN_DEBUG test integer: %d.", integer);
+
+
+    FLOG_EXTRA("FLOG_EXTRA test.");
+    FLOGLN_STREAM(" ");
+    FLOGLN_EXTRA("FLOGLN_EXTRA test.");
+    FLOGF_EXTRA("FLOGF_EXTRA test integer: %d.", integer);
+    FLOGLN_STREAM(" ");
+    FLOGFLN_EXTRA("FLOGFLN_EXTRA test integer: %d.", integer);
+
+
+    FLOG_INFO("FLOG_INFO test.");
+    FLOGLN_STREAM(" ");
+    FLOGLN_INFO("FLOGLN_INFO test.");
+    FLOGF_INFO("FLOGF_INFO test integer: %d.", integer);
+    FLOGLN_STREAM(" ");
+    FLOGFLN_INFO("FLOGFLN_INFO test integer: %d.", integer);
+
+
+    FLOG_HEADER("FLOG_HEADER test.");
+    FLOGLN_STREAM(" ");
+    FLOGLN_HEADER("FLOGLN_HEADER test.");
+    FLOGF_HEADER("FLOGF_HEADER test integer: %d.", integer);
+    FLOGLN_STREAM(" ");
+    FLOGFLN_HEADER("FLOGFLN_HEADER test integer: %d.", integer);
+
+
+    FLOG_SUCCESS("FLOG_SUCCESS test.");
+    FLOGLN_STREAM(" ");
+    FLOGLN_SUCCESS("FLOGLN_SUCCESS test.");
+    FLOGF_SUCCESS("FLOGF_SUCCESS test integer: %d.", integer);
+    FLOGLN_STREAM(" ");
+    FLOGFLN_SUCCESS("FLOGFLN_SUCCESS test integer: %d.", integer);
+
+
+    FLOG_INPUT("FLOG_INPUT test.");
+    FLOGLN_STREAM(" ");
+    FLOGLN_INPUT("FLOGLN_INPUT test.");
+    FLOGF_INPUT("FLOGF_INPUT test integer: %d.", integer);
+    FLOGLN_STREAM(" ");
+    FLOGFLN_INPUT("FLOGFLN_INPUT test integer: %d.", integer);
+
+
+    FLOG_WARNING("FLOG_WARNING test.");
+    FLOGLN_STREAM(" ");
+    FLOGLN_WARNING("FLOGLN_WARNING test.");
+    FLOGF_WARNING("FLOGF_WARNING test integer: %d.", integer);
+    FLOGLN_STREAM(" ");
+    FLOGFLN_WARNING("FLOGFLN_WARNING test integer: %d.", integer);
+
+    FLOG_PERROR_WARNING("FLOG_PERROR_WARNING test");
+    FLOG_PERRORF_WARNING("FLOG_PERRORF_WARNING test: %d", integer);
+
+
+    FLOG_ERROR("FLOG_ERROR test.");
+    FLOGLN_STREAM(" ");
+    FLOGLN_ERROR("FLOGLN_ERROR test.");
+    FLOGF_ERROR("FLOGF_ERROR test integer: %d.", integer);
+    FLOGLN_STREAM(" ");
+    FLOGFLN_ERROR("FLOGFLN_ERROR test integer: %d.", integer);
+
+    FLOG_PERROR_ERROR("FLOG_PERROR_ERROR test");
+    FLOG_PERRORF_ERROR("FLOG_PERRORF_ERROR test: %d", integer);
+
+
+    FLOG_FATAL("FLOG_FATAL test.");
+    FLOGLN_STREAM(" ");
+    FLOGLN_FATAL("FLOGLN_FATAL test.");
+    FLOGF_FATAL("FLOGF_FATAL test integer: %d.", integer);
+    FLOGLN_STREAM(" ");
+    FLOGFLN_FATAL("FLOGFLN_FATAL test integer: %d.", integer);
+
+    FLOG_PERROR_FATAL("FLOG_PERROR_FATAL test");
+    FLOG_PERRORF_FATAL("FLOG_PERRORF_FATAL test: %d", integer);
+
     return 0;
 }
 
 
+/**
+ * @brief   Test the "log" series of functions by logging to console and a 
+ *          file for review.
+ *
+ * @return  Return 0.
+ */
 int test_log() {
+
+    int integer = 1234567890;
+    unsigned long long hex = __bswap_constant_64(0xcafebabebaddecaf);
+
+    printf("[*] Testing 'log' functions...\n\n");
+
+    LOG("LOG test.");
+    LOGLN_STREAM(" ");
+    LOGLN("LOGLN test.");
+    LOGF("LOGF test: %d", integer);
+    LOGLN_STREAM(" ");
+    LOGFLN("LOGFLN test: %d", integer);
+    printf("\n");
+
+    LOG("LOG_STREAM test: ");
+    LOG_STREAM("stream test.");
+    LOGLN_STREAM(" ");
+    LOG("LOGLN_STREAM test: ");
+    LOGLN_STREAM("stream test.");
+    LOG("LOGF_STREAM test: ");
+    LOGF_STREAM("integer: %d", integer);
+    LOGLN_STREAM(" ");
+    LOG("LOGFLN_STREAM test: ");
+    LOGFLN_STREAM("integer: %d", integer);
+    printf("\n");
+
+    LOG("LOG_STREAM_HEX test: ");
+    LOG_STREAM_HEX(&hex, sizeof(hex));
+    LOGLN_STREAM(" ");
+    LOG("LOGLN_STREAM_HEX test: ");
+    LOGLN_STREAM_HEX(&hex, sizeof(hex));
+    LOG("LOG_STREAM_WIDE_HEX test: ");
+    LOG_STREAM_WIDE_HEX(&hex, sizeof(hex));
+    LOGLN_STREAM(" ");
+    LOG("LOGLN_STREAM_WIDE_HEX test: ");
+    LOGLN_STREAM_WIDE_HEX(&hex, sizeof(hex));
+    printf("\n");
+
+    LOG_PERROR("LOG_PERROR test");
+    LOG_PERRORF("LOG_PERRORF test: %d", integer);
+    printf("\n");
+
+    LOG_T("LOG_T test.");
+    LOGLN_STREAM(" ");
+    LOGLN_T("LOGLN_T test.");
+    LOGF_T("LOGF_T test: %d.", integer);
+    LOGLN_STREAM(" ");
+    LOGFLN_T("LOGFLN_T test: %d.", integer);
+    printf("\n");
+
+    LOG_PERROR_T("LOG_PERROR_T test");
+    LOG_PERRORF_T("LOG_PERRORF_T test: %d", integer);
+    printf("\n");
+
+
+    printf("[*] Testing 'log_<level>' functions...\n\n");
+
+    LOG_TRACE("LOG_TRACE test.");
+    LOGLN_STREAM(" ");
+    LOGLN_TRACE("LOGLN_TRACE test.");
+    LOGF_TRACE("LOGF_TRACE test integer: %d.", integer);
+    LOGLN_STREAM(" ");
+    LOGFLN_TRACE("LOGFLN_TRACE test integer: %d.", integer);
+    printf("\n");
+
+
+    LOG_DEBUG("LOG_DEBUG test.");
+    LOGLN_STREAM(" ");
+    LOGLN_DEBUG("LOGLN_DEBUG test.");
+    LOGF_DEBUG("LOGF_DEBUG test integer: %d.", integer);
+    LOGLN_STREAM(" ");
+    LOGFLN_DEBUG("LOGFLN_DEBUG test integer: %d.", integer);
+    printf("\n");
+
+
+    LOG_EXTRA("LOG_EXTRA test.");
+    LOGLN_STREAM(" ");
+    LOGLN_EXTRA("LOGLN_EXTRA test.");
+    LOGF_EXTRA("LOGF_EXTRA test integer: %d.", integer);
+    LOGLN_STREAM(" ");
+    LOGFLN_EXTRA("LOGFLN_EXTRA test integer: %d.", integer);
+    printf("\n");
+
+
+    LOG_INFO("LOG_INFO test.");
+    LOGLN_STREAM(" ");
+    LOGLN_INFO("LOGLN_INFO test.");
+    LOGF_INFO("LOGF_INFO test integer: %d.", integer);
+    LOGLN_STREAM(" ");
+    LOGFLN_INFO("LOGFLN_INFO test integer: %d.", integer);
+    printf("\n");
+
+
+    LOG_HEADER("LOG_HEADER test.");
+    LOGLN_STREAM(" ");
+    LOGLN_HEADER("LOGLN_HEADER test.");
+    LOGF_HEADER("LOGF_HEADER test integer: %d.", integer);
+    LOGLN_STREAM(" ");
+    LOGFLN_HEADER("LOGFLN_HEADER test integer: %d.", integer);
+    printf("\n");
+
+
+    LOG_SUCCESS("LOG_SUCCESS test.");
+    LOGLN_STREAM(" ");
+    LOGLN_SUCCESS("LOGLN_SUCCESS test.");
+    LOGF_SUCCESS("LOGF_SUCCESS test integer: %d.", integer);
+    LOGLN_STREAM(" ");
+    LOGFLN_SUCCESS("LOGFLN_SUCCESS test integer: %d.", integer);
+    printf("\n");
+
+
+    LOG_INPUT("LOG_INPUT test.");
+    LOGLN_STREAM(" ");
+    LOGLN_INPUT("LOGLN_INPUT test.");
+    LOGF_INPUT("LOGF_INPUT test integer: %d.", integer);
+    LOGLN_STREAM(" ");
+    LOGFLN_INPUT("LOGFLN_INPUT test integer: %d.", integer);
+    printf("\n");
+
+
+    LOG_WARNING("LOG_WARNING test.");
+    LOGLN_STREAM(" ");
+    LOGLN_WARNING("LOGLN_WARNING test.");
+    LOGF_WARNING("LOGF_WARNING test integer: %d.", integer);
+    LOGLN_STREAM(" ");
+    LOGFLN_WARNING("LOGFLN_WARNING test integer: %d.", integer);
+    printf("\n");
+
+    LOG_PERROR_WARNING("LOG_PERROR_WARNING test");
+    LOG_PERRORF_WARNING("LOG_PERRORF_WARNING test: %d", integer);
+    printf("\n");
+
+
+    LOG_ERROR("LOG_ERROR test.");
+    LOGLN_STREAM(" ");
+    LOGLN_ERROR("LOGLN_ERROR test.");
+    LOGF_ERROR("LOGF_ERROR test integer: %d.", integer);
+    LOGLN_STREAM(" ");
+    LOGFLN_ERROR("LOGFLN_ERROR test integer: %d.", integer);
+    printf("\n");
+
+    LOG_PERROR_ERROR("LOG_PERROR_ERROR test");
+    LOG_PERRORF_ERROR("LOG_PERRORF_ERROR test: %d", integer);
+    printf("\n");
+
+
+    LOG_FATAL("LOG_FATAL test.");
+    LOGLN_STREAM(" ");
+    LOGLN_FATAL("LOGLN_FATAL test.");
+    LOGF_FATAL("LOGF_FATAL test integer: %d.", integer);
+    LOGLN_STREAM(" ");
+    LOGFLN_FATAL("LOGFLN_FATAL test integer: %d.", integer);
+    printf("\n");
+
+    LOG_PERROR_FATAL("LOG_PERROR_FATAL test");
+    LOG_PERRORF_FATAL("LOG_PERRORF_FATAL test: %d", integer);
+    printf("\n");
+
+    return 0;
+}
+
+
+/**
+ * @brief   Test the log level switches.
+ *
+ * @return  Return 0.
+ */
+int test_log_custom() {
+
+    int integer = 1234567890;
+    unsigned long long hex = __bswap_constant_64(0xcafebabebaddecaf);
+
+    printf("[*] Testing log levels...\n\n");
+
+    #undef CSYM_TRACE
+    #define CSYM_TRACE "🍄 "
+
+    #undef C_TRACE
+    #define C_TRACE C_YELLOW
+
+    #undef CSYM_DEBUG
+    #define CSYM_DEBUG "<x> "
+
+    #undef C_DEBUG
+    #define C_DEBUG C_ORANGE
+
+    LOG_TRACE("LOG_TRACE test.");
+    LOGLN_STREAM(" ");
+    LOGLN_TRACE("LOGLN_TRACE test.");
+    LOGF_TRACE("LOGF_TRACE test integer: %d.", integer);
+    LOGLN_STREAM(" ");
+    LOGFLN_TRACE("LOGFLN_TRACE test integer: %d.", integer);
+    printf("\n");
+
+
+    LOG_DEBUG("LOG_DEBUG test.");
+    LOGLN_STREAM(" ");
+    LOGLN_DEBUG("LOGLN_DEBUG test.");
+    LOGF_DEBUG("LOGF_DEBUG test integer: %d.", integer);
+    LOGLN_STREAM(" ");
+    LOGFLN_DEBUG("LOGFLN_DEBUG test integer: %d.", integer);
+    printf("\n");
+
     return 0;
 }
 
