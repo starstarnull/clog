@@ -1,11 +1,11 @@
 
 # CHANGLOG
 
-## [1.0.0] - 2025-04-28 - Initial Release
+## [0.0.1] - 2025-05-30 - Initial Release
 
-:seedling: _Initial release._
+:seedling: _Initial release_ (beta version 1).
 
 
-[1.0.0]: https://github.com/owner/name/releases/tag/v1.0.0
+[0.0.1]: https://github.com/owner/name/releases/tag/v1.0.0
 
 

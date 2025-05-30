@@ -1,5 +1,4 @@
 
-#include "clog-config.h"
 #include "clog.h"
 
 

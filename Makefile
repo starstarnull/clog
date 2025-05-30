@@ -9,7 +9,7 @@
 # @version      <0.0.0-0>
 # @date         <date>
 #
-# @copyright    Copyright (c) <year>. All rights reserved.
+# @copyright    Copyright (c) 2025. All rights reserved.
 #
 # Standards:    Capital variables are standard makefile variables.
 #
@@ -17,62 +17,57 @@
 
 RM           := trash
 
-TARGET_EXEC  := clog-test
+target_exec  := test-clog-manual
 
-BUILD_DIR    := ./build
-TEST_DIR     := ./test
+src_dir      := ./src
+build_dir    := ./build
+test_dir     := ./test
 
-SRC_DIRS     := ./src
-INC_DIRS     := $(shell find $(SRC_DIRS) -type d)
+inc_dirs     := $(src_dir) $(test_dir)
 
-SRCS := $(shell find $(SRC_DIRS) -name '*.cpp' -or -name '*.c' -or -name '*.s')
-SRCS += $(shell find $(TEST_DIR) -name '*.cpp' -or -name '*.c' -or -name '*.s')
+srcs         := $(shell find $(src_dir) -name '*.c')
+srcs         += $(shell find $(test_dir) -name '*.c')
 
-OBJS         := $(SRCS:%=$(BUILD_DIR)/%.o)
-DEPS         := $(OBJS:.o=.d)
+objs         := $(srcs:%=$(build_dir)/%.o)
+deps         := $(objs:.o=.d)
 
-INC_FLAGS    := $(addprefix -I,$(INC_DIRS))
+inc_flags    := $(addprefix -I,$(inc_dirs))
 
-# The -MMD and -MP flags together generate Makefiles for us!
-CPPFLAGS     := $(INC_FLAGS) -MMD -MP -Wall -g
+# The -MMD and -MP flags together generate Makefiles for us.
+CFLAGS       := $(inc_flags) -MMD -MP -Wall -g
 
 
 .PHONY: default
-default: run
+default: build
 
 
-.PHONY: run
-run: $(BUILD_DIR)/$(TARGET_EXEC)
-	cd $(BUILD_DIR) && ./$(TARGET_EXEC)
+.PHONY: test
+test: $(build_dir)/$(target_exec)
+	cd $(build_dir) && ./$(target_exec)
 
 
 .PHONY: build
-build: $(BUILD_DIR)/$(TARGET_EXEC)
+build: $(build_dir)/$(target_exec)
 
 
 .PHONY: rebuild
 rebuild: clean build
 
 
-$(BUILD_DIR)/$(TARGET_EXEC): $(OBJS)
-	$(CXX) $(OBJS) -o $@ $(LDFLAGS)
+$(build_dir)/$(target_exec): $(objs)
+	$(CC) $^ $(LDFLAGS) -o $@ 
 
 
-$(BUILD_DIR)/%.c.o: %.c
+$(build_dir)/%.c.o: %.c
 	mkdir -p $(dir $@)
-	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
-
-
-$(BUILD_DIR)/%.cpp.o: %.cpp
-	mkdir -p $(dir $@)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
 
 .PHONY: clean
 clean:
-	$(RM) -r $(BUILD_DIR)
+	$(RM) -r $(build_dir)
 
 
--include $(DEPS)
+-include $(deps)
 
 
