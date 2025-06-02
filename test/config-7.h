@@ -294,7 +294,6 @@
 
 /**
  * Uncomment this to customize the line header separator (defaults to space).
- * Percentage symbols is not currently supported do to format strings.
  */
 
 //#define CLOG_LINE_HEADER_SEP      " "
@@ -302,7 +301,6 @@
 
 /**
  * Uncomment this to customize the tracing separator (defaults to colon).
- * Percentage symbols is not currently supported do to format strings.
  */
 
 //#define CLOG_TRACING_SEP            ":"
@@ -335,18 +333,18 @@
  * `CLOG_LEVEL_SYMS` setting.
  */
 
-//#define CLOG_SYM_TRACE     "<MY SYM>"
-//#define CLOG_SYM_DEBUG     "<MY SYM>"
-//#define CLOG_SYM_EXTRA     "<MY SYM>"
-//#define CLOG_SYM_INFO      "<MY SYM>"
-//#define CLOG_SYM_HEADER    "<MY SYM>"
-//#define CLOG_SYM_SUCCESS   "<MY SYM>"
-//#define CLOG_SYM_MONEY     "<MY SYM>"
-//#define CLOG_SYM_INPUT     "<MY SYM>"
-//#define CLOG_SYM_WARNING   "<MY SYM>"
-//#define CLOG_SYM_ERROR     "<MY SYM>"
-//#define CLOG_SYM_CRITICAL  "<MY SYM>"
-//#define CLOG_SYM_FATAL     "<MY SYM>"
+#define CLOG_SYM_TRACE     "<T>"
+#define CLOG_SYM_DEBUG     "<D>"
+#define CLOG_SYM_EXTRA     "<X>"
+#define CLOG_SYM_INFO      "<I>"
+#define CLOG_SYM_HEADER    "<^>"
+#define CLOG_SYM_SUCCESS   "<+>"
+#define CLOG_SYM_MONEY     "<$>"
+#define CLOG_SYM_INPUT     "<?>"
+#define CLOG_SYM_WARNING   "<!>"
+#define CLOG_SYM_ERROR     "<->"
+#define CLOG_SYM_CRITICAL  "<#>"
+#define CLOG_SYM_FATAL     ".(x_x)."
 
 
 /* Console Color Logging Mode options */

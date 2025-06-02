@@ -1,6 +1,6 @@
 
 <!-- Logo -->
-!["Clog Logo"](img/clog-logo.png)
+!["Clog Logo"](img/clog-logo-little.png)
 
 
 Clog C Header - Simple C Header Logging Library
@@ -47,7 +47,15 @@ Features
 from releases).
 
 
-<!-- Gallery -->
+Examples
+========
+
+!["Demo Levels with Default Config"](img/demo-levels-default.png)
+!["Demo with Default Config"](img/demo-default.png)
+!["Demo Levels with Emoji Config"](img/demo-levels-emojis.png)
+!["Demo with Emoji Config"](img/demo-emojis.png)
+!["Demo Levels with Custom Config"](img/demo-levels-custom.png)
+!["Demo with Custom Config"](img/demo-custom.png)
 
 
 Philosophy
@@ -260,6 +268,7 @@ Future Plans
 * Add print verbosity functionality.
 * Add namespace mode (with defines in more limited namespace).
 * Add color hex and string hex (#ffffff) conversion functions.
+* Expand terminal color library to include italic, etc.
 * Add option to set new log file instead of appending to file.
 * Add exported symbols.
 * Add python library.

@@ -250,7 +250,7 @@
  * disabled.
  */
 
-//#define CLOG_ENABLE_SHORT_ALIASES
+#define CLOG_ENABLE_SHORT_ALIASES
 
 
 /**
@@ -258,7 +258,7 @@
  * Defaults to disabled.
  */
 
-//#define CLOG_ENABLE_SHORTER_ALIASES
+#define CLOG_ENABLE_SHORTER_ALIASES
 
 
 /**
@@ -266,7 +266,7 @@
  * Defaults to disabled.
  */
 
-//#define CLOG_ENABLE_NAME_ALIASES
+#define CLOG_ENABLE_NAME_ALIASES
 
 
 /**
@@ -276,36 +276,34 @@
  * Uncomment color library if you want to use its colors.
  */
 
-//#include <clog-colors.h>
+#include <clog-colors.h>
 
-//#define C_TRACE     C_DARK_GRAY
-//#define C_DEBUG     C_CYAN
-//#define C_EXTRA     C_DARK_GRAY
-//#define C_INFO      C_BR_BLUE
-//#define C_HEADER    C_BOLD C_BR_YELLOW
-//#define C_SUCCESS   C_GREEN
-//#define C_MONEY     C_BOLD C_GREEN
-//#define C_INPUT     C_BR_MAGENTA
-//#define C_WARNING   C_ORANGE
-//#define C_ERROR     C_BR_RED
-//#define C_CRITICAL  C_BOLD C_BR_RED
-//#define C_FATAL     C_BOLD C_BR_RED
+#define C_TRACE     C_B_DARK_GRAY C_YELLOW
+#define C_DEBUG     C_B_DARK_GRAY C_ORANGE
+#define C_EXTRA     C_B_DARK_GRAY C_BR_BLUE
+#define C_INFO      C_B_DARK_GRAY C_BLACK
+#define C_HEADER    C_B_DARK_GRAY C_BLACK
+#define C_SUCCESS   C_B_DARK_GRAY C_MAGENTA
+#define C_MONEY     C_B_DARK_GRAY C_CYAN
+#define C_INPUT     C_B_DARK_GRAY C_GRAY
+#define C_WARNING   C_B_ORANGE C_BLACK
+#define C_ERROR     C_B_DARK_GRAY C_BOLD C_BR_GREEN
+#define C_CRITICAL  C_B_DARK_GRAY C_BR_BLACK
+#define C_FATAL     C_B_DARK_GRAY C_BOLD
 
 
 /**
  * Uncomment this to customize the line header separator (defaults to space).
- * Percentage symbols is not currently supported do to format strings.
  */
 
-//#define CLOG_LINE_HEADER_SEP      " "
+#define CLOG_LINE_HEADER_SEP      " %%HEADERSEP%% "
 
 
 /**
  * Uncomment this to customize the tracing separator (defaults to colon).
- * Percentage symbols is not currently supported do to format strings.
  */
 
-//#define CLOG_TRACING_SEP            ":"
+#define CLOG_TRACING_SEP            "-|%%TRACINGSEP%%|-"
 
 
 /* Logging level line header symbol options */
@@ -326,7 +324,7 @@
  * options. Defaults to `CLOG_LEVEL_SYMS_DEFAULT`.
  */
 
-//#define CLOG_LEVEL_SYMS             CLOG_LEVEL_SYMS_DEFAULT
+#define CLOG_LEVEL_SYMS             CLOG_LEVEL_SYMS_WORDS
 
 
 /**
@@ -376,7 +374,7 @@
  * Adjust this to change log mode. Defaults to `CLOG_MODE_CONSOLE_AND_FILE`.
  */
 
-//#define CLOG_MODE                   CLOG_MODE_CONSOLE_AND_FILE
+#define CLOG_MODE                   CLOG_MODE_CONSOLE
 
 
 /* Logging level for what logs statements are compiled options */
@@ -422,7 +420,7 @@
  * format.
  */
 
-//#define CLOG_TIME_FORMAT            "%FT%T%z"
+#define CLOG_TIME_FORMAT            "%x %x %z %W FORMATTEST"
 
 
 /**

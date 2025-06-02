@@ -1,0 +1,1623 @@
+
+#include "test-config-1.h"
+#include "test-macro-helper.h"
+
+
+// Function Declarations
+
+static struct test* test_manual_short_aliases();
+static struct test* test_manual_shorter_aliases();
+static struct test* test_manual_name_aliases();
+static struct test* test_manual_custom_colors();
+static struct test* test_manual_line_header_sep();
+static struct test* test_manual_tracing_sep();
+static struct test* test_manual_syms_words();
+static struct test* test_manual_mode_console();
+static struct test* test_manual_time_format();
+
+
+// Main test function.
+
+struct unit* unit_config_1() {
+
+    struct unit* unit = (struct unit*) malloc(sizeof(*unit));
+
+    unit->name = (char*) __FUNCTION__;
+    unit->result = true;
+    unit->tests = NULL;
+    unit->next = NULL;
+    assert(unit);
+    UNIT_HEADER("Testing Config 1 Options");
+
+    ADD_TEST(unit, test_manual_short_aliases());
+    ADD_TEST(unit, test_manual_shorter_aliases());
+    ADD_TEST(unit, test_manual_name_aliases());
+    ADD_TEST(unit, test_manual_custom_colors());
+    ADD_TEST(unit, test_manual_line_header_sep());
+    ADD_TEST(unit, test_manual_tracing_sep());
+    ADD_TEST(unit, test_manual_syms_words());
+    ADD_TEST(unit, test_manual_mode_console());
+    ADD_TEST(unit, test_manual_time_format());
+
+    REVERSE_LIST(unit->tests);
+    PRINT_UNIT_RESULT(unit);
+    puts("\n");
+
+    return unit;
+}
+
+
+static struct test* test_manual_short_aliases() {
+
+    int integer = 1234567890, fd;
+    char buf[LINE_BUF_SIZE];
+
+    TEST_HEADER(__FUNCTION__);
+
+    // Create log.
+    FLOGLN("Test creation.");
+
+    fd = open(LOG_FILENAME, O_RDONLY);
+    ASSERT(fd != -1 && "Failed to open log file.");
+    lseek(fd, 0, SEEK_END);
+
+    COLOR_MACRO_TEST_LINE(C_TRC);
+    COLOR_MACRO_TEST_LINE(C_DBG);
+    COLOR_MACRO_TEST_LINE(C_EXT);
+    COLOR_MACRO_TEST_LINE(C_INF);
+    COLOR_MACRO_TEST_LINE(C_HEAD);
+    COLOR_MACRO_TEST_LINE(C_SUC);
+    COLOR_MACRO_TEST_LINE(C_MON);
+    COLOR_MACRO_TEST_LINE(C_MNY);
+    COLOR_MACRO_TEST_LINE(C_IN);
+    COLOR_MACRO_TEST_LINE(C_WARN);
+    COLOR_MACRO_TEST_LINE(C_ERR);
+    COLOR_MACRO_TEST_LINE(C_CRIT);
+    COLOR_MACRO_TEST_LINE(C_FAT);
+    ASSERT(strstr(C_TRC, "\x1b") && "Terminal code not detected.");
+    puts("");
+
+
+    SYMBOL_MACRO_TEST(CSYM_TRC);
+    SYMBOL_MACRO_TEST(CSYM_DB);
+    SYMBOL_MACRO_TEST(CSYM_EXT);
+    SYMBOL_MACRO_TEST(CSYM_INF);
+    SYMBOL_MACRO_TEST(CSYM_HEAD);
+    SYMBOL_MACRO_TEST(CSYM_SUC);
+    SYMBOL_MACRO_TEST(CSYM_MON);
+    SYMBOL_MACRO_TEST(CSYM_MNY);
+    SYMBOL_MACRO_TEST(CSYM_IN);
+    SYMBOL_MACRO_TEST(CSYM_WARN);
+    SYMBOL_MACRO_TEST(CSYM_ERR);
+    SYMBOL_MACRO_TEST(CSYM_CRIT);
+    SYMBOL_MACRO_TEST(CSYM_FAT);
+    ASSERT(!strcmp(CSYM_TRC, CLOG_SYM_TRACE) && "Symbols do not match.");
+    puts("");
+
+
+    TEST_PRINT(PRINT_TRC);
+    TEST_PRINTLN(PRINTLN_TRC);
+    TEST_PRINTF(PRINTF_TRC);
+    TEST_PRINTFLN(PRINTFLN_TRC);
+    puts("");
+
+    TEST_PRINT(PRINT_DBG);
+    TEST_PRINTLN(PRINTLN_DBG);
+    TEST_PRINTF(PRINTF_DBG);
+    TEST_PRINTFLN(PRINTFLN_DBG);
+    puts("");
+
+    TEST_PRINT(PRINT_EXT);
+    TEST_PRINTLN(PRINTLN_EXT);
+    TEST_PRINTF(PRINTF_EXT);
+    TEST_PRINTFLN(PRINTFLN_EXT);
+    puts("");
+
+    TEST_PRINT(PRINT_INF);
+    TEST_PRINTLN(PRINTLN_INF);
+    TEST_PRINTF(PRINTF_INF);
+    TEST_PRINTFLN(PRINTFLN_INF);
+    puts("");
+
+    TEST_PRINT(PRINT_HEAD);
+    TEST_PRINTLN(PRINTLN_HEAD);
+    TEST_PRINTF(PRINTF_HEAD);
+    TEST_PRINTFLN(PRINTFLN_HEAD);
+    puts("");
+
+    TEST_PRINT(PRINT_SUC);
+    TEST_PRINTLN(PRINTLN_SUC);
+    TEST_PRINTF(PRINTF_SUC);
+    TEST_PRINTFLN(PRINTFLN_SUC);
+    puts("");
+
+    TEST_PRINT(PRINT_MON);
+    TEST_PRINTLN(PRINTLN_MON);
+    TEST_PRINTF(PRINTF_MON);
+    TEST_PRINTFLN(PRINTFLN_MON);
+    puts("");
+
+    TEST_PRINT(PRINT_MNY);
+    TEST_PRINTLN(PRINTLN_MNY);
+    TEST_PRINTF(PRINTF_MNY);
+    TEST_PRINTFLN(PRINTFLN_MNY);
+    puts("");
+
+    TEST_PRINT(PRINT_IN);
+    TEST_PRINTLN(PRINTLN_IN);
+    TEST_PRINTF(PRINTF_IN);
+    TEST_PRINTFLN(PRINTFLN_IN);
+    puts("");
+
+    TEST_PRINT(PRINT_WARN);
+    TEST_PRINTLN(PRINTLN_WARN);
+    TEST_PRINTF(PRINTF_WARN);
+    TEST_PRINTFLN(PRINTFLN_WARN);
+    TEST_PRINTLN(PERROR_WARN);
+    TEST_PRINTFLN(PERRORF_WARN);
+    puts("");
+
+    TEST_PRINT(PRINT_ERR);
+    TEST_PRINTLN(PRINTLN_ERR);
+    TEST_PRINTF(PRINTF_ERR);
+    TEST_PRINTFLN(PRINTFLN_ERR);
+    TEST_PRINTLN(PERROR_ERR);
+    TEST_PRINTFLN(PERRORF_ERR);
+    puts("");
+
+    TEST_PRINT(PRINT_CRIT);
+    TEST_PRINTLN(PRINTLN_CRIT);
+    TEST_PRINTF(PRINTF_CRIT);
+    TEST_PRINTFLN(PRINTFLN_CRIT);
+    TEST_PRINTLN(PERROR_CRIT);
+    TEST_PRINTFLN(PERRORF_CRIT);
+    puts("");
+
+    TEST_PRINT(PRINT_FAT);
+    TEST_PRINTLN(PRINTLN_FAT);
+    TEST_PRINTF(PRINTF_FAT);
+    TEST_PRINTFLN(PRINTFLN_FAT);
+    TEST_PRINTLN(PERROR_FAT);
+    TEST_PRINTFLN(PERRORF_FAT);
+    puts("");
+
+    FILL_LINE_BUF_FROM_STDOUT(
+        buf, LINE_BUF_SIZE, PRINTLN_TRC("MARKER");
+    );
+    ASSERT(strstr(buf, "MARKER\n") && "Print test failed.");
+    ASSERT(strstr(buf, "TRACE") && "Trace symbol not found.");
+    puts("");
+
+
+    TEST_CPRINT(CPRINT_TRC);
+    TEST_CPRINTLN(CPRINTLN_TRC);
+    TEST_CPRINTF(CPRINTF_TRC);
+    TEST_CPRINTFLN(CPRINTFLN_TRC);
+    puts("");
+
+    TEST_CPRINT(CPRINT_DBG);
+    TEST_CPRINTLN(CPRINTLN_DBG);
+    TEST_CPRINTF(CPRINTF_DBG);
+    TEST_CPRINTFLN(CPRINTFLN_DBG);
+    puts("");
+
+    TEST_CPRINT(CPRINT_EXT);
+    TEST_CPRINTLN(CPRINTLN_EXT);
+    TEST_CPRINTF(CPRINTF_EXT);
+    TEST_CPRINTFLN(CPRINTFLN_EXT);
+    puts("");
+
+    TEST_CPRINT(CPRINT_INF);
+    TEST_CPRINTLN(CPRINTLN_INF);
+    TEST_CPRINTF(CPRINTF_INF);
+    TEST_CPRINTFLN(CPRINTFLN_INF);
+    puts("");
+
+    TEST_CPRINT(CPRINT_HEAD);
+    TEST_CPRINTLN(CPRINTLN_HEAD);
+    TEST_CPRINTF(CPRINTF_HEAD);
+    TEST_CPRINTFLN(CPRINTFLN_HEAD);
+    puts("");
+
+    TEST_CPRINT(CPRINT_SUC);
+    TEST_CPRINTLN(CPRINTLN_SUC);
+    TEST_CPRINTF(CPRINTF_SUC);
+    TEST_CPRINTFLN(CPRINTFLN_SUC);
+    puts("");
+
+    TEST_CPRINT(CPRINT_MON);
+    TEST_CPRINTLN(CPRINTLN_MON);
+    TEST_CPRINTF(CPRINTF_MON);
+    TEST_CPRINTFLN(CPRINTFLN_MON);
+    puts("");
+
+    TEST_CPRINT(CPRINT_MNY);
+    TEST_CPRINTLN(CPRINTLN_MNY);
+    TEST_CPRINTF(CPRINTF_MNY);
+    TEST_CPRINTFLN(CPRINTFLN_MNY);
+    puts("");
+
+    TEST_CPRINT(CPRINT_IN);
+    TEST_CPRINTLN(CPRINTLN_IN);
+    TEST_CPRINTF(CPRINTF_IN);
+    TEST_CPRINTFLN(CPRINTFLN_IN);
+    puts("");
+
+    TEST_CPRINT(CPRINT_WARN);
+    TEST_CPRINTLN(CPRINTLN_WARN);
+    TEST_CPRINTF(CPRINTF_WARN);
+    TEST_CPRINTFLN(CPRINTFLN_WARN);
+    TEST_CPRINTLN(CPERROR_WARN);
+    TEST_CPRINTFLN(CPERRORF_WARN);
+    puts("");
+
+    TEST_CPRINT(CPRINT_ERR);
+    TEST_CPRINTLN(CPRINTLN_ERR);
+    TEST_CPRINTF(CPRINTF_ERR);
+    TEST_CPRINTFLN(CPRINTFLN_ERR);
+    TEST_CPRINTLN(CPERROR_ERR);
+    TEST_CPRINTFLN(CPERRORF_ERR);
+    puts("");
+
+    TEST_CPRINT(CPRINT_CRIT);
+    TEST_CPRINTLN(CPRINTLN_CRIT);
+    TEST_CPRINTF(CPRINTF_CRIT);
+    TEST_CPRINTFLN(CPRINTFLN_CRIT);
+    TEST_CPRINTLN(CPERROR_CRIT);
+    TEST_CPRINTFLN(CPERRORF_CRIT);
+    puts("");
+
+    TEST_CPRINT(CPRINT_FAT);
+    TEST_CPRINTLN(CPRINTLN_FAT);
+    TEST_CPRINTF(CPRINTF_FAT);
+    TEST_CPRINTFLN(CPRINTFLN_FAT);
+    TEST_CPRINTLN(CPERROR_FAT);
+    TEST_CPRINTFLN(CPERRORF_FAT);
+    puts("");
+
+    FILL_LINE_BUF_FROM_STDOUT(
+        buf, LINE_BUF_SIZE, CPRINT_TRC(C_RED, "MARKER");
+    );
+    ASSERT(strstr(buf, C_RED) && "RED not found in print.");
+    ASSERT(strstr(buf, "MARKER") && "Print test failed.");
+    ASSERT(strstr(buf, "TRACE") && "Trace symbol not found.");
+    puts("");
+
+
+    TEST_PRINT(CLOG_TRC);
+    TEST_PRINTLN(CLOGLN_TRC);
+    TEST_PRINTF(CLOGF_TRC);
+    TEST_PRINTFLN(CLOGFLN_TRC);
+    puts("");
+
+    TEST_PRINT(CLOG_DBG);
+    TEST_PRINTLN(CLOGLN_DBG);
+    TEST_PRINTF(CLOGF_DBG);
+    TEST_PRINTFLN(CLOGFLN_DBG);
+    puts("");
+
+    TEST_PRINT(CLOG_EXT);
+    TEST_PRINTLN(CLOGLN_EXT);
+    TEST_PRINTF(CLOGF_EXT);
+    TEST_PRINTFLN(CLOGFLN_EXT);
+    puts("");
+
+    TEST_PRINT(CLOG_INF);
+    TEST_PRINTLN(CLOGLN_INF);
+    TEST_PRINTF(CLOGF_INF);
+    TEST_PRINTFLN(CLOGFLN_INF);
+    puts("");
+
+    TEST_PRINT(CLOG_HEAD);
+    TEST_PRINTLN(CLOGLN_HEAD);
+    TEST_PRINTF(CLOGF_HEAD);
+    TEST_PRINTFLN(CLOGFLN_HEAD);
+    puts("");
+
+    TEST_PRINT(CLOG_SUC);
+    TEST_PRINTLN(CLOGLN_SUC);
+    TEST_PRINTF(CLOGF_SUC);
+    TEST_PRINTFLN(CLOGFLN_SUC);
+    puts("");
+
+    TEST_PRINT(CLOG_MON);
+    TEST_PRINTLN(CLOGLN_MON);
+    TEST_PRINTF(CLOGF_MON);
+    TEST_PRINTFLN(CLOGFLN_MON);
+    puts("");
+
+    TEST_PRINT(CLOG_MNY);
+    TEST_PRINTLN(CLOGLN_MNY);
+    TEST_PRINTF(CLOGF_MNY);
+    TEST_PRINTFLN(CLOGFLN_MNY);
+    puts("");
+
+    TEST_PRINT(CLOG_IN);
+    TEST_PRINTLN(CLOGLN_IN);
+    TEST_PRINTF(CLOGF_IN);
+    TEST_PRINTFLN(CLOGFLN_IN);
+    puts("");
+
+    TEST_PRINT(CLOG_WARN);
+    TEST_PRINTLN(CLOGLN_WARN);
+    TEST_PRINTF(CLOGF_WARN);
+    TEST_PRINTFLN(CLOGFLN_WARN);
+    TEST_PRINTLN(CLOG_PERROR_WARN);
+    TEST_PRINTFLN(CLOG_PERRORF_WARN);
+    puts("");
+
+    TEST_PRINT(CLOG_ERR);
+    TEST_PRINTLN(CLOGLN_ERR);
+    TEST_PRINTF(CLOGF_ERR);
+    TEST_PRINTFLN(CLOGFLN_ERR);
+    TEST_PRINTLN(CLOG_PERROR_ERR);
+    TEST_PRINTFLN(CLOG_PERRORF_ERR);
+    puts("");
+
+    TEST_PRINT(CLOG_CRIT);
+    TEST_PRINTLN(CLOGLN_CRIT);
+    TEST_PRINTF(CLOGF_CRIT);
+    TEST_PRINTFLN(CLOGFLN_CRIT);
+    TEST_PRINTLN(CLOG_PERROR_CRIT);
+    TEST_PRINTFLN(CLOG_PERRORF_CRIT);
+    puts("");
+
+    TEST_PRINT(CLOG_FAT);
+    TEST_PRINTLN(CLOGLN_FAT);
+    TEST_PRINTF(CLOGF_FAT);
+    TEST_PRINTFLN(CLOGFLN_FAT);
+    TEST_PRINTLN(CLOG_PERROR_FAT);
+    TEST_PRINTFLN(CLOG_PERRORF_FAT);
+    puts("");
+
+    FILL_LINE_BUF_FROM_STDERR(
+        buf, LINE_BUF_SIZE, CLOGLN_TRC("MARKER");
+    );
+    ASSERT(strstr(buf, "MARKER") && "Print test failed.");
+    ASSERT(strstr(buf, (char*) __FUNCTION__) && "Trace function not found.");
+    ASSERT(strstr(buf, "TRACE") && "Trace symbol not found.");
+    puts("");
+
+
+    TEST_FLOGPRINT(FLOG_TRC);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTLN(FLOGLN_TRC);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTF(FLOGF_TRC);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTFLN(FLOGFLN_TRC);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_FLOGPRINT(FLOG_DBG);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTLN(FLOGLN_DBG);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTF(FLOGF_DBG);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTFLN(FLOGFLN_DBG);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_FLOGPRINT(FLOG_EXT);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTLN(FLOGLN_EXT);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTF(FLOGF_EXT);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTFLN(FLOGFLN_EXT);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_FLOGPRINT(FLOG_INF);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTLN(FLOGLN_INF);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTF(FLOGF_INF);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTFLN(FLOGFLN_INF);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_FLOGPRINT(FLOG_HEAD);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTLN(FLOGLN_HEAD);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTF(FLOGF_HEAD);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTFLN(FLOGFLN_HEAD);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_FLOGPRINT(FLOG_SUC);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTLN(FLOGLN_SUC);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTF(FLOGF_SUC);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTFLN(FLOGFLN_SUC);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_FLOGPRINT(FLOG_MON);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTLN(FLOGLN_MON);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTF(FLOGF_MON);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTFLN(FLOGFLN_MON);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_FLOGPRINT(FLOG_MNY);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTLN(FLOGLN_MNY);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTF(FLOGF_MNY);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTFLN(FLOGFLN_MNY);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_FLOGPRINT(FLOG_IN);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTLN(FLOGLN_IN);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTF(FLOGF_IN);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTFLN(FLOGFLN_IN);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_FLOGPRINT(FLOG_WARN);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTLN(FLOGLN_WARN);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTF(FLOGF_WARN);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTFLN(FLOGFLN_WARN);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTLN(FLOG_PERROR_WARN);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTFLN(FLOG_PERRORF_WARN);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_FLOGPRINT(FLOG_ERR);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTLN(FLOGLN_ERR);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTF(FLOGF_ERR);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTFLN(FLOGFLN_ERR);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTLN(FLOG_PERROR_ERR);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTFLN(FLOG_PERRORF_ERR);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_FLOGPRINT(FLOG_CRIT);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTLN(FLOGLN_CRIT);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTF(FLOGF_CRIT);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTFLN(FLOGFLN_CRIT);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTLN(FLOG_PERROR_CRIT);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTFLN(FLOG_PERRORF_CRIT);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_FLOGPRINT(FLOG_FAT);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTLN(FLOGLN_FAT);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTF(FLOGF_FAT);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTFLN(FLOGFLN_FAT);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTLN(FLOG_PERROR_FAT);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTFLN(FLOG_PERRORF_FAT);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    FLOGLN_TRC("MARKER");
+    PRINT_FILE_LINE(fd, buf);
+    ASSERT(strstr(buf, "MARKER\n") && "Print test failed.");
+    ASSERT(strstr(buf, (char*) __FUNCTION__) && "Trace function not found.");
+    ASSERT(strstr(buf, "TRACE") && "Trace symbol not found.");
+    puts("");
+
+
+    TEST_PRINT(LOG_TRC);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTLN(LOGLN_TRC);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTF(LOGF_TRC);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTFLN(LOGFLN_TRC);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_PRINT(LOG_DBG);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTLN(LOGLN_DBG);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTF(LOGF_DBG);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTFLN(LOGFLN_DBG);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_PRINT(LOG_EXT);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTLN(LOGLN_EXT);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTF(LOGF_EXT);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTFLN(LOGFLN_EXT);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_PRINT(LOG_INF);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTLN(LOGLN_INF);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTF(LOGF_INF);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTFLN(LOGFLN_INF);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_PRINT(LOG_HEAD);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTLN(LOGLN_HEAD);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTF(LOGF_HEAD);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTFLN(LOGFLN_HEAD);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_PRINT(LOG_SUC);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTLN(LOGLN_SUC);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTF(LOGF_SUC);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTFLN(LOGFLN_SUC);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_PRINT(LOG_MON);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTLN(LOGLN_MON);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTF(LOGF_MON);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTFLN(LOGFLN_MON);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_PRINT(LOG_MNY);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTLN(LOGLN_MNY);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTF(LOGF_MNY);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTFLN(LOGFLN_MNY);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_PRINT(LOG_IN);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTLN(LOGLN_IN);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTF(LOGF_IN);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTFLN(LOGFLN_IN);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_PRINT(LOG_WARN);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTLN(LOGLN_WARN);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTF(LOGF_WARN);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTFLN(LOGFLN_WARN);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTLN(LOG_PERROR_WARN);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTFLN(LOG_PERRORF_WARN);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_PRINT(LOG_ERR);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTLN(LOGLN_ERR);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTF(LOGF_ERR);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTFLN(LOGFLN_ERR);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTLN(LOG_PERROR_ERR);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTFLN(LOG_PERRORF_ERR);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_PRINT(LOG_CRIT);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTLN(LOGLN_CRIT);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTF(LOGF_CRIT);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTFLN(LOGFLN_CRIT);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTLN(LOG_PERROR_CRIT);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTFLN(LOG_PERRORF_CRIT);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_PRINT(LOG_FAT);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTLN(LOGLN_FAT);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTF(LOGF_FAT);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTFLN(LOGFLN_FAT);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTLN(LOG_PERROR_FAT);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTFLN(LOG_PERRORF_FAT);
+    PRINT_FILE_LINE(fd, buf);
+    puts("\n");
+
+    FILL_LINE_BUF_FROM_STDERR(
+        buf, LINE_BUF_SIZE, LOGLN_TRC("MARKER");
+    );
+    ASSERT(strstr(buf, "MARKER") && "Print test failed.");
+    ASSERT(strstr(buf, (char*) __FUNCTION__) && "Trace function not found.");
+    ASSERT(strstr(buf, "TRACE") && "Trace symbol not found.");
+    close(fd);
+
+    PASS_TEST();
+}
+
+
+static struct test* test_manual_shorter_aliases() {
+
+    int integer = 1234567890, fd;
+    char buf[LINE_BUF_SIZE];
+
+    fd = open(LOG_FILENAME, O_RDONLY);
+    ASSERT(fd != -1 && "Failed to open log file.");
+    lseek(fd, 0, SEEK_END);
+
+    TEST_HEADER(__FUNCTION__);
+
+    COLOR_MACRO_TEST_LINE(C_TR);
+    COLOR_MACRO_TEST_LINE(C_DB);
+    COLOR_MACRO_TEST_LINE(C_EX);
+    COLOR_MACRO_TEST_LINE(C_IF);
+    COLOR_MACRO_TEST_LINE(C_HD);
+    COLOR_MACRO_TEST_LINE(C_SC);
+    COLOR_MACRO_TEST_LINE(C_MN);
+    COLOR_MACRO_TEST_LINE(C_MY);
+    COLOR_MACRO_TEST_LINE(C_IN);
+    COLOR_MACRO_TEST_LINE(C_WN);
+    COLOR_MACRO_TEST_LINE(C_ER);
+    COLOR_MACRO_TEST_LINE(C_CR);
+    COLOR_MACRO_TEST_LINE(C_FT);
+    ASSERT(strstr(C_TR, "\x1b") && "Terminal code not detected.");
+    puts("");
+
+
+    SYMBOL_MACRO_TEST(CSYM_TR);
+    SYMBOL_MACRO_TEST(CSYM_DB);
+    SYMBOL_MACRO_TEST(CSYM_EX);
+    SYMBOL_MACRO_TEST(CSYM_IF);
+    SYMBOL_MACRO_TEST(CSYM_HD);
+    SYMBOL_MACRO_TEST(CSYM_SC);
+    SYMBOL_MACRO_TEST(CSYM_MN);
+    SYMBOL_MACRO_TEST(CSYM_MY);
+    SYMBOL_MACRO_TEST(CSYM_IN);
+    SYMBOL_MACRO_TEST(CSYM_WN);
+    SYMBOL_MACRO_TEST(CSYM_ER);
+    SYMBOL_MACRO_TEST(CSYM_CR);
+    SYMBOL_MACRO_TEST(CSYM_FT);
+    ASSERT(!strcmp(CSYM_TRC, CLOG_SYM_TRACE) && "Symbols do not match.");
+    puts("");
+
+
+    TEST_PRINT(PRINT_TR);
+    TEST_PRINTLN(PRINTLN_TR);
+    TEST_PRINTF(PRINTF_TR);
+    TEST_PRINTFLN(PRINTFLN_TR);
+    puts("");
+
+    TEST_PRINT(PRINT_DB);
+    TEST_PRINTLN(PRINTLN_DB);
+    TEST_PRINTF(PRINTF_DB);
+    TEST_PRINTFLN(PRINTFLN_DB);
+    puts("");
+
+    TEST_PRINT(PRINT_EX);
+    TEST_PRINTLN(PRINTLN_EX);
+    TEST_PRINTF(PRINTF_EX);
+    TEST_PRINTFLN(PRINTFLN_EX);
+    puts("");
+
+    TEST_PRINT(PRINT_IF);
+    TEST_PRINTLN(PRINTLN_IF);
+    TEST_PRINTF(PRINTF_IF);
+    TEST_PRINTFLN(PRINTFLN_IF);
+    puts("");
+
+    TEST_PRINT(PRINT_HD);
+    TEST_PRINTLN(PRINTLN_HD);
+    TEST_PRINTF(PRINTF_HD);
+    TEST_PRINTFLN(PRINTFLN_HD);
+    puts("");
+
+    TEST_PRINT(PRINT_SC);
+    TEST_PRINTLN(PRINTLN_SC);
+    TEST_PRINTF(PRINTF_SC);
+    TEST_PRINTFLN(PRINTFLN_SC);
+    puts("");
+
+    TEST_PRINT(PRINT_MN);
+    TEST_PRINTLN(PRINTLN_MN);
+    TEST_PRINTF(PRINTF_MN);
+    TEST_PRINTFLN(PRINTFLN_MN);
+    puts("");
+
+    TEST_PRINT(PRINT_MY);
+    TEST_PRINTLN(PRINTLN_MY);
+    TEST_PRINTF(PRINTF_MY);
+    TEST_PRINTFLN(PRINTFLN_MY);
+    puts("");
+
+    TEST_PRINT(PRINT_IN);
+    TEST_PRINTLN(PRINTLN_IN);
+    TEST_PRINTF(PRINTF_IN);
+    TEST_PRINTFLN(PRINTFLN_IN);
+    puts("");
+
+    TEST_PRINT(PRINT_WN);
+    TEST_PRINTLN(PRINTLN_WN);
+    TEST_PRINTF(PRINTF_WN);
+    TEST_PRINTFLN(PRINTFLN_WN);
+    TEST_PRINTLN(PERROR_WN);
+    TEST_PRINTFLN(PERRORF_WN);
+    puts("");
+
+    TEST_PRINT(PRINT_ER);
+    TEST_PRINTLN(PRINTLN_ER);
+    TEST_PRINTF(PRINTF_ER);
+    TEST_PRINTFLN(PRINTFLN_ER);
+    TEST_PRINTLN(PERROR_ERR);
+    TEST_PRINTFLN(PERRORF_ERR);
+    puts("");
+
+    TEST_PRINT(PRINT_CR);
+    TEST_PRINTLN(PRINTLN_CR);
+    TEST_PRINTF(PRINTF_CR);
+    TEST_PRINTFLN(PRINTFLN_CR);
+    TEST_PRINTLN(PERROR_CR);
+    TEST_PRINTFLN(PERRORF_CR);
+    puts("");
+
+    TEST_PRINT(PRINT_FT);
+    TEST_PRINTLN(PRINTLN_FT);
+    TEST_PRINTF(PRINTF_FT);
+    TEST_PRINTFLN(PRINTFLN_FT);
+    TEST_PRINTLN(PERROR_FT);
+    TEST_PRINTFLN(PERRORF_FT);
+    puts("");
+
+    FILL_LINE_BUF_FROM_STDOUT(
+        buf, LINE_BUF_SIZE, PRINTLN_TR("MARKER");
+    );
+    ASSERT(strstr(buf, "MARKER\n") && "Print test failed.");
+    ASSERT(strstr(buf, "TRACE") && "Trace symbol not found.");
+    puts("");
+
+
+    TEST_CPRINT(CPRINT_TR);
+    TEST_CPRINTLN(CPRINTLN_TR);
+    TEST_CPRINTF(CPRINTF_TR);
+    TEST_CPRINTFLN(CPRINTFLN_TR);
+    puts("");
+
+    TEST_CPRINT(CPRINT_DB);
+    TEST_CPRINTLN(CPRINTLN_DB);
+    TEST_CPRINTF(CPRINTF_DB);
+    TEST_CPRINTFLN(CPRINTFLN_DB);
+    puts("");
+
+    TEST_CPRINT(CPRINT_EX);
+    TEST_CPRINTLN(CPRINTLN_EX);
+    TEST_CPRINTF(CPRINTF_EX);
+    TEST_CPRINTFLN(CPRINTFLN_EX);
+    puts("");
+
+    TEST_CPRINT(CPRINT_IF);
+    TEST_CPRINTLN(CPRINTLN_IF);
+    TEST_CPRINTF(CPRINTF_IF);
+    TEST_CPRINTFLN(CPRINTFLN_IF);
+    puts("");
+
+    TEST_CPRINT(CPRINT_HD);
+    TEST_CPRINTLN(CPRINTLN_HD);
+    TEST_CPRINTF(CPRINTF_HD);
+    TEST_CPRINTFLN(CPRINTFLN_HD);
+    puts("");
+
+    TEST_CPRINT(CPRINT_SC);
+    TEST_CPRINTLN(CPRINTLN_SC);
+    TEST_CPRINTF(CPRINTF_SC);
+    TEST_CPRINTFLN(CPRINTFLN_SC);
+    puts("");
+
+    TEST_CPRINT(CPRINT_MN);
+    TEST_CPRINTLN(CPRINTLN_MN);
+    TEST_CPRINTF(CPRINTF_MN);
+    TEST_CPRINTFLN(CPRINTFLN_MN);
+    puts("");
+
+    TEST_CPRINT(CPRINT_MY);
+    TEST_CPRINTLN(CPRINTLN_MY);
+    TEST_CPRINTF(CPRINTF_MY);
+    TEST_CPRINTFLN(CPRINTFLN_MY);
+    puts("");
+
+    TEST_CPRINT(CPRINT_IN);
+    TEST_CPRINTLN(CPRINTLN_IN);
+    TEST_CPRINTF(CPRINTF_IN);
+    TEST_CPRINTFLN(CPRINTFLN_IN);
+    puts("");
+
+    TEST_CPRINT(CPRINT_WN);
+    TEST_CPRINTLN(CPRINTLN_WN);
+    TEST_CPRINTF(CPRINTF_WN);
+    TEST_CPRINTFLN(CPRINTFLN_WN);
+    TEST_CPRINTLN(CPERROR_WN);
+    TEST_CPRINTFLN(CPERRORF_WN);
+    puts("");
+
+    TEST_CPRINT(CPRINT_ER);
+    TEST_CPRINTLN(CPRINTLN_ER);
+    TEST_CPRINTF(CPRINTF_ER);
+    TEST_CPRINTFLN(CPRINTFLN_ER);
+    TEST_CPRINTLN(CPERROR_ERR);
+    TEST_CPRINTFLN(CPERRORF_ERR);
+    puts("");
+
+    TEST_CPRINT(CPRINT_CR);
+    TEST_CPRINTLN(CPRINTLN_CR);
+    TEST_CPRINTF(CPRINTF_CR);
+    TEST_CPRINTFLN(CPRINTFLN_CR);
+    TEST_CPRINTLN(CPERROR_CR);
+    TEST_CPRINTFLN(CPERRORF_CR);
+    puts("");
+
+    TEST_CPRINT(CPRINT_FT);
+    TEST_CPRINTLN(CPRINTLN_FT);
+    TEST_CPRINTF(CPRINTF_FT);
+    TEST_CPRINTFLN(CPRINTFLN_FT);
+    TEST_CPRINTLN(CPERROR_FT);
+    TEST_CPRINTFLN(CPERRORF_FT);
+    puts("");
+
+    FILL_LINE_BUF_FROM_STDOUT(
+        buf, LINE_BUF_SIZE, CPRINT_TR(C_RED, "MARKER");
+    );
+    ASSERT(strstr(buf, C_RED) && "RED not found in print.");
+    ASSERT(strstr(buf, "MARKER") && "Print test failed.");
+    ASSERT(strstr(buf, "TRACE") && "Trace symbol not found.");
+    puts("");
+
+
+    TEST_PRINT(CLOG_TR);
+    TEST_PRINTLN(CLOGLN_TR);
+    TEST_PRINTF(CLOGF_TR);
+    TEST_PRINTFLN(CLOGFLN_TR);
+    puts("");
+
+    TEST_PRINT(CLOG_DB);
+    TEST_PRINTLN(CLOGLN_DB);
+    TEST_PRINTF(CLOGF_DB);
+    TEST_PRINTFLN(CLOGFLN_DB);
+    puts("");
+
+    TEST_PRINT(CLOG_EX);
+    TEST_PRINTLN(CLOGLN_EX);
+    TEST_PRINTF(CLOGF_EX);
+    TEST_PRINTFLN(CLOGFLN_EX);
+    puts("");
+
+    TEST_PRINT(CLOG_IF);
+    TEST_PRINTLN(CLOGLN_IF);
+    TEST_PRINTF(CLOGF_IF);
+    TEST_PRINTFLN(CLOGFLN_IF);
+    puts("");
+
+    TEST_PRINT(CLOG_HD);
+    TEST_PRINTLN(CLOGLN_HD);
+    TEST_PRINTF(CLOGF_HD);
+    TEST_PRINTFLN(CLOGFLN_HD);
+    puts("");
+
+    TEST_PRINT(CLOG_SC);
+    TEST_PRINTLN(CLOGLN_SC);
+    TEST_PRINTF(CLOGF_SC);
+    TEST_PRINTFLN(CLOGFLN_SC);
+    puts("");
+
+    TEST_PRINT(CLOG_MN);
+    TEST_PRINTLN(CLOGLN_MN);
+    TEST_PRINTF(CLOGF_MN);
+    TEST_PRINTFLN(CLOGFLN_MN);
+    puts("");
+
+    TEST_PRINT(CLOG_MY);
+    TEST_PRINTLN(CLOGLN_MY);
+    TEST_PRINTF(CLOGF_MY);
+    TEST_PRINTFLN(CLOGFLN_MY);
+    puts("");
+
+    TEST_PRINT(CLOG_IN);
+    TEST_PRINTLN(CLOGLN_IN);
+    TEST_PRINTF(CLOGF_IN);
+    TEST_PRINTFLN(CLOGFLN_IN);
+    puts("");
+
+    TEST_PRINT(CLOG_WN);
+    TEST_PRINTLN(CLOGLN_WN);
+    TEST_PRINTF(CLOGF_WN);
+    TEST_PRINTFLN(CLOGFLN_WN);
+    TEST_PRINTLN(CLOG_PERROR_WN);
+    TEST_PRINTFLN(CLOG_PERRORF_WN);
+    puts("");
+
+    TEST_PRINT(CLOG_ER);
+    TEST_PRINTLN(CLOGLN_ER);
+    TEST_PRINTF(CLOGF_ER);
+    TEST_PRINTFLN(CLOGFLN_ER);
+    TEST_PRINTLN(CLOG_PERROR_ERR);
+    TEST_PRINTFLN(CLOG_PERRORF_ERR);
+    puts("");
+
+    TEST_PRINT(CLOG_CR);
+    TEST_PRINTLN(CLOGLN_CR);
+    TEST_PRINTF(CLOGF_CR);
+    TEST_PRINTFLN(CLOGFLN_CR);
+    TEST_PRINTLN(CLOG_PERROR_CR);
+    TEST_PRINTFLN(CLOG_PERRORF_CR);
+    puts("");
+
+    TEST_PRINT(CLOG_FT);
+    TEST_PRINTLN(CLOGLN_FT);
+    TEST_PRINTF(CLOGF_FT);
+    TEST_PRINTFLN(CLOGFLN_FT);
+    TEST_PRINTLN(CLOG_PERROR_FT);
+    TEST_PRINTFLN(CLOG_PERRORF_FT);
+    puts("");
+
+    FILL_LINE_BUF_FROM_STDERR(
+        buf, LINE_BUF_SIZE, CLOGLN_TR("MARKER");
+    );
+    ASSERT(strstr(buf, "MARKER") && "Print test failed.");
+    ASSERT(strstr(buf, (char*) __FUNCTION__) && "Trace function not found.");
+    ASSERT(strstr(buf, "TRACE") && "Trace symbol not found.");
+    puts("");
+
+
+    TEST_FLOGPRINT(FLOG_TR);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTLN(FLOGLN_TR);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTF(FLOGF_TR);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTFLN(FLOGFLN_TR);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_FLOGPRINT(FLOG_DB);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTLN(FLOGLN_DB);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTF(FLOGF_DB);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTFLN(FLOGFLN_DB);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_FLOGPRINT(FLOG_EX);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTLN(FLOGLN_EX);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTF(FLOGF_EX);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTFLN(FLOGFLN_EX);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_FLOGPRINT(FLOG_IF);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTLN(FLOGLN_IF);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTF(FLOGF_IF);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTFLN(FLOGFLN_IF);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_FLOGPRINT(FLOG_HD);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTLN(FLOGLN_HD);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTF(FLOGF_HD);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTFLN(FLOGFLN_HD);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_FLOGPRINT(FLOG_SC);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTLN(FLOGLN_SC);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTF(FLOGF_SC);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTFLN(FLOGFLN_SC);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_FLOGPRINT(FLOG_MN);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTLN(FLOGLN_MN);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTF(FLOGF_MN);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTFLN(FLOGFLN_MN);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_FLOGPRINT(FLOG_MY);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTLN(FLOGLN_MY);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTF(FLOGF_MY);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTFLN(FLOGFLN_MY);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_FLOGPRINT(FLOG_IN);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTLN(FLOGLN_IN);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTF(FLOGF_IN);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTFLN(FLOGFLN_IN);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_FLOGPRINT(FLOG_WN);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTLN(FLOGLN_WN);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTF(FLOGF_WN);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTFLN(FLOGFLN_WN);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTLN(FLOG_PERROR_WN);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTFLN(FLOG_PERRORF_WN);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_FLOGPRINT(FLOG_ER);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTLN(FLOGLN_ER);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTF(FLOGF_ER);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTFLN(FLOGFLN_ER);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTLN(FLOG_PERROR_ERR);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTFLN(FLOG_PERRORF_ERR);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_FLOGPRINT(FLOG_CR);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTLN(FLOGLN_CR);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTF(FLOGF_CR);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTFLN(FLOGFLN_CR);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTLN(FLOG_PERROR_CR);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTFLN(FLOG_PERRORF_CR);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_FLOGPRINT(FLOG_FT);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTLN(FLOGLN_FT);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTF(FLOGF_FT);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTFLN(FLOGFLN_FT);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTLN(FLOG_PERROR_FT);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_FLOGPRINTFLN(FLOG_PERRORF_FT);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    FLOGLN_TR("MARKER");
+    PRINT_FILE_LINE(fd, buf);
+    ASSERT(strstr(buf, "MARKER\n") && "Print test failed.");
+    ASSERT(strstr(buf, (char*) __FUNCTION__) && "Trace function not found.");
+    ASSERT(strstr(buf, "TRACE") && "Trace symbol not found.");
+    puts("");
+
+
+    TEST_PRINT(LOG_TR);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTLN(LOGLN_TR);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTF(LOGF_TR);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTFLN(LOGFLN_TR);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_PRINT(LOG_DB);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTLN(LOGLN_DB);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTF(LOGF_DB);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTFLN(LOGFLN_DB);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_PRINT(LOG_EX);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTLN(LOGLN_EX);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTF(LOGF_EX);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTFLN(LOGFLN_EX);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_PRINT(LOG_IF);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTLN(LOGLN_IF);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTF(LOGF_IF);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTFLN(LOGFLN_IF);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_PRINT(LOG_HD);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTLN(LOGLN_HD);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTF(LOGF_HD);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTFLN(LOGFLN_HD);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_PRINT(LOG_SC);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTLN(LOGLN_SC);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTF(LOGF_SC);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTFLN(LOGFLN_SC);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_PRINT(LOG_MN);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTLN(LOGLN_MN);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTF(LOGF_MN);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTFLN(LOGFLN_MN);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_PRINT(LOG_MY);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTLN(LOGLN_MY);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTF(LOGF_MY);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTFLN(LOGFLN_MY);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_PRINT(LOG_IN);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTLN(LOGLN_IN);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTF(LOGF_IN);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTFLN(LOGFLN_IN);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_PRINT(LOG_WN);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTLN(LOGLN_WN);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTF(LOGF_WN);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTFLN(LOGFLN_WN);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTLN(LOG_PERROR_WN);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTFLN(LOG_PERRORF_WN);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_PRINT(LOG_ER);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTLN(LOGLN_ER);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTF(LOGF_ER);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTFLN(LOGFLN_ER);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTLN(LOG_PERROR_ERR);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTFLN(LOG_PERRORF_ERR);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_PRINT(LOG_CR);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTLN(LOGLN_CR);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTF(LOGF_CR);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTFLN(LOGFLN_CR);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTLN(LOG_PERROR_CR);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTFLN(LOG_PERRORF_CR);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_PRINT(LOG_FT);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTLN(LOGLN_FT);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTF(LOGF_FT);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTFLN(LOGFLN_FT);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTLN(LOG_PERROR_FT);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTFLN(LOG_PERRORF_FT);
+    PRINT_FILE_LINE(fd, buf);
+    puts("\n");
+
+    FILL_LINE_BUF_FROM_STDERR(buf, LINE_BUF_SIZE, LOGLN_TR("MARKER"));
+    ASSERT(strstr(buf, "MARKER") && "Print test failed.");
+    ASSERT(strstr(buf, (char*) __FUNCTION__) && "Trace function not found.");
+    ASSERT(strstr(buf, "TRACE") && "Trace symbol not found.");
+    close(fd);
+
+    PASS_TEST();
+}
+
+
+static struct test* test_manual_name_aliases() {
+
+    int integer = 1234567890, fd;
+    char buf[LINE_BUF_SIZE];
+
+    TEST_HEADER(__FUNCTION__);
+
+    fd = open(LOG_FILENAME, O_RDONLY);
+    ASSERT(fd != -1 && "Failed to open log file.");
+    lseek(fd, 0, SEEK_END);
+
+    TEST_PRINT(TRACE);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTLN(TRACELN);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTF(TRACEF);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTFLN(TRACEFLN);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_PRINT(DEBUG);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTLN(DEBUGLN);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTF(DEBUGF);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTFLN(DEBUGFLN);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_PRINT(EXTRA);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTLN(EXTRALN);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTF(EXTRAF);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTFLN(EXTRAFLN);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_PRINT(INFO);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTLN(INFOLN);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTF(INFOF);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTFLN(INFOFLN);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_PRINT(HEADER);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTLN(HEADERLN);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTF(HEADERF);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTFLN(HEADERFLN);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_PRINT(SUCCESS);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTLN(SUCCESSLN);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTF(SUCCESSF);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTFLN(SUCCESSFLN);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_PRINT(MONEY);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTLN(MONEYLN);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTF(MONEYF);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTFLN(MONEYFLN);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_PRINT(INPUT);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTLN(INPUTLN);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTF(INPUTF);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTFLN(INPUTFLN);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_PRINT(WARNING);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTLN(WARNINGLN);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTF(WARNINGF);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTFLN(WARNINGFLN);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTLN(WARNING_PERROR);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTFLN(WARNING_PERRORF);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_PRINT(ERROR);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTLN(ERRORLN);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTF(ERRORF);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTFLN(ERRORFLN);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTLN(ERROR_PERROR);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTFLN(ERROR_PERRORF);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_PRINT(CRITICAL);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTLN(CRITICALLN);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTF(CRITICALF);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTFLN(CRITICALFLN);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTLN(CRITICAL_PERROR);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTFLN(CRITICAL_PERRORF);
+    PRINT_FILE_LINE(fd, buf);
+    puts("");
+
+    TEST_PRINT(FATAL);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTLN(FATALLN);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTF(FATALF);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTFLN(FATALFLN);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTLN(FATAL_PERROR);
+    PRINT_FILE_LINE(fd, buf);
+    TEST_PRINTFLN(FATAL_PERRORF);
+    PRINT_FILE_LINE(fd, buf);
+    puts("\n");
+
+    FILL_LINE_BUF_FROM_STDERR(
+        buf, LINE_BUF_SIZE, TRACELN("MARKER");
+    );
+    ASSERT(strstr(buf, "MARKER") && "Print test failed.");
+    ASSERT(strstr(buf, (char*) __FUNCTION__) && "Trace function not found.");
+    ASSERT(strstr(buf, "TRACE") && "Trace symbol not found.");
+    close(fd);
+
+    PASS_TEST();
+}
+
+
+static struct test* test_manual_custom_colors() {
+
+    char buf[LINE_BUF_SIZE];
+
+    TEST_HEADER(__FUNCTION__);
+
+    TEST_PRINTLN(CLOGLN_TRACE);
+    TEST_PRINTLN(CLOGLN_DEBUG);
+    TEST_PRINTLN(CLOGLN_EXTRA);
+    TEST_PRINTLN(CLOGLN_INFO);
+    TEST_PRINTLN(CLOGLN_HEADER);
+    TEST_PRINTLN(CLOGLN_SUCCESS);
+    TEST_PRINTLN(CLOGLN_MONEY);
+    TEST_PRINTLN(CLOGLN_INPUT);
+    TEST_PRINTLN(CLOGLN_WARNING);
+    TEST_PRINTLN(CLOGLN_ERROR);
+    TEST_PRINTLN(CLOGLN_CRITICAL);
+    TEST_PRINTLN(CLOGLN_FATAL);
+    puts("\n");
+
+    FILL_LINE_BUF_FROM_STDERR(
+        buf, LINE_BUF_SIZE, CLOGLN_INFO("This is a test");
+    );
+    ASSERT(strstr(buf, C_BLACK) && "Black not found in info log.");
+
+    PASS_TEST();
+}
+
+
+static struct test* test_manual_line_header_sep() {
+
+    char buf[LINE_BUF_SIZE];
+
+    TEST_HEADER(__FUNCTION__);
+
+    TEST_PRINTLN(CLOGLN_INFO);
+    puts("\n");
+
+    FILL_LINE_BUF_FROM_STDERR(
+        buf, LINE_BUF_SIZE, CLOGLN_INFO("This is a test");
+    );
+    ASSERT(
+        strstr(buf, "HEADERSEP") && "Line header separator marker not found."
+    );
+
+    PASS_TEST();
+}
+
+
+static struct test* test_manual_tracing_sep() {
+
+    char buf[LINE_BUF_SIZE];
+
+    TEST_HEADER(__FUNCTION__);
+
+    TEST_PRINTLN(CLOGLN_TRACE);
+    puts("\n");
+
+    FILL_LINE_BUF_FROM_STDERR(
+        buf, LINE_BUF_SIZE, CLOGLN_TRACE("This is a test");
+    );
+    ASSERT(strstr(buf, "TRACINGSEP") && "Tracing separator marker not found.");
+
+    PASS_TEST();
+}
+
+
+static struct test* test_manual_syms_words() {
+
+    char buf[LINE_BUF_SIZE];
+
+    TEST_HEADER(__FUNCTION__);
+
+    TEST_PRINTLN(CLOGLN_TRACE);
+    TEST_PRINTLN(CLOGLN_DEBUG);
+    TEST_PRINTLN(CLOGLN_EXTRA);
+    TEST_PRINTLN(CLOGLN_INFO);
+    TEST_PRINTLN(CLOGLN_HEADER);
+    TEST_PRINTLN(CLOGLN_SUCCESS);
+    TEST_PRINTLN(CLOGLN_MONEY);
+    TEST_PRINTLN(CLOGLN_INPUT);
+    TEST_PRINTLN(CLOGLN_WARNING);
+    TEST_PRINTLN(CLOGLN_ERROR);
+    TEST_PRINTLN(CLOGLN_CRITICAL);
+    TEST_PRINTLN(CLOGLN_FATAL);
+    puts("\n");
+
+    FILL_LINE_BUF_FROM_STDERR(
+        buf, LINE_BUF_SIZE, CLOGLN_INFO("This is a test");
+    );
+    ASSERT(strstr(buf, "INFO") && "INFO not found in info log.");
+
+    PASS_TEST();
+}
+
+
+static struct test* test_manual_mode_console() {
+
+    FILE* fp = NULL;
+
+    TEST_HEADER(__FUNCTION__);
+
+    unlink(LOG_FILENAME);
+    TEST_PRINTLN(LOGLN_INFO);
+    printf("Checking file...\n");
+    puts("\n");
+
+    fp = fopen(LOG_FILENAME, "r");
+    ASSERT(fp ? fclose(fp) && false : (bool) "File found.");
+
+    PASS_TEST();
+}
+
+
+static struct test* test_manual_time_format() {
+
+    char buf[LINE_BUF_SIZE];
+
+    TEST_HEADER(__FUNCTION__);
+
+    TEST_PRINTLN(CLOGLN_INFO);
+    puts("\n");
+
+    FILL_LINE_BUF_FROM_STDERR(
+        buf, LINE_BUF_SIZE, CLOGLN_INFO("This is a test");
+    );
+    ASSERT(strstr(buf, "FORMATTEST") && "Time format marker not found.");
+
+    PASS_TEST();
+}
+
+

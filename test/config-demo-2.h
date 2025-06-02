@@ -276,36 +276,34 @@
  * Uncomment color library if you want to use its colors.
  */
 
-//#include <clog-colors.h>
+#include <clog-colors.h>
 
-//#define C_TRACE     C_DARK_GRAY
-//#define C_DEBUG     C_CYAN
-//#define C_EXTRA     C_DARK_GRAY
-//#define C_INFO      C_BR_BLUE
-//#define C_HEADER    C_BOLD C_BR_YELLOW
-//#define C_SUCCESS   C_GREEN
-//#define C_MONEY     C_BOLD C_GREEN
-//#define C_INPUT     C_BR_MAGENTA
-//#define C_WARNING   C_ORANGE
-//#define C_ERROR     C_BR_RED
-//#define C_CRITICAL  C_BOLD C_BR_RED
-//#define C_FATAL     C_BOLD C_BR_RED
+#define C_TRACE     C_RGB(100,149,237)
+#define C_DEBUG     C_RGB(255, 191, 0)
+#define C_EXTRA     C_RGB(211, 211, 211)
+#define C_INFO      C_RGB(255, 244, 79)
+#define C_HEADER    C_BOLD C_RGB(255, 255, 255)
+#define C_SUCCESS   C_RGB(255, 157, 255)
+#define C_MONEY     C_RGB(186, 184, 108)
+#define C_INPUT     C_RGB(230, 230, 230)
+#define C_WARNING   C_RGB(255, 165, 0)
+#define C_ERROR     C_RGB(255, 0, 64)
+#define C_CRITICAL  C_BOLD C_RGB(220, 20, 60)
+#define C_FATAL     C_BOLD C_B_RGB(220, 20, 60) C_BR_RED
 
 
 /**
  * Uncomment this to customize the line header separator (defaults to space).
- * Percentage symbols is not currently supported do to format strings.
  */
 
-//#define CLOG_LINE_HEADER_SEP      " "
+#define CLOG_LINE_HEADER_SEP        " | "
 
 
 /**
  * Uncomment this to customize the tracing separator (defaults to colon).
- * Percentage symbols is not currently supported do to format strings.
  */
 
-//#define CLOG_TRACING_SEP            ":"
+//#define CLOG_TRACING_SEP            " "
 
 
 /* Logging level line header symbol options */
@@ -335,18 +333,18 @@
  * `CLOG_LEVEL_SYMS` setting.
  */
 
-//#define CLOG_SYM_TRACE     "<MY SYM>"
-//#define CLOG_SYM_DEBUG     "<MY SYM>"
-//#define CLOG_SYM_EXTRA     "<MY SYM>"
-//#define CLOG_SYM_INFO      "<MY SYM>"
-//#define CLOG_SYM_HEADER    "<MY SYM>"
-//#define CLOG_SYM_SUCCESS   "<MY SYM>"
-//#define CLOG_SYM_MONEY     "<MY SYM>"
-//#define CLOG_SYM_INPUT     "<MY SYM>"
-//#define CLOG_SYM_WARNING   "<MY SYM>"
-//#define CLOG_SYM_ERROR     "<MY SYM>"
-//#define CLOG_SYM_CRITICAL  "<MY SYM>"
-//#define CLOG_SYM_FATAL     "<MY SYM>"
+#define CLOG_SYM_TRACE     " T "
+#define CLOG_SYM_DEBUG     " D "
+#define CLOG_SYM_EXTRA     " x "
+#define CLOG_SYM_INFO      " i "
+#define CLOG_SYM_HEADER    " * "
+#define CLOG_SYM_SUCCESS   " + "
+#define CLOG_SYM_MONEY     " $ "
+#define CLOG_SYM_INPUT     " ? "
+#define CLOG_SYM_WARNING   " ! "
+#define CLOG_SYM_ERROR     " - "
+#define CLOG_SYM_CRITICAL  " @ "
+#define CLOG_SYM_FATAL     " % "
 
 
 /* Console Color Logging Mode options */
@@ -422,7 +420,7 @@
  * format.
  */
 
-//#define CLOG_TIME_FORMAT            "%FT%T%z"
+#define CLOG_TIME_FORMAT            "%a %-m-%-d-%Y %-I:%-M %p"
 
 
 /**
@@ -446,6 +444,6 @@
  * DEBUG, ERROR, CRITICAL, and FATAL level logs.
  */
 
-//#define CLOG_DISABLE_TRACING
+#define CLOG_DISABLE_TRACING
 
 

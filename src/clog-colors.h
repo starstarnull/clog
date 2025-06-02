@@ -24,7 +24,7 @@
  *
  * Provides macros for terminal color codes.
  *
- * The clog color C header library is used to define colors terminal console 
+ * The clog color C header library is used to define colors terminal console
  * output. It can be used for customizing colors in the Clog Logging library.
  *
  *
@@ -45,8 +45,8 @@
  * =====
  *
  * Simply include the header file in your project and start using the macros.
- * ANZI terminal codes are strings that can be included before the text you 
- * want to affect. 
+ * ANZI terminal codes are strings that can be included before the text you
+ * want to affect.
  *
  *
  * Examples
@@ -180,10 +180,10 @@
  *      8-Bit Colors
  *      ------------
  *
- *      C_8BIT(n)       Make text foreground `n` color where `n` is a ANZI 
+ *      C_8BIT(n)       Make text foreground `n` color where `n` is a ANZI
  *                      8-bit color code.
  *
- *      C_B_8BIT(n)     Make text background `n` color where `n` is a ANZI 
+ *      C_B_8BIT(n)     Make text background `n` color where `n` is a ANZI
  *                      8-bit color code.
  *
  *      24-Bit Colors
@@ -235,7 +235,7 @@
  * 3-Bit Colors
  * ------------
  *
- * `C_<color>` sets the terminal foreground color to <color>. 
+ * `C_<color>` sets the terminal foreground color to <color>.
  * `C_B_<color>` sets the terminal background color to <color>.
  */
 
@@ -483,17 +483,17 @@
  *
  * `C_24BIT(<r>, <g>, <b>)` is used for foreground colors.
  * `C_B_24BIT(<r>, <g>, <b>)` is used for background colors.
- * 
+ *
  * `C_RBG(<r>, <g>, <b>)` is an alias of `C_24BIT(<r>, <g>, <b>)`.
  * `C_B_RBG(<r>, <g>, <b>)` is an alias of `C_B_24BIT(<r>, <g>, <b>)`.
  *
  * `C_24BIT(<r>, <g>, <b>)` accepts a decimal number between 0 and 255 for <r>,
  * <g>, and <b> parameters.
- * `C_B_24BIT(<r>, <g>, <b>)` accepts a decimal number between 0 and 255 for 
+ * `C_B_24BIT(<r>, <g>, <b>)` accepts a decimal number between 0 and 255 for
  * <r>, <g>, and <b> parameters.
  *
- * 0 represents no color (i.e. black) and 255 represents the most of that 
- * color (i.e., most the red for the <r> parameter, the most green for the <g> 
+ * 0 represents no color (i.e. black) and 255 represents the most of that
+ * color (i.e., most the red for the <r> parameter, the most green for the <g>
  * parameter, and the most blue for the <b> parameter).
  */
 
@@ -503,7 +503,7 @@
  *  Convert given red, green, blue color values to a ANZI foreground color.
  *
  *  0 - 255 for amount of red; 0 - 255 for amount of green; and 0 - 255 for
- *  amount of blue. 
+ *  amount of blue.
  *
  *  This function is a macro and does not validate that the input parameters
  *  are integers or that their values are between 0 and 255.
@@ -516,7 +516,7 @@
  *                  blue.
  *  @return char*   ANZI color code string.
  */
-#define C_24BIT(red, green, blue)    "\x1b[38;2;" #red ";" #green ";" #blue "m"      
+#define C_24BIT(red, green, blue)    "\x1b[38;2;" #red ";" #green ";" #blue "m"
 
 /**
  *  const char* C_RGB(uint_8 red, uint_8 green, uint_8 blue);
@@ -526,7 +526,7 @@
  *  Convert given red, green, blue color values to a ANZI foreground color.
  *
  *  0 - 255 for amount of red; 0 - 255 for amount of green; and 0 - 255 for
- *  amount of blue. 
+ *  amount of blue.
  *
  *  This function is a macro and does not validate that the input parameters
  *  are integers or that their values are between 0 and 255.
@@ -547,7 +547,7 @@
  *  Convert given red, green, blue color values to a ANZI background color.
  *
  *  0 - 255 for amount of red; 0 - 255 for amount of green; and 0 - 255 for
- *  amount of blue. 
+ *  amount of blue.
  *
  *  This function is a macro and does not validate that the input parameters
  *  are integers or that their values are between 0 and 255.
@@ -560,7 +560,7 @@
  *                  blue.
  *  @return char*   ANZI color code string.
  */
-#define C_B_24BIT(red, green, blue)  "\x1b[48;2;" #red ";" #green ";" #blue "m"      
+#define C_B_24BIT(red, green, blue)  "\x1b[48;2;" #red ";" #green ";" #blue "m"
 
 /**
  *  const char* C_B_RGB(uint_8 red, uint_8 green, uint_8 blue);
@@ -570,7 +570,7 @@
  *  Convert given red, green, blue color values to a ANZI background color.
  *
  *  0 - 255 for amount of red; 0 - 255 for amount of green; and 0 - 255 for
- *  amount of blue. 
+ *  amount of blue.
  *
  *  This function is a macro and does not validate that the input parameters
  *  are integers or that their values are between 0 and 255.

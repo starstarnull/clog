@@ -17,7 +17,7 @@
 
 RM           := trash
 
-target_exec  := test-clog-manual
+target_exec  := test-main
 
 src_dir      := ./src
 build_dir    := ./build

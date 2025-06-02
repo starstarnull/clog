@@ -294,7 +294,6 @@
 
 /**
  * Uncomment this to customize the line header separator (defaults to space).
- * Percentage symbols is not currently supported do to format strings.
  */
 
 //#define CLOG_LINE_HEADER_SEP      " "
@@ -302,7 +301,6 @@
 
 /**
  * Uncomment this to customize the tracing separator (defaults to colon).
- * Percentage symbols is not currently supported do to format strings.
  */
 
 //#define CLOG_TRACING_SEP            ":"
@@ -326,7 +324,7 @@
  * options. Defaults to `CLOG_LEVEL_SYMS_DEFAULT`.
  */
 
-//#define CLOG_LEVEL_SYMS             CLOG_LEVEL_SYMS_DEFAULT
+#define CLOG_LEVEL_SYMS             CLOG_LEVEL_SYMS_NONE
 
 
 /**
@@ -376,7 +374,7 @@
  * Adjust this to change log mode. Defaults to `CLOG_MODE_CONSOLE_AND_FILE`.
  */
 
-//#define CLOG_MODE                   CLOG_MODE_CONSOLE_AND_FILE
+#define CLOG_MODE                   CLOG_MODE_FILE
 
 
 /* Logging level for what logs statements are compiled options */
@@ -414,7 +412,7 @@
  * not defined.
  */
 
-//#define CLOG_FILE                   "clog.log"
+#define CLOG_FILE                   "clog.log"
 
 
 /**
@@ -429,7 +427,7 @@
  * Uncomment this to disable timestamps. Defaults to timestamps enabled.
  */
 
-//#define CLOG_DISABLE_TIMESTAMPS
+#define CLOG_DISABLE_TIMESTAMPS
 
 
 /**
@@ -446,6 +444,6 @@
  * DEBUG, ERROR, CRITICAL, and FATAL level logs.
  */
 
-//#define CLOG_DISABLE_TRACING
+#define CLOG_DISABLE_TRACING
 
 

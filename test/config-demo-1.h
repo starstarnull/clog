@@ -294,7 +294,6 @@
 
 /**
  * Uncomment this to customize the line header separator (defaults to space).
- * Percentage symbols is not currently supported do to format strings.
  */
 
 //#define CLOG_LINE_HEADER_SEP      " "
@@ -302,10 +301,9 @@
 
 /**
  * Uncomment this to customize the tracing separator (defaults to colon).
- * Percentage symbols is not currently supported do to format strings.
  */
 
-//#define CLOG_TRACING_SEP            ":"
+//#define CLOG_TRACING_SEP            " "
 
 
 /* Logging level line header symbol options */
@@ -326,7 +324,7 @@
  * options. Defaults to `CLOG_LEVEL_SYMS_DEFAULT`.
  */
 
-//#define CLOG_LEVEL_SYMS             CLOG_LEVEL_SYMS_DEFAULT
+#define CLOG_LEVEL_SYMS             CLOG_LEVEL_SYMS_EMOJIS
 
 
 /**
@@ -437,7 +435,7 @@
  * local time.
  */
 
-//#define CLOG_USE_UTC_TIME
+#define CLOG_USE_UTC_TIME
 
 
 /**
@@ -446,6 +444,6 @@
  * DEBUG, ERROR, CRITICAL, and FATAL level logs.
  */
 
-//#define CLOG_DISABLE_TRACING
+#define CLOG_DISABLE_TRACING
 
 

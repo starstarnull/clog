@@ -294,7 +294,6 @@
 
 /**
  * Uncomment this to customize the line header separator (defaults to space).
- * Percentage symbols is not currently supported do to format strings.
  */
 
 //#define CLOG_LINE_HEADER_SEP      " "
@@ -302,7 +301,6 @@
 
 /**
  * Uncomment this to customize the tracing separator (defaults to colon).
- * Percentage symbols is not currently supported do to format strings.
  */
 
 //#define CLOG_TRACING_SEP            ":"
@@ -406,7 +404,7 @@
  * Adjust this to change log level. Defaults to `CLOG_LEVEL_ALL`.
  */
 
-//#define CLOG_LEVEL                  CLOG_LEVEL_ALL
+#define CLOG_LEVEL                  CLOG_LEVEL_INFO
 
 
 /**

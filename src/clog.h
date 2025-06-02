@@ -243,6 +243,7 @@
  *  * Add print verbosity functionality.
  *  * Add namespace mode (with defines in more limited namespace).
  *  * Add color hex and string hex (#ffffff) conversion functions.
+ *  * Expand terminal color library to include italic, etc.
  *  * Add option to set new log file instead of appending to file.
  *  * Add exported symbols.
  *  * Add python library.
@@ -7027,14 +7028,14 @@
         /**
          *  Symbol for line header for "trace" logs.
          */
-        #define CLOG_SYM_TRACE              "[TRA]"
+        #define CLOG_SYM_TRACE              "[ / ]"
     #endif
 
     #ifndef CLOG_SYM_DEBUG
         /**
          *  Symbol for line header for "debug" logs.
          */
-        #define CLOG_SYM_DEBUG              "[DBG]"
+        #define CLOG_SYM_DEBUG              "[>0<]"
     #endif
 
     #ifndef CLOG_SYM_EXTRA
@@ -7104,7 +7105,7 @@
         /**
          *  Symbol for line header for "fatal" logs.
          */
-        #define CLOG_SYM_FATAL              "[FAT]"
+        #define CLOG_SYM_FATAL              "[x x]"
     #endif
 
 
@@ -7114,84 +7115,84 @@
         /**
          *  Symbol for line header for "trace" logs.
          */
-        #define CLOG_SYM_TRACE              "[ 📋 ]"
+        #define CLOG_SYM_TRACE              " 📋 "
     #endif
 
     #ifndef CLOG_SYM_DEBUG
         /**
          *  Symbol for line header for "debug" logs.
          */
-        #define CLOG_SYM_DEBUG              "[ 🪲 ]"
+        #define CLOG_SYM_DEBUG              " 🪲 "
     #endif
 
     #ifndef CLOG_SYM_EXTRA
         /**
          *  Symbol for line header for "extra" logs.
          */
-        #define CLOG_SYM_EXTRA              "[ 🔍 ]"
+        #define CLOG_SYM_EXTRA              " 🔍 "
     #endif
 
     #ifndef CLOG_SYM_INFO
         /**
          *  Symbol for line header for "info" logs.
          */
-        #define CLOG_SYM_INFO               "[ ℹ️ ]"
+        #define CLOG_SYM_INFO               " ℹ️ "
     #endif
 
     #ifndef CLOG_SYM_HEADER
         /**
          *  Symbol for line header for "header" logs.
          */
-        #define CLOG_SYM_HEADER             "[ 😀 ]"
+        #define CLOG_SYM_HEADER             " 😀 "
     #endif
 
     #ifndef CLOG_SYM_SUCCESS
         /**
          *  Symbol for line header for "success" logs.
          */
-        #define CLOG_SYM_SUCCESS            "[ ✅ ]"
+        #define CLOG_SYM_SUCCESS            " ✅ "
     #endif
 
     #ifndef CLOG_SYM_MONEY
         /**
          *  Symbol for line header for "money" logs.
          */
-        #define CLOG_SYM_MONEY              "[ 🤑 ]"
+        #define CLOG_SYM_MONEY              " 🤑 "
     #endif
 
     #ifndef CLOG_SYM_INPUT
         /**
          *  Symbol for line header for "input" logs.
          */
-        #define CLOG_SYM_INPUT              "[ ❓ ]"
+        #define CLOG_SYM_INPUT              " ❓ "
     #endif
 
     #ifndef CLOG_SYM_WARNING
         /**
          *  Symbol for line header for "warning" logs.
          */
-        #define CLOG_SYM_WARNING            "[ ⚠️ ]"
+        #define CLOG_SYM_WARNING            " ⚠️ "
     #endif
 
     #ifndef CLOG_SYM_ERROR
         /**
          *  Symbol for line header for "error" logs.
          */
-        #define CLOG_SYM_ERROR              "[ ⛔ ]"
+        #define CLOG_SYM_ERROR              " ⛔ "
     #endif
 
     #ifndef CLOG_SYM_CRITICAL
         /**
          *  Symbol for line header for "critical" logs.
          */
-        #define CLOG_SYM_CRITICAL           "[ ⚡ ]"
+        #define CLOG_SYM_CRITICAL           " ⚡ "
     #endif
 
     #ifndef CLOG_SYM_FATAL
         /**
          *  Symbol for line header for "fatal" logs.
          */
-        #define CLOG_SYM_FATAL              "[ 💀 ]"
+        #define CLOG_SYM_FATAL              " 💀 "
     #endif
 
 
@@ -7774,7 +7775,7 @@
  *  @param  stream      Pointer to file stream.
  *  @param  str         String to print.
  */
-#define CFPRINTLN(color, stream, str)   FPRINTLN(stream, color str C_RESET);
+#define CFPRINTLN(color, stream, str)   FPRINT(stream, color str C_RESET "\n");
 
 /**
  *  void CFPRINTF(const char* color, FILE* stream, const char* format, ...);
@@ -7810,8 +7811,8 @@
  *  @param  ...         Format specifier arguments.
  */
 #define CFPRINTFLN(color, stream, ...) { \
-    FPRINTFLN(stream, color __VA_ARGS__); \
-    FPRINT(stream, C_RESET); \
+    FPRINTF(stream, color __VA_ARGS__); \
+    FPRINT(stream, C_RESET "\n"); \
 }
 
 /**
@@ -7853,8 +7854,8 @@
  */
 #define CFPRINTLN_HEX(color, stream, buffer, length) { \
     FPRINT(stream, color); \
-    FPRINTLN_HEX(stream, buffer, length); \
-    FPRINT(stream, C_RESET); \
+    FPRINT_HEX(stream, buffer, length); \
+    FPRINT(stream, C_RESET "\n"); \
 }
 
 /**
@@ -7898,8 +7899,8 @@
  */
 #define CFPRINTLN_WIDE_HEX(color, stream, buffer, length) { \
     FPRINT(stream, color); \
-    FPRINTLN_WIDE_HEX(stream, buffer, length); \
-    FPRINT(stream, C_RESET); \
+    FPRINT_WIDE_HEX(stream, buffer, length); \
+    FPRINT(stream, C_RESET "\n"); \
 }
 
 /**
@@ -7917,7 +7918,7 @@
  */
 #define CFPERROR(color, stream, str) { \
     FPRINT(stream, color str); \
-    FPRINTFLN(stream, ": %s" C_RESET, strerror(errno)); \
+    FPRINTF(stream, ": %s" C_RESET "\n", strerror(errno)); \
 }
 
 /**
@@ -7936,7 +7937,7 @@
  */
 #define CFPERRORF(color, stream, ...) { \
     FPRINTF(stream, color __VA_ARGS__); \
-    FPRINTFLN(stream, ": %s" C_RESET, strerror(errno)); \
+    FPRINTF(stream, ": %s" C_RESET "\n", strerror(errno)); \
 }
 
 
@@ -11846,7 +11847,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CPERRORF_WARN(color, ...)   CPERROR_WARNING(color, __VA_ARGS__)
+    #define CPERRORF_WARN(color, ...)   CPERRORF_WARNING(color, __VA_ARGS__)
 
 
     /**
@@ -12936,7 +12937,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CPERRORF_FT(color, ...)     CPERROR_FATAL(color, __VA_ARGS__)
+    #define CPERRORF_FT(color, ...)     CPERRORF_FATAL(color, __VA_ARGS__)
 
 #endif
 
@@ -13276,7 +13277,7 @@
      *  adjusted via the Clog Configuration Header.
 */
     #define CLOG_FILE \
-        (strrchr(__FILE__, '/') \
+        (strchr(__FILE__, '/') \
             ? strrchr(__FILE__ ".log", '/') + 1 : __FILE__ ".log")
 #endif
 
@@ -13347,9 +13348,9 @@
 #define _CLOG_TM_FMT            CLOG_TIME_FORMAT
 
 #define _CLOG_DECLARE \
-    static FILE* _clog_glog = NULL; \
-    static char _clog_gtime_buf[_CLOG_TM_BUFSZ] = {0}; \
-    static time_t _clog_gtime = 0;
+    static FILE* __attribute__((__unused__)) _clog_glog = NULL; \
+    static char  __attribute__((__unused__)) _clog_gtime_buf[_CLOG_TM_BUFSZ] = {0}; \
+    static time_t __attribute__((__unused__)) _clog_gtime = 0;
 
 
 #ifdef CLOG_DISABLE_TIMESTAMPS
@@ -13392,7 +13393,7 @@
             "%s" CLOG_TRACING_SEP\
             "%s" CLOG_TRACING_SEP\
             "%u" CLOG_LINE_HEADER_SEP, \
-            __FILE__, \
+            strchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__, \
             __FUNCTION__, \
             __LINE__ \
         );
@@ -13401,9 +13402,9 @@
         FPRINTF( \
             f, \
             C_BR_BLUE "%s" CLOG_TRACING_SEP C_RESET \
-            C_BR_MAGENTA "%s" CLOG_TRACING_SEP C_RESET \
-            C_BR_CYAN "%u" CLOG_LINE_HEADER_SEP C_RESET, \
-            __FILE__, \
+            C_ORANGE "%s" CLOG_TRACING_SEP C_RESET \
+            C_BR_MAGENTA "%u" CLOG_LINE_HEADER_SEP C_RESET, \
+            strchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__, \
             __FUNCTION__, \
             __LINE__ \
         );
@@ -15463,7 +15464,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOGF_TRC(...) CLOGF_TRACE(...)
+    #define CLOGF_TRC(...) CLOGF_TRACE(__VA_ARGS__)
 
     /**
      *  void CLOGFLN_TRC(const char* format, ...);
@@ -15477,7 +15478,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOGFLN_TRC(...) CLOGFLN_TRACE(...)
+    #define CLOGFLN_TRC(...) CLOGFLN_TRACE(__VA_ARGS__)
 
 
     /**
@@ -15517,7 +15518,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOGF_DBG(...) CLOGF_DEBUG(...)
+    #define CLOGF_DBG(...) CLOGF_DEBUG(__VA_ARGS__)
 
     /**
      *  void CLOGFLN_DBG(const char* format, ...);
@@ -15531,7 +15532,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOGFLN_DBG(...) CLOGFLN_DEBUG(...)
+    #define CLOGFLN_DBG(...) CLOGFLN_DEBUG(__VA_ARGS__)
 
 
     /**
@@ -15569,7 +15570,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOGF_EXT(...) CLOGF_EXTRA(...)
+    #define CLOGF_EXT(...) CLOGF_EXTRA(__VA_ARGS__)
 
     /**
      *  void CLOGFLN_EXT(const char* format, ...);
@@ -15583,7 +15584,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOGFLN_EXT(...) CLOGFLN_EXTRA(...)
+    #define CLOGFLN_EXT(...) CLOGFLN_EXTRA(__VA_ARGS__)
 
 
     /**
@@ -15621,7 +15622,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOGF_INF(...) CLOGF_INFO(...)
+    #define CLOGF_INF(...) CLOGF_INFO(__VA_ARGS__)
 
     /**
      *  void CLOGFLN_INF(const char* format, ...);
@@ -15635,7 +15636,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOGFLN_INF(...) CLOGFLN_INFO(...)
+    #define CLOGFLN_INF(...) CLOGFLN_INFO(__VA_ARGS__)
 
 
     /**
@@ -15673,7 +15674,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOGF_HEAD(...) CLOGF_HEADER(...)
+    #define CLOGF_HEAD(...) CLOGF_HEADER(__VA_ARGS__)
 
     /**
      *  void CLOGFLN_HEAD(const char* format, ...);
@@ -15687,7 +15688,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOGFLN_HEAD(...) CLOGFLN_HEADER(...)
+    #define CLOGFLN_HEAD(...) CLOGFLN_HEADER(__VA_ARGS__)
 
 
     /**
@@ -15725,7 +15726,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOGF_SUC(...) CLOGF_SUCCESS(...)
+    #define CLOGF_SUC(...) CLOGF_SUCCESS(__VA_ARGS__)
 
     /**
      *  void CLOGFLN_SUC(const char* format, ...);
@@ -15740,7 +15741,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOGFLN_SUC(...) CLOGFLN_SUCCESS(...)
+    #define CLOGFLN_SUC(...) CLOGFLN_SUCCESS(__VA_ARGS__)
 
 
     /**
@@ -15778,7 +15779,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOGF_MON(...) CLOGF_MONEY(...)
+    #define CLOGF_MON(...) CLOGF_MONEY(__VA_ARGS__)
 
     /**
      *  void CLOGFLN_MON(const char* format, ...);
@@ -15793,7 +15794,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOGFLN_MON(...) CLOGFLN_MONEY(...)
+    #define CLOGFLN_MON(...) CLOGFLN_MONEY(__VA_ARGS__)
 
 
     /**
@@ -15831,7 +15832,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOGF_MNY(...) CLOGF_MONEY(...)
+    #define CLOGF_MNY(...) CLOGF_MONEY(__VA_ARGS__)
 
     /**
      *  void CLOGFLN_MNY(const char* format, ...);
@@ -15845,7 +15846,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOGFLN_MNY(...) CLOGFLN_MONEY(...)
+    #define CLOGFLN_MNY(...) CLOGFLN_MONEY(__VA_ARGS__)
 
 
     /**
@@ -15883,7 +15884,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOGF_IN(...) CLOGF_INPUT(...)
+    #define CLOGF_IN(...) CLOGF_INPUT(__VA_ARGS__)
 
     /**
      *  void CLOGFLN_IN(const char* format, ...);
@@ -15897,7 +15898,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOGFLN_IN(...) CLOGFLN_INPUT(...)
+    #define CLOGFLN_IN(...) CLOGFLN_INPUT(__VA_ARGS__)
 
 
     /**
@@ -15935,7 +15936,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOGF_WARN(...) CLOGF_WARNING(...)
+    #define CLOGF_WARN(...) CLOGF_WARNING(__VA_ARGS__)
 
     /**
      *  void CLOGFLN_WARN(const char* format, ...);
@@ -15949,7 +15950,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOGFLN_WARN(...) CLOGFLN_WARNING(...)
+    #define CLOGFLN_WARN(...) CLOGFLN_WARNING(__VA_ARGS__)
 
     /**
      *  void CLOG_PERROR_WARN(const char* str);
@@ -15975,7 +15976,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOG_PERRORF_WARN(...) CLOG_PERRORF_WARNING(...)
+    #define CLOG_PERRORF_WARN(...) CLOG_PERRORF_WARNING(__VA_ARGS__)
 
 
     /**
@@ -16013,7 +16014,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOGF_ERR(...) CLOGF_ERROR(...)
+    #define CLOGF_ERR(...) CLOGF_ERROR(__VA_ARGS__)
 
     /**
      *  void CLOGFLN_ERR(const char* format, ...);
@@ -16027,7 +16028,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOGFLN_ERR(...) CLOGFLN_ERROR(...)
+    #define CLOGFLN_ERR(...) CLOGFLN_ERROR(__VA_ARGS__)
 
     /**
      *  void CLOG_PERROR_ERR(const char* str);
@@ -16053,7 +16054,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOG_PERRORF_ERR(...) CLOG_PERRORF_ERROR(...)
+    #define CLOG_PERRORF_ERR(...) CLOG_PERRORF_ERROR(__VA_ARGS__)
 
 
     /**
@@ -16091,7 +16092,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOGF_CRIT(...) CLOGF_CRITICAL(...)
+    #define CLOGF_CRIT(...) CLOGF_CRITICAL(__VA_ARGS__)
 
     /**
      *  void CLOGFLN_CRIT(const char* format, ...);
@@ -16105,7 +16106,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOGFLN_CRIT(...) CLOGFLN_CRITICAL(...)
+    #define CLOGFLN_CRIT(...) CLOGFLN_CRITICAL(__VA_ARGS__)
 
     /**
      *  void CLOG_PERROR_CRIT(const char* str);
@@ -16131,7 +16132,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOG_PERRORF_CRIT(...) CLOG_PERRORF_CRITICAL(...)
+    #define CLOG_PERRORF_CRIT(...) CLOG_PERRORF_CRITICAL(__VA_ARGS__)
 
 
     /**
@@ -16169,7 +16170,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOGF_FAT(...) CLOGF_FATAL(...)
+    #define CLOGF_FAT(...) CLOGF_FATAL(__VA_ARGS__)
 
     /**
      *  void CLOGFLN_FAT(const char* format, ...);
@@ -16183,7 +16184,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOGFLN_FAT(...) CLOGFLN_FATAL(...)
+    #define CLOGFLN_FAT(...) CLOGFLN_FATAL(__VA_ARGS__)
 
     /**
      *  void CLOG_PERROR_FAT(const char* str);
@@ -16209,7 +16210,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOG_PERRORF_FAT(...) CLOG_PERRORF_FATAL(...)
+    #define CLOG_PERRORF_FAT(...) CLOG_PERRORF_FATAL(__VA_ARGS__)
 
 #endif
 
@@ -16263,7 +16264,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOGF_TR(...) CLOGF_TRACE(...)
+    #define CLOGF_TR(...) CLOGF_TRACE(__VA_ARGS__)
 
     /**
      *  void CLOGFLN_TR(const char* format, ...);
@@ -16277,7 +16278,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOGFLN_TR(...) CLOGFLN_TRACE(...)
+    #define CLOGFLN_TR(...) CLOGFLN_TRACE(__VA_ARGS__)
 
 
     /**
@@ -16317,7 +16318,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOGF_DB(...) CLOGF_DEBUG(...)
+    #define CLOGF_DB(...) CLOGF_DEBUG(__VA_ARGS__)
 
     /**
      *  void CLOGFLN_DB(const char* format, ...);
@@ -16331,7 +16332,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOGFLN_DB(...) CLOGFLN_DEBUG(...)
+    #define CLOGFLN_DB(...) CLOGFLN_DEBUG(__VA_ARGS__)
 
 
     /**
@@ -16369,7 +16370,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOGF_EX(...) CLOGF_EXTRA(...)
+    #define CLOGF_EX(...) CLOGF_EXTRA(__VA_ARGS__)
 
     /**
      *  void CLOGFLN_EX(const char* format, ...);
@@ -16383,7 +16384,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOGFLN_EX(...) CLOGFLN_EXTRA(...)
+    #define CLOGFLN_EX(...) CLOGFLN_EXTRA(__VA_ARGS__)
 
 
     /**
@@ -16421,7 +16422,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOGF_IF(...) CLOGF_INFO(...)
+    #define CLOGF_IF(...) CLOGF_INFO(__VA_ARGS__)
 
     /**
      *  void CLOGFLN_IF(const char* format, ...);
@@ -16435,7 +16436,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOGFLN_IF(...) CLOGFLN_INFO(...)
+    #define CLOGFLN_IF(...) CLOGFLN_INFO(__VA_ARGS__)
 
 
     /**
@@ -16473,7 +16474,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOGF_HD(...) CLOGF_HEADER(...)
+    #define CLOGF_HD(...) CLOGF_HEADER(__VA_ARGS__)
 
     /**
      *  void CLOGFLN_HD(const char* format, ...);
@@ -16487,7 +16488,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOGFLN_HD(...) CLOGFLN_HEADER(...)
+    #define CLOGFLN_HD(...) CLOGFLN_HEADER(__VA_ARGS__)
 
 
     /**
@@ -16525,7 +16526,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOGF_SC(...) CLOGF_SUCCESS(...)
+    #define CLOGF_SC(...) CLOGF_SUCCESS(__VA_ARGS__)
 
     /**
      *  void CLOGFLN_SC(const char* format, ...);
@@ -16539,7 +16540,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOGFLN_SC(...) CLOGFLN_SUCCESS(...)
+    #define CLOGFLN_SC(...) CLOGFLN_SUCCESS(__VA_ARGS__)
 
 
     /**
@@ -16577,7 +16578,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOGF_MN(...) CLOGF_MONEY(...)
+    #define CLOGF_MN(...) CLOGF_MONEY(__VA_ARGS__)
 
     /**
      *  void CLOGFLN_MN(const char* format, ...);
@@ -16591,7 +16592,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOGFLN_MN(...) CLOGFLN_MONEY(...)
+    #define CLOGFLN_MN(...) CLOGFLN_MONEY(__VA_ARGS__)
 
 
     /**
@@ -16629,7 +16630,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOGF_MY(...) CLOGF_MONEY(...)
+    #define CLOGF_MY(...) CLOGF_MONEY(__VA_ARGS__)
 
     /**
      *  void CLOGFLN_MY(const char* format, ...);
@@ -16643,7 +16644,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOGFLN_MY(...) CLOGFLN_MONEY(...)
+    #define CLOGFLN_MY(...) CLOGFLN_MONEY(__VA_ARGS__)
 
 
     /**
@@ -16681,7 +16682,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOGF_IN(...) CLOGF_INPUT(...)
+    #define CLOGF_IN(...) CLOGF_INPUT(__VA_ARGS__)
 
     /**
      *  void CLOGFLN_IN(const char* format, ...);
@@ -16695,7 +16696,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOGFLN_IN(...) CLOGFLN_INPUT(...)
+    #define CLOGFLN_IN(...) CLOGFLN_INPUT(__VA_ARGS__)
 
 
     /**
@@ -16733,7 +16734,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOGF_WN(...) CLOGF_WARNING(...)
+    #define CLOGF_WN(...) CLOGF_WARNING(__VA_ARGS__)
 
     /**
      *  void CLOGFLN_WN(const char* format, ...);
@@ -16747,7 +16748,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOGFLN_WN(...) CLOGFLN_WARNING(...)
+    #define CLOGFLN_WN(...) CLOGFLN_WARNING(__VA_ARGS__)
 
     /**
      *  void CLOG_PERROR_WN(const char* str);
@@ -16773,7 +16774,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOG_PERRORF_WN(...) CLOG_PERRORF_WARNING(...)
+    #define CLOG_PERRORF_WN(...) CLOG_PERRORF_WARNING(__VA_ARGS__)
 
 
     /**
@@ -16811,7 +16812,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOGF_ER(...) CLOGF_ERROR(...)
+    #define CLOGF_ER(...) CLOGF_ERROR(__VA_ARGS__)
 
     /**
      *  void CLOGFLN_ER(const char* format, ...);
@@ -16825,7 +16826,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOGFLN_ER(...) CLOGFLN_ERROR(...)
+    #define CLOGFLN_ER(...) CLOGFLN_ERROR(__VA_ARGS__)
 
     /**
      *  void CLOG_PERROR_ER(const char* str);
@@ -16851,7 +16852,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOG_PERRORF_ER(...) CLOG_PERRORF_ERROR(...)
+    #define CLOG_PERRORF_ER(...) CLOG_PERRORF_ERROR(__VA_ARGS__)
 
 
     /**
@@ -16889,7 +16890,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOGF_CR(...) CLOGF_CRITICAL(...)
+    #define CLOGF_CR(...) CLOGF_CRITICAL(__VA_ARGS__)
 
     /**
      *  void CLOGFLN_CR(const char* format, ...);
@@ -16903,7 +16904,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOGFLN_CR(...) CLOGFLN_CRITICAL(...)
+    #define CLOGFLN_CR(...) CLOGFLN_CRITICAL(__VA_ARGS__)
 
     /**
      *  void CLOG_PERROR_CR(const char* str);
@@ -16929,7 +16930,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOG_PERRORF_CR(...) CLOG_PERRORF_CRITICAL(...)
+    #define CLOG_PERRORF_CR(...) CLOG_PERRORF_CRITICAL(__VA_ARGS__)
 
 
     /**
@@ -16967,7 +16968,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOGF_FT(...) CLOGF_FATAL(...)
+    #define CLOGF_FT(...) CLOGF_FATAL(__VA_ARGS__)
 
     /**
      *  void CLOGFLN_FT(const char* format, ...);
@@ -16981,7 +16982,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOGFLN_FT(...) CLOGFLN_FATAL(...)
+    #define CLOGFLN_FT(...) CLOGFLN_FATAL(__VA_ARGS__)
 
     /**
      *  void CLOG_PERROR_FT(const char* str);
@@ -17007,7 +17008,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CLOG_PERRORF_FT(...) CLOG_PERRORF_FATAL(...)
+    #define CLOG_PERRORF_FT(...) CLOG_PERRORF_FATAL(__VA_ARGS__)
 
 #endif
 
@@ -18292,7 +18293,7 @@
  *  Short aliases only have three or four character log level names.
  */
 
-#ifdef FLOG_ENABLE_SHORT_ALIASES
+#ifdef CLOG_ENABLE_SHORT_ALIASES
 
     /**
      *  void FLOG_TRC(const char* str);
@@ -18329,7 +18330,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOGF_TRC(...) FLOGF_TRACE(...)
+    #define FLOGF_TRC(...) FLOGF_TRACE(__VA_ARGS__)
 
     /**
      *  void FLOGFLN_TRC(const char* format, ...);
@@ -18343,7 +18344,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOGFLN_TRC(...) FLOGFLN_TRACE(...)
+    #define FLOGFLN_TRC(...) FLOGFLN_TRACE(__VA_ARGS__)
 
 
     /**
@@ -18381,7 +18382,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOGF_DBG(...) FLOGF_DEBUG(...)
+    #define FLOGF_DBG(...) FLOGF_DEBUG(__VA_ARGS__)
 
     /**
      *  void FLOGFLN_DBG(const char* format, ...);
@@ -18395,7 +18396,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOGFLN_DBG(...) FLOGFLN_DEBUG(...)
+    #define FLOGFLN_DBG(...) FLOGFLN_DEBUG(__VA_ARGS__)
 
 
     /**
@@ -18432,7 +18433,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOGF_EXT(...) FLOGF_EXTRA(...)
+    #define FLOGF_EXT(...) FLOGF_EXTRA(__VA_ARGS__)
 
     /**
      *  void FLOGFLN_EXT(const char* format, ...);
@@ -18445,7 +18446,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOGFLN_EXT(...) FLOGFLN_EXTRA(...)
+    #define FLOGFLN_EXT(...) FLOGFLN_EXTRA(__VA_ARGS__)
 
 
     /**
@@ -18482,7 +18483,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOGF_INF(...) FLOGF_INFO(...)
+    #define FLOGF_INF(...) FLOGF_INFO(__VA_ARGS__)
 
     /**
      *  void FLOGFLN_INF(const char* format, ...);
@@ -18495,7 +18496,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOGFLN_INF(...) FLOGFLN_INFO(...)
+    #define FLOGFLN_INF(...) FLOGFLN_INFO(__VA_ARGS__)
 
 
     /**
@@ -18532,7 +18533,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOGF_HEAD(...) FLOGF_HEADER(...)
+    #define FLOGF_HEAD(...) FLOGF_HEADER(__VA_ARGS__)
 
     /**
      *  void FLOGFLN_HEAD(const char* format, ...);
@@ -18545,7 +18546,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOGFLN_HEAD(...) FLOGFLN_HEADER(...)
+    #define FLOGFLN_HEAD(...) FLOGFLN_HEADER(__VA_ARGS__)
 
 
     /**
@@ -18582,7 +18583,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOGF_SUC(...) FLOGF_SUCCESS(...)
+    #define FLOGF_SUC(...) FLOGF_SUCCESS(__VA_ARGS__)
 
     /**
      *  void FLOGFLN_SUC(const char* format, ...);
@@ -18597,7 +18598,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOGFLN_SUC(...) FLOGFLN_SUCCESS(...)
+    #define FLOGFLN_SUC(...) FLOGFLN_SUCCESS(__VA_ARGS__)
 
 
     /**
@@ -18634,7 +18635,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOGF_MON(...) FLOGF_MONEY(...)
+    #define FLOGF_MON(...) FLOGF_MONEY(__VA_ARGS__)
 
     /**
      *  void FLOGFLN_MON(const char* format, ...);
@@ -18649,7 +18650,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOGFLN_MON(...) FLOGFLN_MONEY(...)
+    #define FLOGFLN_MON(...) FLOGFLN_MONEY(__VA_ARGS__)
 
 
     /**
@@ -18686,7 +18687,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOGF_MNY(...) FLOGF_MONEY(...)
+    #define FLOGF_MNY(...) FLOGF_MONEY(__VA_ARGS__)
 
     /**
      *  void FLOGFLN_MNY(const char* format, ...);
@@ -18699,7 +18700,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOGFLN_MNY(...) FLOGFLN_MONEY(...)
+    #define FLOGFLN_MNY(...) FLOGFLN_MONEY(__VA_ARGS__)
 
 
     /**
@@ -18736,7 +18737,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOGF_IN(...) FLOGF_INPUT(...)
+    #define FLOGF_IN(...) FLOGF_INPUT(__VA_ARGS__)
 
     /**
      *  void FLOGFLN_IN(const char* format, ...);
@@ -18749,7 +18750,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOGFLN_IN(...) FLOGFLN_INPUT(...)
+    #define FLOGFLN_IN(...) FLOGFLN_INPUT(__VA_ARGS__)
 
 
     /**
@@ -18786,7 +18787,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOGF_WARN(...) FLOGF_WARNING(...)
+    #define FLOGF_WARN(...) FLOGF_WARNING(__VA_ARGS__)
 
     /**
      *  void FLOGFLN_WARN(const char* format, ...);
@@ -18799,7 +18800,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOGFLN_WARN(...) FLOGFLN_WARNING(...)
+    #define FLOGFLN_WARN(...) FLOGFLN_WARNING(__VA_ARGS__)
 
     /**
      *  void FLOG_PERROR_WARN(const char* str);
@@ -18824,7 +18825,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOG_PERRORF_WARN(...) FLOG_PERRORF_WARNING(...)
+    #define FLOG_PERRORF_WARN(...) FLOG_PERRORF_WARNING(__VA_ARGS__)
 
 
     /**
@@ -18861,7 +18862,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOGF_ERR(...) FLOGF_ERROR(...)
+    #define FLOGF_ERR(...) FLOGF_ERROR(__VA_ARGS__)
 
     /**
      *  void FLOGFLN_ERR(const char* format, ...);
@@ -18874,7 +18875,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOGFLN_ERR(...) FLOGFLN_ERROR(...)
+    #define FLOGFLN_ERR(...) FLOGFLN_ERROR(__VA_ARGS__)
 
     /**
      *  void FLOG_PERROR_ERR(const char* str);
@@ -18899,7 +18900,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOG_PERRORF_ERR(...) FLOG_PERRORF_ERROR(...)
+    #define FLOG_PERRORF_ERR(...) FLOG_PERRORF_ERROR(__VA_ARGS__)
 
 
     /**
@@ -18936,7 +18937,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOGF_CRIT(...) FLOGF_CRITICAL(...)
+    #define FLOGF_CRIT(...) FLOGF_CRITICAL(__VA_ARGS__)
 
     /**
      *  void FLOGFLN_CRIT(const char* format, ...);
@@ -18949,7 +18950,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOGFLN_CRIT(...) FLOGFLN_CRITICAL(...)
+    #define FLOGFLN_CRIT(...) FLOGFLN_CRITICAL(__VA_ARGS__)
 
     /**
      *  void FLOG_PERROR_CRIT(const char* str);
@@ -18974,7 +18975,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOG_PERRORF_CRIT(...) FLOG_PERRORF_CRITICAL(...)
+    #define FLOG_PERRORF_CRIT(...) FLOG_PERRORF_CRITICAL(__VA_ARGS__)
 
 
     /**
@@ -19011,7 +19012,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOGF_FAT(...) FLOGF_FATAL(...)
+    #define FLOGF_FAT(...) FLOGF_FATAL(__VA_ARGS__)
 
     /**
      *  void FLOGFLN_FAT(const char* format, ...);
@@ -19024,7 +19025,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOGFLN_FAT(...) FLOGFLN_FATAL(...)
+    #define FLOGFLN_FAT(...) FLOGFLN_FATAL(__VA_ARGS__)
 
     /**
      *  void FLOG_PERROR_FAT(const char* str);
@@ -19049,7 +19050,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOG_PERRORF_FAT(...) FLOG_PERRORF_FATAL(...)
+    #define FLOG_PERRORF_FAT(...) FLOG_PERRORF_FATAL(__VA_ARGS__)
 
 #endif
 
@@ -19064,7 +19065,7 @@
  *  Shorter aliases only have two character log level names.
  */
 
-#ifdef FLOG_ENABLE_SHORTER_ALIASES
+#ifdef CLOG_ENABLE_SHORTER_ALIASES
 
     /**
      *  void FLOG_TR(const char* str);
@@ -19101,7 +19102,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOGF_TR(...) FLOGF_TRACE(...)
+    #define FLOGF_TR(...) FLOGF_TRACE(__VA_ARGS__)
 
     /**
      *  void FLOGFLN_TR(const char* format, ...);
@@ -19115,7 +19116,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOGFLN_TR(...) FLOGFLN_TRACE(...)
+    #define FLOGFLN_TR(...) FLOGFLN_TRACE(__VA_ARGS__)
 
 
     /**
@@ -19153,7 +19154,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOGF_DB(...) FLOGF_DEBUG(...)
+    #define FLOGF_DB(...) FLOGF_DEBUG(__VA_ARGS__)
 
     /**
      *  void FLOGFLN_DB(const char* format, ...);
@@ -19167,7 +19168,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOGFLN_DB(...) FLOGFLN_DEBUG(...)
+    #define FLOGFLN_DB(...) FLOGFLN_DEBUG(__VA_ARGS__)
 
 
     /**
@@ -19204,7 +19205,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOGF_EX(...) FLOGF_EXTRA(...)
+    #define FLOGF_EX(...) FLOGF_EXTRA(__VA_ARGS__)
 
     /**
      *  void FLOGFLN_EX(const char* format, ...);
@@ -19217,7 +19218,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOGFLN_EX(...) FLOGFLN_EXTRA(...)
+    #define FLOGFLN_EX(...) FLOGFLN_EXTRA(__VA_ARGS__)
 
 
     /**
@@ -19254,7 +19255,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOGF_IF(...) FLOGF_INFO(...)
+    #define FLOGF_IF(...) FLOGF_INFO(__VA_ARGS__)
 
     /**
      *  void FLOGFLN_IF(const char* format, ...);
@@ -19267,7 +19268,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOGFLN_IF(...) FLOGFLN_INFO(...)
+    #define FLOGFLN_IF(...) FLOGFLN_INFO(__VA_ARGS__)
 
 
     /**
@@ -19304,7 +19305,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOGF_HD(...) FLOGF_HEADER(...)
+    #define FLOGF_HD(...) FLOGF_HEADER(__VA_ARGS__)
 
     /**
      *  void FLOGFLN_HD(const char* format, ...);
@@ -19317,7 +19318,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOGFLN_HD(...) FLOGFLN_HEADER(...)
+    #define FLOGFLN_HD(...) FLOGFLN_HEADER(__VA_ARGS__)
 
 
     /**
@@ -19354,7 +19355,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOGF_SC(...) FLOGF_SUCCESS(...)
+    #define FLOGF_SC(...) FLOGF_SUCCESS(__VA_ARGS__)
 
     /**
      *  void FLOGFLN_SC(const char* format, ...);
@@ -19367,7 +19368,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOGFLN_SC(...) FLOGFLN_SUCCESS(...)
+    #define FLOGFLN_SC(...) FLOGFLN_SUCCESS(__VA_ARGS__)
 
 
     /**
@@ -19404,7 +19405,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOGF_MN(...) FLOGF_MONEY(...)
+    #define FLOGF_MN(...) FLOGF_MONEY(__VA_ARGS__)
 
     /**
      *  void FLOGFLN_MN(const char* format, ...);
@@ -19417,7 +19418,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOGFLN_MN(...) FLOGFLN_MONEY(...)
+    #define FLOGFLN_MN(...) FLOGFLN_MONEY(__VA_ARGS__)
 
 
     /**
@@ -19454,7 +19455,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOGF_MY(...) FLOGF_MONEY(...)
+    #define FLOGF_MY(...) FLOGF_MONEY(__VA_ARGS__)
 
     /**
      *  void FLOGFLN_MY(const char* format, ...);
@@ -19467,7 +19468,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOGFLN_MY(...) FLOGFLN_MONEY(...)
+    #define FLOGFLN_MY(...) FLOGFLN_MONEY(__VA_ARGS__)
 
 
     /**
@@ -19504,7 +19505,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOGF_IN(...) FLOGF_INPUT(...)
+    #define FLOGF_IN(...) FLOGF_INPUT(__VA_ARGS__)
 
     /**
      *  void FLOGFLN_IN(const char* format, ...);
@@ -19517,7 +19518,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOGFLN_IN(...) FLOGFLN_INPUT(...)
+    #define FLOGFLN_IN(...) FLOGFLN_INPUT(__VA_ARGS__)
 
 
     /**
@@ -19554,7 +19555,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOGF_WN(...) FLOGF_WARNING(...)
+    #define FLOGF_WN(...) FLOGF_WARNING(__VA_ARGS__)
 
     /**
      *  void FLOGFLN_WN(const char* format, ...);
@@ -19567,7 +19568,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOGFLN_WN(...) FLOGFLN_WARNING(...)
+    #define FLOGFLN_WN(...) FLOGFLN_WARNING(__VA_ARGS__)
 
     /**
      *  void FLOG_PERROR_WN(const char* str);
@@ -19592,7 +19593,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOG_PERRORF_WN(...) FLOG_PERRORF_WARNING(...)
+    #define FLOG_PERRORF_WN(...) FLOG_PERRORF_WARNING(__VA_ARGS__)
 
 
     /**
@@ -19629,7 +19630,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOGF_ER(...) FLOGF_ERROR(...)
+    #define FLOGF_ER(...) FLOGF_ERROR(__VA_ARGS__)
 
     /**
      *  void FLOGFLN_ER(const char* format, ...);
@@ -19642,7 +19643,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOGFLN_ER(...) FLOGFLN_ERROR(...)
+    #define FLOGFLN_ER(...) FLOGFLN_ERROR(__VA_ARGS__)
 
     /**
      *  void FLOG_PERROR_ER(const char* str);
@@ -19667,7 +19668,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOG_PERRORF_ER(...) FLOG_PERRORF_ERROR(...)
+    #define FLOG_PERRORF_ER(...) FLOG_PERRORF_ERROR(__VA_ARGS__)
 
 
     /**
@@ -19704,7 +19705,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOGF_CR(...) FLOGF_CRITICAL(...)
+    #define FLOGF_CR(...) FLOGF_CRITICAL(__VA_ARGS__)
 
     /**
      *  void FLOGFLN_CR(const char* format, ...);
@@ -19717,7 +19718,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOGFLN_CR(...) FLOGFLN_CRITICAL(...)
+    #define FLOGFLN_CR(...) FLOGFLN_CRITICAL(__VA_ARGS__)
 
     /**
      *  void FLOG_PERROR_CR(const char* str);
@@ -19742,7 +19743,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOG_PERRORF_CR(...) FLOG_PERRORF_CRITICAL(...)
+    #define FLOG_PERRORF_CR(...) FLOG_PERRORF_CRITICAL(__VA_ARGS__)
 
 
     /**
@@ -19779,7 +19780,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOGF_FT(...) FLOGF_FATAL(...)
+    #define FLOGF_FT(...) FLOGF_FATAL(__VA_ARGS__)
 
     /**
      *  void FLOGFLN_FT(const char* format, ...);
@@ -19792,7 +19793,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOGFLN_FT(...) FLOGFLN_FATAL(...)
+    #define FLOGFLN_FT(...) FLOGFLN_FATAL(__VA_ARGS__)
 
     /**
      *  void FLOG_PERROR_FT(const char* str);
@@ -19817,7 +19818,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FLOG_PERRORF_FT(...) FLOG_PERRORF_FATAL(...)
+    #define FLOG_PERRORF_FT(...) FLOG_PERRORF_FATAL(__VA_ARGS__)
 
 #endif
 
@@ -21053,7 +21054,7 @@
  *  @param  str         String to print.
  */
 #define C_LOG(color, str) \
-    _CLOG_LOG(color, str)
+    _CLOG_C_LOG(color, str)
 
 /**
  *  void C_LOGLN(const char* color, const char* str);
@@ -21520,7 +21521,7 @@
  *  @param  ...         Format specifier arguments.
  */
 #define C_TLOG_PERRORF(color, ...) \
-    _CLOG_TLOG_PERRORF(__VA_ARGS__)
+    _CLOG_C_TLOG_PERRORF(color, __VA_ARGS__)
 
 
 /**
@@ -22296,7 +22297,7 @@
  *  Short aliases only have three or four character log level names.
  */
 
-#ifdef LOG_ENABLE_SHORT_ALIASES
+#ifdef CLOG_ENABLE_SHORT_ALIASES
 
     /**
      *  void LOG_TRC(const char* str);
@@ -22335,7 +22336,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOGF_TRC(...) LOGF_TRACE(...)
+    #define LOGF_TRC(...) LOGF_TRACE(__VA_ARGS__)
 
     /**
      *  void LOGFLN_TRC(const char* format, ...);
@@ -22349,7 +22350,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOGFLN_TRC(...) LOGFLN_TRACE(...)
+    #define LOGFLN_TRC(...) LOGFLN_TRACE(__VA_ARGS__)
 
 
     /**
@@ -22389,7 +22390,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOGF_DBG(...) LOGF_DEBUG(...)
+    #define LOGF_DBG(...) LOGF_DEBUG(__VA_ARGS__)
 
     /**
      *  void LOGFLN_DBG(const char* format, ...);
@@ -22403,7 +22404,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOGFLN_DBG(...) LOGFLN_DEBUG(...)
+    #define LOGFLN_DBG(...) LOGFLN_DEBUG(__VA_ARGS__)
 
 
     /**
@@ -22442,7 +22443,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOGF_EXT(...) LOGF_EXTRA(...)
+    #define LOGF_EXT(...) LOGF_EXTRA(__VA_ARGS__)
 
     /**
      *  void LOGFLN_EXT(const char* format, ...);
@@ -22456,7 +22457,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOGFLN_EXT(...) LOGFLN_EXTRA(...)
+    #define LOGFLN_EXT(...) LOGFLN_EXTRA(__VA_ARGS__)
 
 
     /**
@@ -22495,7 +22496,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOGF_INF(...) LOGF_INFO(...)
+    #define LOGF_INF(...) LOGF_INFO(__VA_ARGS__)
 
     /**
      *  void LOGFLN_INF(const char* format, ...);
@@ -22509,7 +22510,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOGFLN_INF(...) LOGFLN_INFO(...)
+    #define LOGFLN_INF(...) LOGFLN_INFO(__VA_ARGS__)
 
 
     /**
@@ -22548,7 +22549,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOGF_HEAD(...) LOGF_HEADER(...)
+    #define LOGF_HEAD(...) LOGF_HEADER(__VA_ARGS__)
 
     /**
      *  void LOGFLN_HEAD(const char* format, ...);
@@ -22562,7 +22563,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOGFLN_HEAD(...) LOGFLN_HEADER(...)
+    #define LOGFLN_HEAD(...) LOGFLN_HEADER(__VA_ARGS__)
 
 
     /**
@@ -22601,7 +22602,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOGF_SUC(...) LOGF_SUCCESS(...)
+    #define LOGF_SUC(...) LOGF_SUCCESS(__VA_ARGS__)
 
     /**
      *  void LOGFLN_SUC(const char* format, ...);
@@ -22615,7 +22616,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOGFLN_SUC(...) LOGFLN_SUCCESS(...)
+    #define LOGFLN_SUC(...) LOGFLN_SUCCESS(__VA_ARGS__)
 
 
     /**
@@ -22654,7 +22655,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOGF_MON(...) LOGF_MONEY(...)
+    #define LOGF_MON(...) LOGF_MONEY(__VA_ARGS__)
 
     /**
      *  void LOGFLN_MON(const char* format, ...);
@@ -22668,7 +22669,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOGFLN_MON(...) LOGFLN_MONEY(...)
+    #define LOGFLN_MON(...) LOGFLN_MONEY(__VA_ARGS__)
 
 
     /**
@@ -22707,7 +22708,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOGF_MNY(...) LOGF_MONEY(...)
+    #define LOGF_MNY(...) LOGF_MONEY(__VA_ARGS__)
 
     /**
      *  void LOGFLN_MNY(const char* format, ...);
@@ -22721,7 +22722,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOGFLN_MNY(...) LOGFLN_MONEY(...)
+    #define LOGFLN_MNY(...) LOGFLN_MONEY(__VA_ARGS__)
 
 
     /**
@@ -22760,7 +22761,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOGF_IN(...) LOGF_INPUT(...)
+    #define LOGF_IN(...) LOGF_INPUT(__VA_ARGS__)
 
     /**
      *  void LOGFLN_IN(const char* format, ...);
@@ -22774,7 +22775,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOGFLN_IN(...) LOGFLN_INPUT(...)
+    #define LOGFLN_IN(...) LOGFLN_INPUT(__VA_ARGS__)
 
 
     /**
@@ -22813,7 +22814,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOGF_WARN(...) LOGF_WARNING(...)
+    #define LOGF_WARN(...) LOGF_WARNING(__VA_ARGS__)
 
     /**
      *  void LOGFLN_WARN(const char* format, ...);
@@ -22827,7 +22828,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOGFLN_WARN(...) LOGFLN_WARNING(...)
+    #define LOGFLN_WARN(...) LOGFLN_WARNING(__VA_ARGS__)
 
     /**
      *  void LOG_PERROR_WARN(const char* str);
@@ -22854,7 +22855,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOG_PERRORF_WARN(...) LOG_PERRORF_WARNING(...)
+    #define LOG_PERRORF_WARN(...) LOG_PERRORF_WARNING(__VA_ARGS__)
 
 
     /**
@@ -22893,7 +22894,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOGF_ERR(...) LOGF_ERROR(...)
+    #define LOGF_ERR(...) LOGF_ERROR(__VA_ARGS__)
 
     /**
      *  void LOGFLN_ERR(const char* format, ...);
@@ -22907,7 +22908,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOGFLN_ERR(...) LOGFLN_ERROR(...)
+    #define LOGFLN_ERR(...) LOGFLN_ERROR(__VA_ARGS__)
 
     /**
      *  void LOG_PERROR_ERR(const char* str);
@@ -22934,7 +22935,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOG_PERRORF_ERR(...) LOG_PERRORF_ERROR(...)
+    #define LOG_PERRORF_ERR(...) LOG_PERRORF_ERROR(__VA_ARGS__)
 
 
     /**
@@ -22973,7 +22974,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOGF_CRIT(...) LOGF_CRITICAL(...)
+    #define LOGF_CRIT(...) LOGF_CRITICAL(__VA_ARGS__)
 
     /**
      *  void LOGFLN_CRIT(const char* format, ...);
@@ -22987,7 +22988,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOGFLN_CRIT(...) LOGFLN_CRITICAL(...)
+    #define LOGFLN_CRIT(...) LOGFLN_CRITICAL(__VA_ARGS__)
 
     /**
      *  void LOG_PERROR_CRIT(const char* str);
@@ -23014,7 +23015,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOG_PERRORF_CRIT(...) LOG_PERRORF_CRITICAL(...)
+    #define LOG_PERRORF_CRIT(...) LOG_PERRORF_CRITICAL(__VA_ARGS__)
 
 
     /**
@@ -23053,7 +23054,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOGF_FAT(...) LOGF_FATAL(...)
+    #define LOGF_FAT(...) LOGF_FATAL(__VA_ARGS__)
 
     /**
      *  void LOGFLN_FAT(const char* format, ...);
@@ -23067,7 +23068,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOGFLN_FAT(...) LOGFLN_FATAL(...)
+    #define LOGFLN_FAT(...) LOGFLN_FATAL(__VA_ARGS__)
 
     /**
      *  void LOG_PERROR_FAT(const char* str);
@@ -23094,7 +23095,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOG_PERRORF_FAT(...) LOG_PERRORF_FATAL(...)
+    #define LOG_PERRORF_FAT(...) LOG_PERRORF_FATAL(__VA_ARGS__)
 
 #endif
 
@@ -23109,7 +23110,7 @@
  *  Shorter aliases only have two character log level names.
  */
 
-#ifdef LOG_ENABLE_SHORTER_ALIASES
+#ifdef CLOG_ENABLE_SHORTER_ALIASES
 
     /**
      *  void LOG_TR(const char* str);
@@ -23148,7 +23149,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOGF_TR(...) LOGF_TRACE(...)
+    #define LOGF_TR(...) LOGF_TRACE(__VA_ARGS__)
 
     /**
      *  void LOGFLN_TR(const char* format, ...);
@@ -23162,7 +23163,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOGFLN_TR(...) LOGFLN_TRACE(...)
+    #define LOGFLN_TR(...) LOGFLN_TRACE(__VA_ARGS__)
 
 
     /**
@@ -23202,7 +23203,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOGF_DB(...) LOGF_DEBUG(...)
+    #define LOGF_DB(...) LOGF_DEBUG(__VA_ARGS__)
 
     /**
      *  void LOGFLN_DB(const char* format, ...);
@@ -23216,7 +23217,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOGFLN_DB(...) LOGFLN_DEBUG(...)
+    #define LOGFLN_DB(...) LOGFLN_DEBUG(__VA_ARGS__)
 
 
     /**
@@ -23255,7 +23256,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOGF_EX(...) LOGF_EXTRA(...)
+    #define LOGF_EX(...) LOGF_EXTRA(__VA_ARGS__)
 
     /**
      *  void LOGFLN_EX(const char* format, ...);
@@ -23269,7 +23270,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOGFLN_EX(...) LOGFLN_EXTRA(...)
+    #define LOGFLN_EX(...) LOGFLN_EXTRA(__VA_ARGS__)
 
 
     /**
@@ -23308,7 +23309,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOGF_IF(...) LOGF_INFO(...)
+    #define LOGF_IF(...) LOGF_INFO(__VA_ARGS__)
 
     /**
      *  void LOGFLN_IF(const char* format, ...);
@@ -23322,7 +23323,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOGFLN_IF(...) LOGFLN_INFO(...)
+    #define LOGFLN_IF(...) LOGFLN_INFO(__VA_ARGS__)
 
 
     /**
@@ -23361,7 +23362,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOGF_HD(...) LOGF_HEADER(...)
+    #define LOGF_HD(...) LOGF_HEADER(__VA_ARGS__)
 
     /**
      *  void LOGFLN_HD(const char* format, ...);
@@ -23375,7 +23376,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOGFLN_HD(...) LOGFLN_HEADER(...)
+    #define LOGFLN_HD(...) LOGFLN_HEADER(__VA_ARGS__)
 
 
     /**
@@ -23414,7 +23415,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOGF_SC(...) LOGF_SUCCESS(...)
+    #define LOGF_SC(...) LOGF_SUCCESS(__VA_ARGS__)
 
     /**
      *  void LOGFLN_SC(const char* format, ...);
@@ -23428,7 +23429,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOGFLN_SC(...) LOGFLN_SUCCESS(...)
+    #define LOGFLN_SC(...) LOGFLN_SUCCESS(__VA_ARGS__)
 
 
     /**
@@ -23467,7 +23468,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOGF_MN(...) LOGF_MONEY(...)
+    #define LOGF_MN(...) LOGF_MONEY(__VA_ARGS__)
 
     /**
      *  void LOGFLN_MN(const char* format, ...);
@@ -23481,7 +23482,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOGFLN_MN(...) LOGFLN_MONEY(...)
+    #define LOGFLN_MN(...) LOGFLN_MONEY(__VA_ARGS__)
 
 
     /**
@@ -23520,7 +23521,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOGF_MY(...) LOGF_MONEY(...)
+    #define LOGF_MY(...) LOGF_MONEY(__VA_ARGS__)
 
     /**
      *  void LOGFLN_MY(const char* format, ...);
@@ -23534,7 +23535,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOGFLN_MY(...) LOGFLN_MONEY(...)
+    #define LOGFLN_MY(...) LOGFLN_MONEY(__VA_ARGS__)
 
 
     /**
@@ -23573,7 +23574,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOGF_IN(...) LOGF_INPUT(...)
+    #define LOGF_IN(...) LOGF_INPUT(__VA_ARGS__)
 
     /**
      *  void LOGFLN_IN(const char* format, ...);
@@ -23587,7 +23588,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOGFLN_IN(...) LOGFLN_INPUT(...)
+    #define LOGFLN_IN(...) LOGFLN_INPUT(__VA_ARGS__)
 
 
     /**
@@ -23626,7 +23627,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOGF_WN(...) LOGF_WARNING(...)
+    #define LOGF_WN(...) LOGF_WARNING(__VA_ARGS__)
 
     /**
      *  void LOGFLN_WN(const char* format, ...);
@@ -23640,7 +23641,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOGFLN_WN(...) LOGFLN_WARNING(...)
+    #define LOGFLN_WN(...) LOGFLN_WARNING(__VA_ARGS__)
 
     /**
      *  void LOG_PERROR_WN(const char* str);
@@ -23667,7 +23668,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOG_PERRORF_WN(...) LOG_PERRORF_WARNING(...)
+    #define LOG_PERRORF_WN(...) LOG_PERRORF_WARNING(__VA_ARGS__)
 
 
     /**
@@ -23706,7 +23707,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOGF_ER(...) LOGF_ERROR(...)
+    #define LOGF_ER(...) LOGF_ERROR(__VA_ARGS__)
 
     /**
      *  void LOGFLN_ER(const char* format, ...);
@@ -23720,7 +23721,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOGFLN_ER(...) LOGFLN_ERROR(...)
+    #define LOGFLN_ER(...) LOGFLN_ERROR(__VA_ARGS__)
 
     /**
      *  void LOG_PERROR_ER(const char* str);
@@ -23747,7 +23748,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOG_PERRORF_ER(...) LOG_PERRORF_ERROR(...)
+    #define LOG_PERRORF_ER(...) LOG_PERRORF_ERROR(__VA_ARGS__)
 
 
     /**
@@ -23786,7 +23787,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOGF_CR(...) LOGF_CRITICAL(...)
+    #define LOGF_CR(...) LOGF_CRITICAL(__VA_ARGS__)
 
     /**
      *  void LOGFLN_CR(const char* format, ...);
@@ -23800,7 +23801,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOGFLN_CR(...) LOGFLN_CRITICAL(...)
+    #define LOGFLN_CR(...) LOGFLN_CRITICAL(__VA_ARGS__)
 
     /**
      *  void LOG_PERROR_CR(const char* str);
@@ -23827,7 +23828,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOG_PERRORF_CR(...) LOG_PERRORF_CRITICAL(...)
+    #define LOG_PERRORF_CR(...) LOG_PERRORF_CRITICAL(__VA_ARGS__)
 
 
     /**
@@ -23866,7 +23867,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOGF_FT(...) LOGF_FATAL(...)
+    #define LOGF_FT(...) LOGF_FATAL(__VA_ARGS__)
 
     /**
      *  void LOGFLN_FT(const char* format, ...);
@@ -23880,7 +23881,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOGFLN_FT(...) LOGFLN_FATAL(...)
+    #define LOGFLN_FT(...) LOGFLN_FATAL(__VA_ARGS__)
 
     /**
      *  void LOG_PERROR_FT(const char* str);
@@ -23907,7 +23908,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define LOG_PERRORF_FT(...) LOG_PERRORF_FATAL(...)
+    #define LOG_PERRORF_FT(...) LOG_PERRORF_FATAL(__VA_ARGS__)
 
 #endif
 
@@ -23961,7 +23962,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define TRACEF(...) LOGF_TRACE(...)
+    #define TRACEF(...) LOGF_TRACE(__VA_ARGS__)
 
     /*
      *  void TRACEFLN(const char* format, ...);
@@ -23975,7 +23976,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define TRACEFLN(...) LOGFLN_TRACE(...)
+    #define TRACEFLN(...) LOGFLN_TRACE(__VA_ARGS__)
 
 
     /**
@@ -24015,7 +24016,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define DEBUGF(...) LOGF_DEBUG(...)
+    #define DEBUGF(...) LOGF_DEBUG(__VA_ARGS__)
 
     /**
      *  void DEBUGFLN(const char* format, ...);
@@ -24029,7 +24030,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define DEBUGFLN(...) LOGFLN_DEBUG(...)
+    #define DEBUGFLN(...) LOGFLN_DEBUG(__VA_ARGS__)
 
 
     /**
@@ -24068,7 +24069,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define EXTRAF(...) LOGF_EXTRA(...)
+    #define EXTRAF(...) LOGF_EXTRA(__VA_ARGS__)
 
     /**
      *  void EXTRAFLN(const char* format, ...);
@@ -24082,7 +24083,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define EXTRAFLN(...) LOGFLN_EXTRA(...)
+    #define EXTRAFLN(...) LOGFLN_EXTRA(__VA_ARGS__)
 
 
     /**
@@ -24121,7 +24122,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define INFOF(...) LOGF_INFO(...)
+    #define INFOF(...) LOGF_INFO(__VA_ARGS__)
 
     /**
      *  void INFOFLN(const char* format, ...);
@@ -24135,7 +24136,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define INFOFLN(...) LOGFLN_INFO(...)
+    #define INFOFLN(...) LOGFLN_INFO(__VA_ARGS__)
 
 
     /**
@@ -24174,7 +24175,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define HEADERF(...) LOGF_HEADER(...)
+    #define HEADERF(...) LOGF_HEADER(__VA_ARGS__)
 
     /**
      *  void HEADERFLN(const char* format, ...);
@@ -24188,7 +24189,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define HEADERFLN(...) LOGFLN_HEADER(...)
+    #define HEADERFLN(...) LOGFLN_HEADER(__VA_ARGS__)
 
 
     /**
@@ -24227,7 +24228,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define SUCCESSF(...) LOGF_SUCCESS(...)
+    #define SUCCESSF(...) LOGF_SUCCESS(__VA_ARGS__)
 
     /**
      *  void SUCCESSFLN(const char* format, ...);
@@ -24241,7 +24242,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define SUCCESSFLN(...) LOGFLN_SUCCESS(...)
+    #define SUCCESSFLN(...) LOGFLN_SUCCESS(__VA_ARGS__)
 
 
     /**
@@ -24280,7 +24281,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define MONEYF(...) LOGF_MONEY(...)
+    #define MONEYF(...) LOGF_MONEY(__VA_ARGS__)
 
     /**
      *  void MONEYFLN(const char* format, ...);
@@ -24294,7 +24295,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define MONEYFLN(...) LOGFLN_MONEY(...)
+    #define MONEYFLN(...) LOGFLN_MONEY(__VA_ARGS__)
 
 
     /**
@@ -24333,7 +24334,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define INPUTF(...) LOGF_INPUT(...)
+    #define INPUTF(...) LOGF_INPUT(__VA_ARGS__)
 
     /**
      *  void INPUTFLN(const char* format, ...);
@@ -24347,7 +24348,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define INPUTFLN(...) LOGFLN_INPUT(...)
+    #define INPUTFLN(...) LOGFLN_INPUT(__VA_ARGS__)
 
 
     /**
@@ -24386,7 +24387,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define WARNINGF(...) LOGF_WARNING(...)
+    #define WARNINGF(...) LOGF_WARNING(__VA_ARGS__)
 
     /**
      *  void WARNINGFLN(const char* format, ...);
@@ -24400,7 +24401,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define WARNINGFLN(...) LOGFLN_WARNING(...)
+    #define WARNINGFLN(...) LOGFLN_WARNING(__VA_ARGS__)
 
     /**
      *  void WARNING_PERROR(const char* str);
@@ -24427,7 +24428,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define WARNING_PERRORF(...) LOG_PERRORF_WARNING(...)
+    #define WARNING_PERRORF(...) LOG_PERRORF_WARNING(__VA_ARGS__)
 
 
     /**
@@ -24466,7 +24467,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define ERRORF(...) LOGF_ERROR(...)
+    #define ERRORF(...) LOGF_ERROR(__VA_ARGS__)
 
     /**
      *  void ERRORFLN(const char* format, ...);
@@ -24480,7 +24481,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define ERRORFLN(...) LOGFLN_ERROR(...)
+    #define ERRORFLN(...) LOGFLN_ERROR(__VA_ARGS__)
 
     /**
      *  void ERROR_PERROR(const char* str);
@@ -24507,7 +24508,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define ERROR_PERRORF(...) LOG_PERRORF_ERROR(...)
+    #define ERROR_PERRORF(...) LOG_PERRORF_ERROR(__VA_ARGS__)
 
 
     /**
@@ -24546,7 +24547,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CRITICALF(...) LOGF_CRITICAL(...)
+    #define CRITICALF(...) LOGF_CRITICAL(__VA_ARGS__)
 
     /**
      *  void CRITICALFLN(const char* format, ...);
@@ -24560,7 +24561,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CRITICALFLN(...) LOGFLN_CRITICAL(...)
+    #define CRITICALFLN(...) LOGFLN_CRITICAL(__VA_ARGS__)
 
     /**
      *  void CRITICAL_PERROR(const char* str);
@@ -24587,7 +24588,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define CRITICAL_PERRORF(...) LOG_PERRORF_CRITICAL(...)
+    #define CRITICAL_PERRORF(...) LOG_PERRORF_CRITICAL(__VA_ARGS__)
 
 
     /**
@@ -24626,7 +24627,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FATALF(...) LOGF_FATAL(...)
+    #define FATALF(...) LOGF_FATAL(__VA_ARGS__)
 
     /**
      *  void FATALFLN(const char* format, ...);
@@ -24640,7 +24641,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FATALFLN(...) LOGFLN_FATAL(...)
+    #define FATALFLN(...) LOGFLN_FATAL(__VA_ARGS__)
 
     /**
      *  void FATAL_PERROR(const char* str);
@@ -24667,7 +24668,7 @@
      *  @param  format      Format specifier.
      *  @param  ...         Format specifier arguments.
      */
-    #define FATAL_PERRORF(...) LOG_PERRORF_FATAL(...)
+    #define FATAL_PERRORF(...) LOG_PERRORF_FATAL(__VA_ARGS__)
 
 #endif
 
