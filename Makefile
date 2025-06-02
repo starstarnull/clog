@@ -55,7 +55,8 @@ install:
 
 uninstall:
 	@echo "Uninstalling library headers..."
-	$(RM) -f $(INCLUDEDIR)/$(headers)
+	$(RM) -f $(INCLUDEDIR)/clog.h
+	$(RM) -f $(INCLUDEDIR)/clog-colors.h
 
 
 .PHONY: test
