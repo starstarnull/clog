@@ -49,7 +49,8 @@ default: test
 install:
 	@echo "Installing library headers clog.h and clog-colors.h..."
 	install -d $(INCLUDEDIR)
-	install -m 644 $(headers_src) $(INCLUDEDIR)/
+	install -m 644 src/clog.h $(INCLUDEDIR)/
+	install -m 644 src/clog-colors.h $(INCLUDEDIR)/
 
 
 uninstall:
