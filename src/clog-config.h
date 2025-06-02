@@ -20,7 +20,7 @@
  *  Clog C Header Config
  *  ====================
  *
- *  Version: 0.0.1-1 beta
+ *  Version: 1.0.0
  *
  *  Clog C Header is a C header library of functions that can be included in a
  *  C project to provide colored printing and console and file logging macros.

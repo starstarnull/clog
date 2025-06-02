@@ -2,8 +2,6 @@
 Clog C Header Config
 ====================
 
-Version: 0.0.1-1 beta
-
 Clog C Header is a C header library of functions that can be included in a
 C project to provide colored printing and console and file logging macros.
 These functions can be configured to allow versatility of compile-time
@@ -22,12 +20,35 @@ are three different main types of logging provided:
 
 - The "clog" functions provide console logging to standard error.
 
-- The "flog" functions provide file logging to the file set in the
-configuration header or to the default which is the '<file.c>.log'
-where `<file.c>` is the name of the C file using the logger.
+- The "flog" functions provide file logging to the file set in the configuration
+header or to the default which is the '<file.c>.log' where `<file.c>` is the
+name of the C file using the logger.
 
-- The "log" functions provide console and file logging if it is enabled
-in the configuration.
+- The "log" functions provide console and file logging if it is enabled in the
+configuration.
+
+Logs are typically one line (but may be more) and are composed of a line
+header (with several elements) and a log message. Log elements may include
+a timestamp followed by a line header separator, a log level symbol
+followed by a line header separator, and, if enabled, a tracing group
+(which may be composed by a filename, function name, and line number
+separated by a tracing separator), followed by a line header separator. For
+example:
+
+     "2025-04-29T06:49:16-04:00 [-] This is an error."
+             ^                 ^ ^ ^ ^
+             |                 | | | |
+         timestamp            sep|sep'------ message
+                                 |
+                               level symbol (error log)
+
+     "2025-04-29:06:49=[DEBUG]=file.c:function:22=This is an error."
+           ^          ^     ^ ^'----------------'^     ^
+           |          |     | |       |          |     |
+ custom timestamp custom sep| sep  tracing info  sep   message
+                            |
+                          level symbol (debug log)
+
 
 
 Default Configuration

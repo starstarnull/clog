@@ -8,14 +8,14 @@ int demo_2() {
     PRINTLN("\n");
     LOGLN_TRACE("This is a trace log.");
     LOGLN_DEBUG("This is a debug log.");
-    LOGLN_EXTRA("This is a extra log.");
-    LOGLN_INFO("This is a info log.");
+    LOGLN_EXTRA("This is an extra log.");
+    LOGLN_INFO("This is an info log.");
     LOGLN_HEADER("This is a header log.");
     LOGLN_SUCCESS("This is a success log.");
     LOGLN_MONEY("This is a money log.");
-    LOGLN_INPUT("This is a input log.");
+    LOGLN_INPUT("This is an input log.");
     LOGLN_WARNING("This is a warning log.");
-    LOGLN_ERROR("This is a error log.");
+    LOGLN_ERROR("This is an error log.");
     LOGLN_CRITICAL("This is a critical log.");
     LOGLN_FATAL("This is a fatal log.");
     PRINTLN("\n\n");

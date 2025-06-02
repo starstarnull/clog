@@ -1,5 +1,4 @@
 
-<!-- Logo -->
 <p align="center">
   <img src="img/clog-logo-little.png" />
 </p>
@@ -7,7 +6,7 @@
 Clog C Header - Simple C Header Logging Library
 ===============================================
 
-Version: 0.0.1-1 beta ([Change Log](CHANGELOG.md))
+Version: 1.0.0 ([Change Log](CHANGELOG.md))
 
 Provides macros for color console and file logging.
 
@@ -69,6 +68,9 @@ Images
 <p align="center">
   <img src="img/demo-custom.png" />
 </p>
+<p align="center">
+  <img src="img/demo-default-nvim.png" />
+</p>
 
 
 Philosophy
@@ -80,8 +82,8 @@ development and then deactivated for release. Or they can be customized and
 controlled by the developer.
 
 The intent is to have a simple c header file that can be dropped into a
-project or added to an include path that enables logging without
-configuration or additional setup unless specific configuration is
+project or added to an include path that enables logging and colored printing
+without configuration or additional setup unless specific configuration is
 required.
 
 This allows the developer to decide whether to compile logging into the
@@ -114,13 +116,14 @@ Installation
 ------------
 
 The `clog.h` header can be added to the include path of a project. But if you
-want to install copies to your linux system, just run:
+want to install copies to your system (for systems with a `/usr/local/include`
+directory like Linux), just run:
 
 ```
 make install
 ```
 
-This will install `clog.h` and `clog-colors.h` to `/usr/include`. For the
+This will install `clog.h` and `clog-colors.h` to `/usr/local/include`. For the
 configuration, you will have to add a copy to each project you want to use it
 on so that different projects can have different configurations.
 
@@ -131,7 +134,7 @@ There is no building necessary (since Clog C Header is just a header library).
 However, if you want to run tests and see a demo, you can run:
 
 ```
-make build          # If you want to see the tests. Not necessary to use.
+make               # If you want to see the tests. Not necessary to use.
 ```
 
 
@@ -273,6 +276,8 @@ Output: "2025-04-29T06:49:16-04:00 [DEBUG] file.c:func:4: Your number is 22.\n"
 
 Output: "2025-04-29T06:49:16-04:00 Your number is 22.\n"
 (In both console and file log)
+
+[List of exported constants and functions](LIBRARY_API.md)
 
 
 Future Plans

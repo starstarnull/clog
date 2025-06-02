@@ -20,7 +20,7 @@
  *  Clog C Header
  *  =============
  *
- *  Version: 0.0.1-1 beta
+ *  Version: 1.0.0
  *
  *  Provides macros for color console and file logging.
  *
@@ -70,9 +70,9 @@
  *  controlled by the developer.
  *
  *  The intent is to have a simple c header file that can be dropped into a
- *  project or added to an include path that enables logging without
- *  configuration or additional setup unless specific configuration is
- *  required.
+ *  project or added to an include path that enables logging and colored
+ *  printing without configuration or additional setup unless specific
+ *  configuration is required.
  *
  *  This allows the developer to decide whether to compile logging into the
  *  project or not by having the option to disable logging at compile time

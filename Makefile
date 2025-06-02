@@ -15,6 +15,8 @@
 #
 ###############################################################################
 
+PREFIX       ?= /usr/local
+INCLUDEDIR   = $(PREFIX)/include
 RM           := trash
 
 target_exec  := test-main
@@ -22,6 +24,8 @@ target_exec  := test-main
 src_dir      := ./src
 build_dir    := ./build
 test_dir     := ./test
+
+headers      := src/clog.h src/clog-colors.h
 
 inc_dirs     := $(src_dir) $(test_dir)
 
@@ -38,7 +42,18 @@ CFLAGS       := $(inc_flags) -MMD -MP -Wall -g
 
 
 .PHONY: default
-default: build
+default: test
+
+
+install:
+	@echo "Installing library headers clog.h and clog-colors.h..."
+	install -d $(INCLUDEDIR)
+	install -m 644 $(headers) $(INCLUDEDIR)/
+
+
+uninstall:
+	@echo "Uninstalling library headers..."
+	$(RM) -f $(INCLUDEDIR)/$(headers)
 
 
 .PHONY: test
@@ -55,6 +70,7 @@ rebuild: clean build
 
 
 $(build_dir)/$(target_exec): $(objs)
+	@echo "Building test and demo..."
 	$(CC) $^ $(LDFLAGS) -o $@ 
 
 
@@ -65,6 +81,7 @@ $(build_dir)/%.c.o: %.c
 
 .PHONY: clean
 clean:
+	@echo "Cleaning up..."
 	$(RM) -r $(build_dir)
 
 

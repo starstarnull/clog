@@ -20,7 +20,7 @@
  * Clog Terminal Colors Header
  * ===========================
  *
- * Version: 0.0.1-1 beta
+ * Version: 1.0.0
  *
  * Provides macros for terminal color codes.
  *
