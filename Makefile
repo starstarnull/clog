@@ -25,7 +25,8 @@ src_dir      := ./src
 build_dir    := ./build
 test_dir     := ./test
 
-headers      := src/clog.h src/clog-colors.h
+headers_src  := src/clog.h src/clog-colors.h
+headers      := clog.h clog-colors.h
 
 inc_dirs     := $(src_dir) $(test_dir)
 
@@ -48,7 +49,7 @@ default: test
 install:
 	@echo "Installing library headers clog.h and clog-colors.h..."
 	install -d $(INCLUDEDIR)
-	install -m 644 $(headers) $(INCLUDEDIR)/
+	install -m 644 $(headers_src) $(INCLUDEDIR)/
 
 
 uninstall:
