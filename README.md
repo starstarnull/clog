@@ -1,7 +1,8 @@
 
 <!-- Logo -->
-!["Clog Logo"](img/clog-logo-little.png)
-
+<p align="center">
+  <img src="img/clog-logo-little.png" />
+</p>
 
 Clog C Header - Simple C Header Logging Library
 ===============================================
@@ -47,15 +48,27 @@ Features
 from releases).
 
 
-Examples
-========
+Images
+======
 
-!["Demo Levels with Default Config"](img/demo-levels-default.png)
-!["Demo with Default Config"](img/demo-default.png)
-!["Demo Levels with Emoji Config"](img/demo-levels-emojis.png)
-!["Demo with Emoji Config"](img/demo-emojis.png)
-!["Demo Levels with Custom Config"](img/demo-levels-custom.png)
-!["Demo with Custom Config"](img/demo-custom.png)
+<p align="center">
+  <img src="img/demo-levels-default.png" />
+</p>
+<p align="center">
+  <img src="img/demo-default.png" />
+</p>
+<p align="center">
+  <img src="img/demo-levels-emojis.png" />
+</p>
+<p align="center">
+  <img src="img/demo-emojis.png" />
+</p>
+<p align="center">
+  <img src="img/demo-levels-custom.png" />
+</p>
+<p align="center">
+  <img src="img/demo-custom.png" />
+</p>
 
 
 Philosophy
