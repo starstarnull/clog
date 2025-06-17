@@ -5,7 +5,6 @@
 // Function Declarations
 
 static struct test* test_manual_syms_none();
-static struct test* test_manual_mode_file();
 static struct test* test_manual_file();
 static struct test* test_manual_disable_timestamps();
 static struct test* test_manual_disable_tracing();
@@ -25,7 +24,6 @@ struct unit* unit_config_2() {
     UNIT_HEADER("Testing Config 2 Options");
 
     ADD_TEST(unit, test_manual_syms_none());
-    ADD_TEST(unit, test_manual_mode_file());
     ADD_TEST(unit, test_manual_file());
     ADD_TEST(unit, test_manual_disable_timestamps());
     ADD_TEST(unit, test_manual_disable_tracing());
@@ -67,68 +65,14 @@ static struct test* test_manual_syms_none() {
 }
 
 
-static struct test* test_manual_mode_file() {
-
-    int fd;
-    char buf[LINE_BUF_SIZE];
-
-    TEST_HEADER(__FUNCTION__);
-    
-    // Create log.
-    FLOGLN("Test creation.");
-
-    fd = open(CLOG_FILE, O_RDONLY);
-    ASSERT(fd != -1 && "Failed to open log file.");
-    lseek(fd, 0, SEEK_END);
-
-    #undef LOG_FILENAME
-    #define LOG_FILENAME CLOG_FILE
-
-    TEST_PRINT(LOGLN_TRACE);
-    PRINT_FILE_LINE(fd, buf);
-    TEST_PRINT(LOGLN_DEBUG);
-    PRINT_FILE_LINE(fd, buf);
-    TEST_PRINT(LOGLN_EXTRA);
-    PRINT_FILE_LINE(fd, buf);
-    TEST_PRINT(LOGLN_INFO);
-    PRINT_FILE_LINE(fd, buf);
-    TEST_PRINT(LOGLN_HEADER);
-    PRINT_FILE_LINE(fd, buf);
-    TEST_PRINT(LOGLN_SUCCESS);
-    PRINT_FILE_LINE(fd, buf);
-    TEST_PRINT(LOGLN_MONEY);
-    PRINT_FILE_LINE(fd, buf);
-    TEST_PRINT(LOGLN_INPUT);
-    PRINT_FILE_LINE(fd, buf);
-    TEST_PRINT(LOGLN_WARNING);
-    PRINT_FILE_LINE(fd, buf);
-    TEST_PRINT(LOGLN_ERROR);
-    PRINT_FILE_LINE(fd, buf);
-    TEST_PRINT(LOGLN_CRITICAL);
-    PRINT_FILE_LINE(fd, buf);
-    TEST_PRINT(LOGLN_FATAL);
-    PRINT_FILE_LINE(fd, buf);
-    puts("");
-
-    LOGLN("MARKER");
-    PRINT_FILE_LINE(fd, buf);
-    ASSERT(strstr(buf, "MARKER\n") && "Log test failed.");
-    close(fd);
-    puts("\n");
-
-    FILL_LINE_BUF_FROM_STDERR(buf, LINE_BUF_SIZE, LOGLN("MARKER"));
-    ASSERT(!*buf && "LOG printed to stderr when configured not to.");
-
-    PASS_TEST();
-}
-
-
 static struct test* test_manual_file() {
 
     int fd;
     char buf[LINE_BUF_SIZE];
 
     TEST_HEADER(__FUNCTION__);
+    
+    FLOGLN("Test Creation");
     
     fd = open(CLOG_FILE, O_RDONLY);
     ASSERT(fd != -1 && "Failed to open log file.");

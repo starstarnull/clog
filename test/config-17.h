@@ -20,7 +20,7 @@
  *  Clog C Header Config
  *  ====================
  *
- *  Version: 1.0.0
+ *  Version: 0.0.1-1 beta
  *
  *  Clog C Header is a C header library of functions that can be included in a
  *  C project to provide colored printing and console and file logging macros.
@@ -294,7 +294,6 @@
 
 /**
  * Uncomment this to customize the line header separator (defaults to space).
- * Percentage symbols is not currently supported do to format strings.
  */
 
 //#define CLOG_LINE_HEADER_SEP      " "
@@ -302,7 +301,6 @@
 
 /**
  * Uncomment this to customize the tracing separator (defaults to colon).
- * Percentage symbols is not currently supported do to format strings.
  */
 
 //#define CLOG_TRACING_SEP            ":"
@@ -365,20 +363,18 @@
 
 /* Logging Mode for where to log options */
 
-#define CLOG_MODE_NONE              0   // Disables `log`, `clog`, and `flog`
-                                        // functions.
-#define CLOG_MODE_CONSOLE           1   // Disables `flog` functions. `log`
-                                        // only logs to console.
-#define CLOG_MODE_FILE              2   // Disables `clog` functions. `log` 
-                                        // only logs to file.
-#define CLOG_MODE_CONSOLE_AND_FILE  3   // `log` logs to console and file
-                                        // (default).
+#define CLOG_MODE_NONE              0  // Disables `log`, `clog`, and `flog`
+                                       // functions.
+#define CLOG_MODE_CONSOLE           1  // `log` only logs to console.
+#define CLOG_MODE_FILE              2  // `log` only logs to file.
+#define CLOG_MODE_CONSOLE_AND_FILE  3  // `log` logs to console and file
+                                       // (default).
 
 /**
  * Adjust this to change log mode. Defaults to `CLOG_MODE_CONSOLE_AND_FILE`.
  */
 
-//#define CLOG_MODE                   CLOG_MODE_CONSOLE_AND_FILE
+#define CLOG_MODE                   CLOG_MODE_NONE
 
 
 /* Logging level for what logs statements are compiled options */

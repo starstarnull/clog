@@ -1,6 +1,5 @@
 
 #include "test-config-1.h"
-#include "test-macro-helper.h"
 
 
 // Function Declarations
@@ -12,7 +11,6 @@ static struct test* test_manual_custom_colors();
 static struct test* test_manual_line_header_sep();
 static struct test* test_manual_tracing_sep();
 static struct test* test_manual_syms_words();
-static struct test* test_manual_mode_console();
 static struct test* test_manual_time_format();
 
 
@@ -36,7 +34,6 @@ struct unit* unit_config_1() {
     ADD_TEST(unit, test_manual_line_header_sep());
     ADD_TEST(unit, test_manual_tracing_sep());
     ADD_TEST(unit, test_manual_syms_words());
-    ADD_TEST(unit, test_manual_mode_console());
     ADD_TEST(unit, test_manual_time_format());
 
     REVERSE_LIST(unit->tests);
@@ -1580,24 +1577,6 @@ static struct test* test_manual_syms_words() {
         buf, LINE_BUF_SIZE, CLOGLN_INFO("This is a test");
     );
     ASSERT(strstr(buf, "INFO") && "INFO not found in info log.");
-
-    PASS_TEST();
-}
-
-
-static struct test* test_manual_mode_console() {
-
-    FILE* fp = NULL;
-
-    TEST_HEADER(__FUNCTION__);
-
-    unlink(LOG_FILENAME);
-    TEST_PRINTLN(LOGLN_INFO);
-    printf("Checking file...\n");
-    puts("\n");
-
-    fp = fopen(LOG_FILENAME, "r");
-    ASSERT(fp ? fclose(fp) && false : (bool) "File found.");
 
     PASS_TEST();
 }

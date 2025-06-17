@@ -6,7 +6,7 @@
 Clog C Header - Simple C Header Logging Library
 ===============================================
 
-Version: 1.0.0 ([Change Log](CHANGELOG.md))
+Version: 1.0.1 ([Change Log](CHANGELOG.md))
 
 Provides macros for color console and file logging.
 
@@ -283,6 +283,7 @@ Output: "2025-04-29T06:49:16-04:00 Your number is 22.\n"
 Future Plans
 ============
 
+* Add support for multi-threading.
 * Add print verbosity functionality.
 * Add namespace mode (with defines in more limited namespace).
 * Add color hex and string hex (#ffffff) conversion functions.
@@ -298,6 +299,9 @@ Future Plans
 * Add optimizations for space or speed (need to benchmark functions).
 * Add option for version that does not use libc.
 * Consider adding dynamic functions version (rather than pure macros).
+
+[Other TODOs](TODO.md)
+
 
 #### [License](LICENSE)
 

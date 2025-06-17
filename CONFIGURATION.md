@@ -119,14 +119,17 @@ Log Mode
 `CLOG_MODE` may be no logging, log to console only, log to file only, or
 log to console and file and may be set to one of the following options:
 
-- `CLOG_MODE_NONE` disables all logging.
+- `CLOG_MODE_NONE` disables all logging (including `clog`, `flog` and `log`
+functions).
 
-- `CLOG_MODE_CONSOLE` enables logging to the console only.
+- `CLOG_MODE_CONSOLE` enables logging to the console only (disables `flog`
+functions and `log` functions only log to console).
 
-- `CLOG_MODE_FILE` enables logging to a file only.
+- `CLOG_MODE_FILE` enables logging to a file only (disables `clog` functions
+and `log` functions only log to a file).
 
 - `CLOG_MODE_CONSOLE_AND_FILE` enables logging to the console and a
-file (default).
+file (default) (`log` functions log to console and a file).
 
 **Note**: All disabled logging calls are removed from the
 compilation (preprocessed out) through undefine or empty redefine

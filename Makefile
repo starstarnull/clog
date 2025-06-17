@@ -1,13 +1,13 @@
 
 ###############################################################################
 #
-# This makefile builds the <program> application.
+# This makefile builds the tests and demo for clog library.
 #
 # @file         Makefile
-# @author       <author>
-# @brief        Builds <program> application.
-# @version      <0.0.0-0>
-# @date         <date>
+# @author       Dorian N. Nihil
+# @brief        Builds tests and demos for clog library.
+# @version      1.0.1
+# @date         2025-06-15
 #
 # @copyright    Copyright (c) 2025. All rights reserved.
 #
@@ -20,6 +20,7 @@ INCLUDEDIR   = $(PREFIX)/include
 RM           := trash
 
 target_exec  := test-main
+target_demo  := demo-main
 
 src_dir      := ./src
 build_dir    := ./build
@@ -39,11 +40,20 @@ deps         := $(objs:.o=.d)
 inc_flags    := $(addprefix -I,$(inc_dirs))
 
 # The -MMD and -MP flags together generate Makefiles for us.
-CFLAGS       := $(inc_flags) -MMD -MP -Wall -g
+CFLAGS       := -MMD -MP -Wall -g
+
+
+# Demo
+
+demo_dir     := ./demo
+demo_srcs    := $(shell find $(demo_dir) -name '*.c')
+demo_objs    := $(demo_srcs:%=$(build_dir)/%.o)
+demo_inc_dirs  := $(src_dir) $(demo_dir)
+demo_inc_flags := $(addprefix -I,$(demo_inc_dirs))
 
 
 .PHONY: default
-default: test
+default: demo
 
 
 install:
@@ -57,6 +67,17 @@ uninstall:
 	@echo "Uninstalling library headers..."
 	$(RM) -f $(INCLUDEDIR)/clog.h
 	$(RM) -f $(INCLUDEDIR)/clog-colors.h
+
+
+.PHONY: demo
+demo: $(build_dir)/$(target_demo)
+	cd $(build_dir) && ./$(target_demo)
+
+
+$(build_dir)/$(target_demo): $(demo_srcs)
+	@echo "Building demo..."
+	mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) $(demo_inc_flags) $^ -o $@
 
 
 .PHONY: test
@@ -73,13 +94,13 @@ rebuild: clean build
 
 
 $(build_dir)/$(target_exec): $(objs)
-	@echo "Building test and demo..."
+	@echo "Building test..."
 	$(CC) $^ $(LDFLAGS) -o $@ 
 
 
 $(build_dir)/%.c.o: %.c
 	mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(inc_flags) -c $< -o $@
 
 
 .PHONY: clean

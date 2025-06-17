@@ -20,7 +20,7 @@
  *  Clog C Header
  *  =============
  *
- *  Version: 1.0.0
+ *  Version: 1.0.1
  *
  *  Provides macros for color console and file logging.
  *
@@ -240,6 +240,7 @@
  *  Future Plans
  *  ============
  *
+ *  * Add support for multi-threading.
  *  * Add print verbosity functionality.
  *  * Add namespace mode (with defines in more limited namespace).
  *  * Add color hex and string hex (#ffffff) conversion functions.
@@ -5692,6 +5693,12 @@
 #include <fcntl.h>
 #include <time.h>
 #include <errno.h>
+
+#ifdef WIN32
+    #define NEWLINE "\r\n"
+#else
+    #define NEWLINE "\n"
+#endif
 
 
 // Macros.
@@ -19901,6 +19908,200 @@
     #define _CLOG_C_TLOG_PERRORF(...)
 
 
+    // Disable console log functions.
+
+    #undef CLOG
+    #define CLOG(...)
+    #undef CLOGLN
+    #define CLOGLN(...)
+    #undef CLOGF
+    #define CLOGF(...)
+    #undef CLOGFLN
+    #define CLOGFLN(...)
+    #undef CLOG_HEX
+    #define CLOG_HEX(...)
+    #undef CLOGLN_HEX
+    #define CLOGLN_HEX(...)
+    #undef CLOG_WIDE_HEX
+    #define CLOG_WIDE_HEX(...)
+    #undef CLOGLN_WIDE_HEX
+    #define CLOGLN_WIDE_HEX(...)
+    #undef CLOG_PERROR
+    #define CLOG_PERROR(...)
+    #undef CLOG_PERRORF
+    #define CLOG_PERRORF(...)
+
+    #undef CLOG_STREAM
+    #define CLOG_STREAM(...)
+    #undef CLOGLN_STREAM
+    #define CLOGLN_STREAM(...)
+    #undef CLOGF_STREAM
+    #define CLOGF_STREAM(...)
+    #undef CLOGFLN_STREAM
+    #define CLOGFLN_STREAM(...)
+    #undef CLOG_HEX_STREAM
+    #define CLOG_HEX_STREAM(...)
+    #undef CLOGLN_HEX_STREAM
+    #define CLOGLN_HEX_STREAM(...)
+    #undef CLOG_WIDE_HEX_STREAM
+    #define CLOG_WIDE_HEX_STREAM(...)
+    #undef CLOGLN_WIDE_HEX_STREAM
+    #define CLOGLN_WIDE_HEX_STREAM(...)
+    #undef CLOG_PERROR_STREAM
+    #define CLOG_PERROR_STREAM(...)
+    #undef CLOG_PERRORF_STREAM
+    #define CLOG_PERRORF_STREAM(...)
+
+    #undef CTLOG
+    #define CTLOG(...)
+    #undef CTLOGLN
+    #define CTLOGLN(...)
+    #undef CTLOGF
+    #define CTLOGF(...)
+    #undef CTLOGFLN
+    #define CTLOGFLN(...)
+    #undef CTLOG_HEX
+    #define CTLOG_HEX(...)
+    #undef CTLOGLN_HEX
+    #define CTLOGLN_HEX(...)
+    #undef CTLOG_WIDE_HEX
+    #define CTLOG_WIDE_HEX(...)
+    #undef CTLOGLN_WIDE_HEX
+    #define CTLOGLN_WIDE_HEX(...)
+    #undef CTLOG_PERROR
+    #define CTLOG_PERROR(...)
+    #undef CTLOG_PERRORF
+    #define CTLOG_PERRORF(...)
+
+    #undef CCLOG
+    #define CCLOG(...)
+    #undef CCLOGLN
+    #define CCLOGLN(...)
+    #undef CCLOGF
+    #define CCLOGF(...)
+    #undef CCLOGFLN
+    #define CCLOGFLN(...)
+    #undef CCLOG_HEX
+    #define CCLOG_HEX(...)
+    #undef CCLOGLN_HEX
+    #define CCLOGLN_HEX(...)
+    #undef CCLOG_WIDE_HEX
+    #define CCLOG_WIDE_HEX(...)
+    #undef CCLOGLN_WIDE_HEX
+    #define CCLOGLN_WIDE_HEX(...)
+    #undef CCLOG_PERROR
+    #define CCLOG_PERROR(...)
+    #undef CCLOG_PERRORF
+    #define CCLOG_PERRORF(...)
+
+    #undef CCLOG_STREAM
+    #define CCLOG_STREAM(...)
+    #undef CCLOGLN_STREAM
+    #define CCLOGLN_STREAM(...)
+    #undef CCLOGF_STREAM
+    #define CCLOGF_STREAM(...)
+    #undef CCLOGFLN_STREAM
+    #define CCLOGFLN_STREAM(...)
+    #undef CCLOG_HEX_STREAM
+    #define CCLOG_HEX_STREAM(...)
+    #undef CCLOGLN_HEX_STREAM
+    #define CCLOGLN_HEX_STREAM(...)
+    #undef CCLOG_WIDE_HEX_STREAM
+    #define CCLOG_WIDE_HEX_STREAM(...)
+    #undef CCLOGLN_WIDE_HEX_STREAM
+    #define CCLOGLN_WIDE_HEX_STREAM(...)
+    #undef CCLOG_PERROR_STREAM
+    #define CCLOG_PERROR_STREAM(...)
+    #undef CCLOG_PERRORF_STREAM
+    #define CCLOG_PERRORF_STREAM(...)
+
+    #undef CCTLOG
+    #define CCTLOG(...)
+    #undef CCTLOGLN
+    #define CCTLOGLN(...)
+    #undef CCTLOGF
+    #define CCTLOGF(...)
+    #undef CCTLOGFLN
+    #define CCTLOGFLN(...)
+    #undef CCTLOG_HEX
+    #define CCTLOG_HEX(...)
+    #undef CCTLOGLN_HEX
+    #define CCTLOGLN_HEX(...)
+    #undef CCTLOG_WIDE_HEX
+    #define CCTLOG_WIDE_HEX(...)
+    #undef CCTLOGLN_WIDE_HEX
+    #define CCTLOGLN_WIDE_HEX(...)
+    #undef CCTLOG_PERROR
+    #define CCTLOG_PERROR(...)
+    #undef CCTLOG_PERRORF
+    #define CCTLOG_PERRORF(...)
+
+    // Disable file log functions.
+
+    #undef FLOG
+    #define FLOG(...)
+    #undef FLOGLN
+    #define FLOGLN(...)
+    #undef FLOGF
+    #define FLOGF(...)
+    #undef FLOGFLN
+    #define FLOGFLN(...)
+    #undef FLOG_HEX
+    #define FLOG_HEX(...)
+    #undef FLOGLN_HEX
+    #define FLOGLN_HEX(...)
+    #undef FLOG_WIDE_HEX
+    #define FLOG_WIDE_HEX(...)
+    #undef FLOGLN_WIDE_HEX
+    #define FLOGLN_WIDE_HEX(...)
+    #undef FLOG_PERROR
+    #define FLOG_PERROR(...)
+    #undef FLOG_PERRORF
+    #define FLOG_PERRORF(...)
+
+    #undef FLOG_STREAM
+    #define FLOG_STREAM(...)
+    #undef FLOGLN_STREAM
+    #define FLOGLN_STREAM(...)
+    #undef FLOGF_STREAM
+    #define FLOGF_STREAM(...)
+    #undef FLOGFLN_STREAM
+    #define FLOGFLN_STREAM(...)
+    #undef FLOG_HEX_STREAM
+    #define FLOG_HEX_STREAM(...)
+    #undef FLOGLN_HEX_STREAM
+    #define FLOGLN_HEX_STREAM(...)
+    #undef FLOG_WIDE_HEX_STREAM
+    #define FLOG_WIDE_HEX_STREAM(...)
+    #undef FLOGLN_WIDE_HEX_STREAM
+    #define FLOGLN_WIDE_HEX_STREAM(...)
+    #undef FLOG_PERROR_STREAM
+    #define FLOG_PERROR_STREAM(...)
+    #undef FLOG_PERRORF_STREAM
+    #define FLOG_PERRORF_STREAM(...)
+
+    #undef FTLOG
+    #define FTLOG(...)
+    #undef FTLOGLN
+    #define FTLOGLN(...)
+    #undef FTLOGF
+    #define FTLOGF(...)
+    #undef FTLOGFLN
+    #define FTLOGFLN(...)
+    #undef FTLOG_HEX
+    #define FTLOG_HEX(...)
+    #undef FTLOGLN_HEX
+    #define FTLOGLN_HEX(...)
+    #undef FTLOG_WIDE_HEX
+    #define FTLOG_WIDE_HEX(...)
+    #undef FTLOGLN_WIDE_HEX
+    #define FTLOGLN_WIDE_HEX(...)
+    #undef FTLOG_PERROR
+    #define FTLOG_PERROR(...)
+    #undef FTLOG_PERRORF
+    #define FTLOG_PERRORF(...)
+
+
 #elif CLOG_MODE == CLOG_MODE_CONSOLE
 
     #define _CLOG_LOG(str) \
@@ -19996,7 +20197,6 @@
         CTLOG_PERRORF(__VA_ARGS__)
 
 
-
     #define _CLOG_C_LOG(color, str) \
         _CLOG(color, str)
 
@@ -20088,6 +20288,72 @@
 
     #define _CLOG_C_TLOG_PERRORF(color, ...) \
         _CTLOG_PERRORF(color, __VA_ARGS__)
+
+
+    // Disable file log functions.
+
+    #undef FLOG
+    #define FLOG(...)
+    #undef FLOGLN
+    #define FLOGLN(...)
+    #undef FLOGF
+    #define FLOGF(...)
+    #undef FLOGFLN
+    #define FLOGFLN(...)
+    #undef FLOG_HEX
+    #define FLOG_HEX(...)
+    #undef FLOGLN_HEX
+    #define FLOGLN_HEX(...)
+    #undef FLOG_WIDE_HEX
+    #define FLOG_WIDE_HEX(...)
+    #undef FLOGLN_WIDE_HEX
+    #define FLOGLN_WIDE_HEX(...)
+    #undef FLOG_PERROR
+    #define FLOG_PERROR(...)
+    #undef FLOG_PERRORF
+    #define FLOG_PERRORF(...)
+
+    #undef FLOG_STREAM
+    #define FLOG_STREAM(...)
+    #undef FLOGLN_STREAM
+    #define FLOGLN_STREAM(...)
+    #undef FLOGF_STREAM
+    #define FLOGF_STREAM(...)
+    #undef FLOGFLN_STREAM
+    #define FLOGFLN_STREAM(...)
+    #undef FLOG_HEX_STREAM
+    #define FLOG_HEX_STREAM(...)
+    #undef FLOGLN_HEX_STREAM
+    #define FLOGLN_HEX_STREAM(...)
+    #undef FLOG_WIDE_HEX_STREAM
+    #define FLOG_WIDE_HEX_STREAM(...)
+    #undef FLOGLN_WIDE_HEX_STREAM
+    #define FLOGLN_WIDE_HEX_STREAM(...)
+    #undef FLOG_PERROR_STREAM
+    #define FLOG_PERROR_STREAM(...)
+    #undef FLOG_PERRORF_STREAM
+    #define FLOG_PERRORF_STREAM(...)
+
+    #undef FTLOG
+    #define FTLOG(...)
+    #undef FTLOGLN
+    #define FTLOGLN(...)
+    #undef FTLOGF
+    #define FTLOGF(...)
+    #undef FTLOGFLN
+    #define FTLOGFLN(...)
+    #undef FTLOG_HEX
+    #define FTLOG_HEX(...)
+    #undef FTLOGLN_HEX
+    #define FTLOGLN_HEX(...)
+    #undef FTLOG_WIDE_HEX
+    #define FTLOG_WIDE_HEX(...)
+    #undef FTLOGLN_WIDE_HEX
+    #define FTLOGLN_WIDE_HEX(...)
+    #undef FTLOG_PERROR
+    #define FTLOG_PERROR(...)
+    #undef FTLOG_PERRORF
+    #define FTLOG_PERRORF(...)
 
 
 #elif CLOG_MODE == CLOG_MODE_FILE
@@ -20185,7 +20451,6 @@
         FTLOG_PERRORF(__VA_ARGS__)
 
 
-
     #define _CLOG_C_LOG(color, str) \
         FLOG(str)
 
@@ -20277,6 +20542,136 @@
 
     #define _CLOG_C_TLOG_PERRORF(color, ...) \
         FTLOG_PERRORF(__VA_ARGS__)
+
+
+    // For now, CLOG_MODE_FILE disables console logging.
+
+    #undef CLOG
+    #define CLOG(...)
+    #undef CLOGLN
+    #define CLOGLN(...)
+    #undef CLOGF
+    #define CLOGF(...)
+    #undef CLOGFLN
+    #define CLOGFLN(...)
+    #undef CLOG_HEX
+    #define CLOG_HEX(...)
+    #undef CLOGLN_HEX
+    #define CLOGLN_HEX(...)
+    #undef CLOG_WIDE_HEX
+    #define CLOG_WIDE_HEX(...)
+    #undef CLOGLN_WIDE_HEX
+    #define CLOGLN_WIDE_HEX(...)
+    #undef CLOG_PERROR
+    #define CLOG_PERROR(...)
+    #undef CLOG_PERRORF
+    #define CLOG_PERRORF(...)
+
+    #undef CLOG_STREAM
+    #define CLOG_STREAM(...)
+    #undef CLOGLN_STREAM
+    #define CLOGLN_STREAM(...)
+    #undef CLOGF_STREAM
+    #define CLOGF_STREAM(...)
+    #undef CLOGFLN_STREAM
+    #define CLOGFLN_STREAM(...)
+    #undef CLOG_HEX_STREAM
+    #define CLOG_HEX_STREAM(...)
+    #undef CLOGLN_HEX_STREAM
+    #define CLOGLN_HEX_STREAM(...)
+    #undef CLOG_WIDE_HEX_STREAM
+    #define CLOG_WIDE_HEX_STREAM(...)
+    #undef CLOGLN_WIDE_HEX_STREAM
+    #define CLOGLN_WIDE_HEX_STREAM(...)
+    #undef CLOG_PERROR_STREAM
+    #define CLOG_PERROR_STREAM(...)
+    #undef CLOG_PERRORF_STREAM
+    #define CLOG_PERRORF_STREAM(...)
+
+    #undef CTLOG
+    #define CTLOG(...)
+    #undef CTLOGLN
+    #define CTLOGLN(...)
+    #undef CTLOGF
+    #define CTLOGF(...)
+    #undef CTLOGFLN
+    #define CTLOGFLN(...)
+    #undef CTLOG_HEX
+    #define CTLOG_HEX(...)
+    #undef CTLOGLN_HEX
+    #define CTLOGLN_HEX(...)
+    #undef CTLOG_WIDE_HEX
+    #define CTLOG_WIDE_HEX(...)
+    #undef CTLOGLN_WIDE_HEX
+    #define CTLOGLN_WIDE_HEX(...)
+    #undef CTLOG_PERROR
+    #define CTLOG_PERROR(...)
+    #undef CTLOG_PERRORF
+    #define CTLOG_PERRORF(...)
+
+    #undef CCLOG
+    #define CCLOG(...)
+    #undef CCLOGLN
+    #define CCLOGLN(...)
+    #undef CCLOGF
+    #define CCLOGF(...)
+    #undef CCLOGFLN
+    #define CCLOGFLN(...)
+    #undef CCLOG_HEX
+    #define CCLOG_HEX(...)
+    #undef CCLOGLN_HEX
+    #define CCLOGLN_HEX(...)
+    #undef CCLOG_WIDE_HEX
+    #define CCLOG_WIDE_HEX(...)
+    #undef CCLOGLN_WIDE_HEX
+    #define CCLOGLN_WIDE_HEX(...)
+    #undef CCLOG_PERROR
+    #define CCLOG_PERROR(...)
+    #undef CCLOG_PERRORF
+    #define CCLOG_PERRORF(...)
+
+    #undef CCLOG_STREAM
+    #define CCLOG_STREAM(...)
+    #undef CCLOGLN_STREAM
+    #define CCLOGLN_STREAM(...)
+    #undef CCLOGF_STREAM
+    #define CCLOGF_STREAM(...)
+    #undef CCLOGFLN_STREAM
+    #define CCLOGFLN_STREAM(...)
+    #undef CCLOG_HEX_STREAM
+    #define CCLOG_HEX_STREAM(...)
+    #undef CCLOGLN_HEX_STREAM
+    #define CCLOGLN_HEX_STREAM(...)
+    #undef CCLOG_WIDE_HEX_STREAM
+    #define CCLOG_WIDE_HEX_STREAM(...)
+    #undef CCLOGLN_WIDE_HEX_STREAM
+    #define CCLOGLN_WIDE_HEX_STREAM(...)
+    #undef CCLOG_PERROR_STREAM
+    #define CCLOG_PERROR_STREAM(...)
+    #undef CCLOG_PERRORF_STREAM
+    #define CCLOG_PERRORF_STREAM(...)
+
+    #undef CCTLOG
+    #define CCTLOG(...)
+    #undef CCTLOGLN
+    #define CCTLOGLN(...)
+    #undef CCTLOGF
+    #define CCTLOGF(...)
+    #undef CCTLOGFLN
+    #define CCTLOGFLN(...)
+    #undef CCTLOG_HEX
+    #define CCTLOG_HEX(...)
+    #undef CCTLOGLN_HEX
+    #define CCTLOGLN_HEX(...)
+    #undef CCTLOG_WIDE_HEX
+    #define CCTLOG_WIDE_HEX(...)
+    #undef CCTLOGLN_WIDE_HEX
+    #define CCTLOGLN_WIDE_HEX(...)
+    #undef CCTLOG_PERROR
+    #define CCTLOG_PERROR(...)
+    #undef CCTLOG_PERRORF
+    #define CCTLOG_PERRORF(...)
+
 
 #else
 

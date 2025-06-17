@@ -24,9 +24,9 @@
 #include "test-config-12.h"
 #include "test-config-13.h"
 #include "test-config-14.h"
-#include "demo.h"
-#include "demo-1.h"
-#include "demo-2.h"
+#include "test-config-15.h"
+#include "test-config-16.h"
+#include "test-config-17.h"
 
 
 /**
@@ -68,16 +68,14 @@ int main() {
     ADD_UNIT(units, unit_config_12());
     ADD_UNIT(units, unit_config_13());
     ADD_UNIT(units, unit_config_14());
+    ADD_UNIT(units, unit_config_15());
+    ADD_UNIT(units, unit_config_16());
+    ADD_UNIT(units, unit_config_17());
 
     // Print summary. Don't need to free everything as exit is next.
     DID_UNITS_PASS(units, ret);
     REVERSE_LIST(units);
     PRINT_UNITS_RESULTS(units);
-
-    UNIT_HEADER("RUNNING DEMO");
-    demo();
-    demo_1();
-    demo_2();
 
     return !ret;
 }

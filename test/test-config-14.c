@@ -4,7 +4,7 @@
 
 // Function Declarations
 
-static struct test* test_manual_mode_none();
+static struct test* test_manual_level_none();
 
 
 // Main test function.
@@ -20,7 +20,7 @@ struct unit* unit_config_14() {
     assert(unit);
     UNIT_HEADER("Testing Config 14 Options");
 
-    ADD_TEST(unit, test_manual_mode_none());
+    ADD_TEST(unit, test_manual_level_none());
 
     REVERSE_LIST(unit->tests);
     PRINT_UNIT_RESULT(unit);
@@ -30,7 +30,7 @@ struct unit* unit_config_14() {
 }
 
 
-static struct test* test_manual_mode_none() {
+static struct test* test_manual_level_none() {
 
     int fd;
     char buf[LINE_BUF_SIZE];

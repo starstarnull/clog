@@ -374,7 +374,7 @@
  * Adjust this to change log mode. Defaults to `CLOG_MODE_CONSOLE_AND_FILE`.
  */
 
-#define CLOG_MODE                   CLOG_MODE_CONSOLE
+//#define CLOG_MODE                   CLOG_MODE_CONSOLE_AND_FILE
 
 
 /* Logging level for what logs statements are compiled options */
