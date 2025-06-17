@@ -131,10 +131,10 @@ on so that different projects can have different configurations.
 ### Building from Source
 
 There is no building necessary (since Clog C Header is just a header library).
-However, if you want to run tests and see a demo, you can run:
+However, if you want to see the demo, you can run:
 
 ```
-make               # If you want to see the tests. Not necessary to use.
+make               # If you want to see the demo. Not necessary to use.
 ```
 
 

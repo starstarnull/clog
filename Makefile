@@ -77,7 +77,7 @@ demo: $(build_dir)/$(target_demo)
 $(build_dir)/$(target_demo): $(demo_srcs)
 	@echo "Building demo..."
 	mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) $(demo_inc_flags) $^ -o $@
+	$(CC) -w $(demo_inc_flags) $^ -o $@
 
 
 .PHONY: test
